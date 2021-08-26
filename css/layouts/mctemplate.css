@@ -1,0 +1,150 @@
+#absolute { position: absolute; left: 0px; top: 0px; z-index: 1; }
+
+body {
+  font-family: "Helvetica Neue", Ariel, Helvetica, sans-serif;
+  font-size: 9pt;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  color: #5b6770 }
+
+h1 {
+  font-family: Ariel, Helvetica, Geneva, Swiss, SunSans-Regular;
+  font-size: 16pt;
+  font-style: normal;
+  font-weight: bold;
+  line-height: normal;
+  color: #5b6770 }
+
+
+h1.name {
+      font-family: Ariel, Helvetica, Geneva, Swiss, SunSans-Regular;
+      font-size: 16pt;
+      font-style: normal;
+      font-weight: bold;
+      line-height: normal;
+      color: #FFFFFF }
+
+h2 {
+      font-family: Ariel, Helvetica, Geneva, Swiss, SunSans-Regular;
+      font-size: 14pt;
+      font-style: normal;
+      font-weight: bold;
+      line-height: normal;
+      color: #5b6770 }
+
+h3  {
+      font-family: Ariel, Helvetica, Geneva, Swiss, SunSans-Regular;
+      font-size: 12pt;
+      font-style: normal;
+      font-weight: bold;
+      line-height: normal;
+      color: #5b6770 }
+
+h4 {
+      font-family: Ariel, Helvetica, Geneva, Swiss, SunSans-Regular;
+      font-size: 11pt;
+      font-style: normal;
+      font-weight: bold;
+      line-height: normal;
+      color: #5b6770 }
+
+h5 {
+      font-family: Ariel, Helvetica, Geneva, Swiss, SunSans-Regular;
+      font-size: 10pt;
+      font-style: normal;
+      font-weight: bold;
+      line-height: normal;
+      color: #5b6770 }
+
+h5.prof_title {
+      font-family: Ariel, Helvetica, Geneva, Swiss, SunSans-Regular;
+      font-size: 10pt;
+      font-style: normal;
+      font-weight: bold;
+      line-height: 0.5;
+      color: #5b6770 }
+
+
+h6 {
+      font-family: Ariel, Helvetica, Geneva, Swiss, SunSans-Regular;
+      font-size: 9pt;
+      font-style: normal;
+      font-weight: bold;
+      line-height: normal;
+      color: #5b6770 }
+
+p {
+      font-family: "Helvetica Neue", Ariel, Helvetica, Geneva, Swiss, SunSans-Regular;
+      font-size: 9pt;
+      font-style: normal;
+      font-weight: normal;
+      line-height: normal;
+      color: #5b6770 }
+
+i {
+  font-size: 9pt
+}
+
+font.teeny {
+  font-size: 6pt
+	}
+
+li {
+      font-family: "Helvetica Neue", Ariel, Helvetica, Geneva, Swiss, SunSans-Regular;
+      font-size: 9pt;
+      font-style: normal;
+      font-weight: normal;
+      line-height: normal;
+      color: #5b6770 }
+
+font.prof_title {
+      font-family: Ariel, Helvetica, Geneva, Swiss, SunSans-Regular;
+      font-size: 14pt;
+      font-weight: bold;
+      color: #5b6770 }
+
+font.prof_title2 {
+      font-family: Ariel, Helvetica, Geneva, Swiss, SunSans-Regular;
+      font-size: 12pt;
+      font-weight: bold;
+      color: #5b6770 }
+
+font.prof_title3 {
+      font-family: Ariel, Helvetica, Geneva, Swiss, SunSans-Regular;
+      font-size: 10pt;
+      font-weight: bold;
+      color: #5b6770 }
+
+font.updated {
+      font-family: Ariel, Helvetica, Geneva, Swiss, SunSans-Regular;
+      font-size: 6pt;
+      font-weight: normal;
+      color: #5b6770 }
+
+font.updated2 {
+      font-family: Ariel, Helvetica, Geneva, Swiss, SunSans-Regular;
+      font-size: 6pt;
+      font-weight: normal;
+      color: #FFCC33 }
+
+li.spaced {
+      height: 2.0em;
+  list-style-type: number;
+	font-size: 9pt;
+}
+
+bibbase_paper_title {
+  font-weight: bold;
+  font-size: 9pt;
+}
+
+bibbase_paper_author {
+  font-size:9pt
+}
+
+a:link {color:#5b6770; text-decoration:none; font-weight: bold; font-size: 9pt }
+a:visited {color:#5b6770; text-decoration:none; font-weight: bold; font-size: 9pt }
+a:hover {color:#7a003c; text-decoration:none; background: #EEEEEE}
+
+a img {border: none; }
