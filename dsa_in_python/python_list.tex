@@ -1,0 +1,3656 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{python\_list}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{lists-and-tuples}{%
+\section{Lists and Tuples}\label{lists-and-tuples}}
+
+In this notebook, you will learn to store more than one valuable in a
+single variable. This by itself is one of the most powerful ideas in
+programming, and it introduces a number of other central concepts such
+as loops. If this section ends up making sense to you, you will be able
+to start writing some interesting programs, and you can be more
+confident that you will be able to develop overall competence as a
+programmer.
+
+    \href{http://nbviewer.ipython.org/urls/raw.github.com/ehmatthes/intro_programming/master/notebooks/var_string_num.ipynb}{Previous:
+Variables, Strings, and Numbers} \textbar{}
+\href{http://nbviewer.ipython.org/urls/raw.github.com/ehmatthes/intro_programming/master/notebooks/index.ipynb}{Home}
+\textbar{}
+\href{http://nbviewer.ipython.org/urls/raw.github.com/ehmatthes/intro_programming/master/notebooks/introducing_functions.ipynb}{Next:
+Introducing Functions}
+
+    \hypertarget{contents}{%
+\section{Contents}\label{contents}}
+
+\begin{itemize}
+\tightlist
+\item
+  Section \ref{lists}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Section \ref{introducing-lists}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Section \ref{example}
+    \item
+      Section \ref{naming-and-defining-a-list}
+    \item
+      Section \ref{accessing-one-item-in-a-list}
+    \item
+      Section \ref{exercises-lists}
+    \end{itemize}
+  \item
+    Section \ref{lists-and-looping}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Section \ref{accessing-all-elements-in-a-list}
+    \item
+      Section \ref{enumerating-a-list}
+    \item
+      Section \ref{exercises-loops}
+    \end{itemize}
+  \item
+    Section \ref{common-list-operations}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Section \ref{modifying-elements-in-a-list}
+    \item
+      Section \ref{finding-an-element-in-a-list}
+    \item
+      Section \ref{testing-whether-an-element-is-in-a-list}
+    \item
+      Section \ref{adding-items-to-a-list}
+    \item
+      Section \ref{creating-an-empty-list}
+    \item
+      Section \ref{sorting-a-list}
+    \item
+      Section \ref{finding-the-length-of-a-list}
+    \item
+      Section \ref{exercises-operations}
+    \end{itemize}
+  \item
+    Section \ref{removing-items-from-a-list}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Section \ref{removing-items-by-position}
+    \item
+      Section \ref{removing-items-by-value}
+    \item
+      Section \ref{popping-items}
+    \item
+      Section \ref{exercises-removing}
+    \end{itemize}
+  \item
+    Section \ref{want-to-see-what-functions-are}
+  \item
+    Section \ref{slicing-a-list}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Section \ref{copying-a-list}
+    \item
+      Section \ref{exercises_slicing}
+    \end{itemize}
+  \item
+    Section \ref{numerical-lists}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Section \ref{the-range-function}
+    \item
+      Section \ref{min_max_sum}
+    \item
+      Section \ref{exercises_numerical}
+    \end{itemize}
+  \item
+    Section \ref{list-comprehensions}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Section \ref{numerical-comprehensions}
+    \item
+      Section \ref{non-numerical-comprehensions}
+    \item
+      Section \ref{exercises_comprehensions}
+    \end{itemize}
+  \item
+    Section \ref{strings-as-lists}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Section \ref{strings-as-a-list-of-characters}
+    \item
+      Section \ref{slicing-strings}
+    \item
+      Section \ref{finding-substrings}
+    \item
+      Section \ref{replacing-substrings}
+    \item
+      Section \ref{counting-substrings}
+    \item
+      Section \ref{splitting-strings}
+    \item
+      Section \ref{other-string-methods}
+    \item
+      Section \ref{exercises-strings-as-lists}
+    \item
+      Section \ref{challenges-strings-as-lists}
+    \end{itemize}
+  \item
+    Section \ref{tuples}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Section \ref{defining-tuples-and-accessing-elements}
+    \item
+      Section \ref{using-tuples-to-make-strings}
+    \item
+      Section \ref{exercises_tuples}
+    \end{itemize}
+  \item
+    Section \ref{coging-style-pep-8}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Section \ref{why-have-style-conventions}
+    \item
+      Section \ref{what-is-a-pep}
+    \item
+      Section \ref{basic-python-style-guidelines}
+    \item
+      Section \ref{exercises-pep8}
+    \end{itemize}
+  \item
+    Section \ref{overall-challenges}
+  \end{itemize}
+\end{itemize}
+
+    \hypertarget{lists}{%
+\section{Lists}\label{lists}}
+
+    \hypertarget{introducing-lists}{%
+\section{Introducing Lists}\label{introducing-lists}}
+
+\hypertarget{example}{%
+\subsection{Example}\label{example}}
+
+A list is a collection of items, that is stored in a variable. The items
+should be related in some way, but there are no restrictions on what can
+be stored in a list. Here is a simple example of a list, and how we can
+quickly access each item in the list.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{53}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+ \PY{n}{animals} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cat}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tiger}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{deer}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+ \PY{k}{for} \PY{n}{animal} \PY{o+ow}{in} \PY{n}{animals}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Hello }\PY{l+s+si}{\PYZob{}}\PY{n}{animal}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+ \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+ \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{animals}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Hello }\PY{l+s+si}{\PYZob{}}\PY{n}{animals}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Hello cat!
+Hello dog!
+Hello tiger!
+Hello deer!
+
+
+
+
+Hello cat!
+Hello dog!
+Hello tiger!
+Hello deer!
+    \end{Verbatim}
+
+    \hypertarget{naming-and-defining-a-list}{%
+\subsection{Naming and defining a
+list}\label{naming-and-defining-a-list}}
+
+Since lists are collection of objects, it is good practice to give them
+a plural name. If each item in your list is a car, call the list `cars'.
+If each item is a dog, call your list `dogs'. This gives you a
+straightforward way to refer to the entire list (`dogs'), and to a
+single item in the list (`dog').
+
+In Python, square brackets designate a list. To define a list, you give
+the name of the list, the equals sign, and the values you want to
+include in your list within square brackets.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{accessing-one-item-in-a-list}{%
+\subsection{Accessing one item in a
+list}\label{accessing-one-item-in-a-list}}
+
+Items in a list are identified by their position in the list, starting
+with zero. This will almost certainly trip you up at some point.
+Programmers even joke about how often we all make ``off-by-one'' errors,
+so don't feel bad when you make this kind of error.
+
+To access the first element in a list, you give the name of the list,
+followed by a zero in parentheses.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n}{dog} \PY{o}{=} \PY{n}{dogs}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{dog}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Border Collie
+    \end{Verbatim}
+
+    The number in parentheses is called the \textbf{index} of the item.
+Because lists start at zero, the index of an item is always one less
+than its position in the list. So to get the second item in the list, we
+need to use an index of 1.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[4]}
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n}{dog} \PY{o}{=} \PY{n}{dogs}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{dog}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Australian Cattle Dog
+    \end{Verbatim}
+
+    \hypertarget{accessing-the-last-items-in-a-list}{%
+\subsubsection{Accessing the last items in a
+list}\label{accessing-the-last-items-in-a-list}}
+
+You can probably see that to get the last item in this list, we would
+use an index of 2. This works, but it would only work because our list
+has exactly three items. To get the last item in a list, no matter how
+long the list is, you can use an index of -1.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{54}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[4]}
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{dogs}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+labrador retriever
+    \end{Verbatim}
+
+    This syntax also works for the second to last item, the third to last,
+and so forth.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[4]}
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n}{dog} \PY{o}{=} \PY{n}{dogs}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{dog}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Australian Cattle Dog
+    \end{Verbatim}
+
+    You can't use a negative number larger than the length of the list,
+however.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{55}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[4]}
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n}{dog} \PY{o}{=} \PY{n}{dogs}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{dog}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Border Collie
+    \end{Verbatim}
+
+    \protect\hyperlink{}{top}
+
+    Exercises --- \#\#\#\# First List - Store the values `python', `c', and
+`java' in a list. Print each of these values out, using their position
+in the list.
+
+\hypertarget{first-neat-list}{%
+\paragraph{First Neat List}\label{first-neat-list}}
+
+\begin{itemize}
+\tightlist
+\item
+  Store the values `python', `c', and `java' in a list. Print a
+  statement about each of these values, using their position in the
+  list.
+\item
+  Your statement could simply be, `A nice programming language is
+  \emph{value}.'
+\end{itemize}
+
+\hypertarget{your-first-list}{%
+\paragraph{Your First List}\label{your-first-list}}
+
+\begin{itemize}
+\tightlist
+\item
+  Think of something you can store in a list. Make a list with three or
+  four items, and then print a message that includes at least one item
+  from your list. Your sentence could be as simple as, ``One item in my
+  list is a \_\_\_\_.''
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{59}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{items} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{python}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{c}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{java}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{index}\PY{p}{,} \PY{n}{item} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{items}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{item}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ at }\PY{l+s+si}{\PYZob{}}\PY{n}{index}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{th position}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+python at 0th position
+c at 1th position
+java at 2th position
+    \end{Verbatim}
+
+    \protect\hyperlink{}{top}
+
+    \hypertarget{lists-and-looping}{%
+\section{Lists and Looping}\label{lists-and-looping}}
+
+    \hypertarget{accessing-all-elements-in-a-list}{%
+\subsection{Accessing all elements in a
+list}\label{accessing-all-elements-in-a-list}}
+
+This is one of the most important concepts related to lists. You can
+have a list with a million items in it, and in three lines of code you
+can write a sentence for each of those million items. If you want to
+understand lists, and become a competent programmer, make sure you take
+the time to understand this section.
+
+We use a loop to access all the elements in a list. A loop is a block of
+code that repeats itself until it runs out of items to work with, or
+until a certain condition is met. In this case, our loop will run once
+for every item in our list. With a list that is three items long, our
+loop will run three times.
+
+Let's take a look at how we access all the items in a list, and then try
+to understand how it works.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{dog} \PY{o+ow}{in} \PY{n}{dogs}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{dog}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    We have already seen how to create a list, so we are really just trying
+to understand how the last two lines work. These last two lines make up
+a loop, and the language here can help us see what is happening:
+
+\begin{verbatim}
+for dog in dogs:
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  The keyword ``for'' tells Python to get ready to use a loop.
+\item
+  The variable ``dog'', with no ``s'' on it, is a temporary placeholder
+  variable. This is the variable that Python will place each item in the
+  list into, one at a time.
+\item
+  The first time through the loop, the value of ``dog'' will be `border
+  collie'.
+\item
+  The second time through the loop, the value of ``dog'' will be
+  `australian cattle dog'.
+\item
+  The third time through, ``dog'' will be `labrador retriever'.
+\item
+  After this, there are no more items in the list, and the loop will
+  end.
+\end{itemize}
+
+The site pythontutor.com allows you to run Python code one line at a
+time. As you run the code, there is also a visualization on the screen
+that shows you how the variable ``dog'' holds different values as the
+loop progresses. There is also an arrow that moves around your code,
+showing you how some lines are run just once, while other lines are run
+multiple tiimes. If you would like to see this in action, click the
+Forward button and watch the visualization, and the output as it is
+printed to the screen. Tools like this are incredibly valuable for
+seeing what Python is doing with your code.
+
+\hypertarget{doing-more-with-each-item}{%
+\subsubsection{Doing more with each
+item}\label{doing-more-with-each-item}}
+
+We can do whatever we want with the value of ``dog'' inside the loop. In
+this case, we just print the name of the dog.
+
+\begin{verbatim}
+print(dog)
+\end{verbatim}
+
+We are not limited to just printing the word dog. We can do whatever we
+want with this value, and this action will be carried out for every item
+in the list. Let's say something about each dog in our list.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[5]}
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{dog} \PY{o+ow}{in} \PY{n}{dogs}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{I like }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n}{dog} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{s.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Visualize this on pythontutor.
+
+\hypertarget{inside-and-outside-the-loop}{%
+\subsubsection{Inside and outside the
+loop}\label{inside-and-outside-the-loop}}
+
+Python uses indentation to decide what is inside the loop and what is
+outside the loop. Code that is inside the loop will be run for every
+item in the list. Code that is not indented, which comes after the loop,
+will be run once just like regular code.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[6,7,8]}
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{dog} \PY{o+ow}{in} \PY{n}{dogs}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{I like }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n}{dog} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{s.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{No, I really really like }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n}{dog} \PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{s!}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{That}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{s just how I feel about dogs.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Notice that the last line only runs once, after the loop is completed.
+Also notice the use of newlines (``\n'') to make the output easier to
+read. Run this code on pythontutor.
+
+    \protect\hyperlink{}{top}
+
+    \hypertarget{enumerating-a-list}{%
+\subsection{Enumerating a list}\label{enumerating-a-list}}
+
+When you are looping through a list, you may want to know the index of
+the current item. You could always use the \emph{list.index(value)}
+syntax, but there is a simpler way. The \emph{enumerate()} function
+tracks the index of each item for you, as it loops through the list:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{60}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Results for the dog show are as follows:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{index}\PY{p}{,} \PY{n}{dog} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{dogs}\PY{p}{)}\PY{p}{:}
+    \PY{n}{place} \PY{o}{=} \PY{n+nb}{str}\PY{p}{(}\PY{n}{index}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Place: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{place} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ Dog: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{dog}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Results for the dog show are as follows:
+
+Place: 0 Dog: Border Collie
+Place: 1 Dog: Australian Cattle Dog
+Place: 2 Dog: Labrador Retriever
+    \end{Verbatim}
+
+    To enumerate a list, you need to add an \emph{index} variable to hold
+the current index. So instead of
+
+\begin{verbatim}
+for dog in dogs:
+\end{verbatim}
+
+You have
+
+\begin{verbatim}
+for index, dog in enumerate(dogs)
+\end{verbatim}
+
+The value in the variable \emph{index} is always an integer. If you want
+to print it in a string, you have to turn the integer into a string:
+
+\begin{verbatim}
+str(index)
+\end{verbatim}
+
+The index always starts at 0, so in this example the value of
+\emph{place} should actually be the current index, plus one:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[6]}
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Results for the dog show are as follows:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{index}\PY{p}{,} \PY{n}{dog} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{dogs}\PY{p}{)}\PY{p}{:}
+    \PY{n}{place} \PY{o}{=} \PY{n+nb}{str}\PY{p}{(}\PY{n}{index} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Place: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{place} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ Dog: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{dog}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{a-common-looping-error}{%
+\subsubsection{A common looping error}\label{a-common-looping-error}}
+
+One common looping error occurs when instead of using the single
+variable \emph{dog} inside the loop, we accidentally use the variable
+that holds the entire list:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{61}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[5]}
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{dog} \PY{o+ow}{in} \PY{n}{dogs}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{dogs}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+['border collie', 'australian cattle dog', 'labrador retriever']
+['border collie', 'australian cattle dog', 'labrador retriever']
+['border collie', 'australian cattle dog', 'labrador retriever']
+    \end{Verbatim}
+
+    In this example, instead of printing each dog in the list, we print the
+entire list every time we go through the loop. Python puts each
+individual item in the list into the variable \emph{dog}, but we never
+use that variable. Sometimes you will just get an error if you try to do
+this:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{62}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[5]}
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{dog} \PY{o+ow}{in} \PY{n}{dogs}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{I like }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n}{dogs} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{s.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        TypeError                                 Traceback (most recent call last)
+
+        /var/folders/1\_/2rbdt5292zdb57b821k90d5r0000gn/T/ipykernel\_56860/2180598526.py in <module>
+          3 
+          4 for dog in dogs:
+    ----> 5     print('I like ' + dogs + 's.')
+    
+
+        TypeError: can only concatenate str (not "list") to str
+
+    \end{Verbatim}
+
+    Exercises --- \#\#\#\# First List - Loop - Repeat \emph{First List}, but
+this time use a loop to print out each value in the list.
+
+\hypertarget{first-neat-list---loop}{%
+\paragraph{First Neat List - Loop}\label{first-neat-list---loop}}
+
+\begin{itemize}
+\tightlist
+\item
+  Repeat \emph{First Neat List}, but this time use a loop to print out
+  your statements. Make sure you are writing the same sentence for all
+  values in your list. Loops are not effective when you are trying to
+  generate different output for each value in your list.
+\end{itemize}
+
+\hypertarget{your-first-list---loop}{%
+\paragraph{Your First List - Loop}\label{your-first-list---loop}}
+
+\begin{itemize}
+\tightlist
+\item
+  Repeat \emph{Your First List}, but this time use a loop to print out
+  your message for each item in your list. Again, if you came up with
+  different messages for each value in your list, decide on one message
+  to repeat for each value in your list.
+\end{itemize}
+
+    \protect\hyperlink{}{top}
+
+    \hypertarget{common-list-operations}{%
+\section{Common List Operations}\label{common-list-operations}}
+
+    \hypertarget{modifying-elements-in-a-list}{%
+\subsection{Modifying elements in a
+list}\label{modifying-elements-in-a-list}}
+
+You can change the value of any element in a list if you know the
+position of that item.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n}{dogs}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian shepherd}\PY{l+s+s1}{\PYZsq{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{dogs}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{finding-an-element-in-a-list}{%
+\subsection{Finding an element in a
+list}\label{finding-an-element-in-a-list}}
+
+If you want to find out the position of an element in a list, you can
+use the index() function.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{63}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{dogs}\PY{o}{.}\PY{n}{index}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+1
+    \end{Verbatim}
+
+    This method returns a ValueError if the requested item is not in the
+list.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{64}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[4]}
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{dogs}\PY{o}{.}\PY{n}{index}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{poodle}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        ValueError                                Traceback (most recent call last)
+
+        /var/folders/1\_/2rbdt5292zdb57b821k90d5r0000gn/T/ipykernel\_56860/1758207819.py in <module>
+          2 dogs = ['border collie', 'australian cattle dog', 'labrador retriever']
+          3 
+    ----> 4 print(dogs.index('poodle'))
+    
+
+        ValueError: 'poodle' is not in list
+
+    \end{Verbatim}
+
+    \hypertarget{testing-whether-an-item-is-in-a-list}{%
+\subsection{Testing whether an item is in a
+list}\label{testing-whether-an-item-is-in-a-list}}
+
+You can test whether an item is in a list using the ``in'' keyword. This
+will become more useful after learning how to use if-else statements.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{65}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{dogs}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{poodle}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{dogs}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+True
+False
+    \end{Verbatim}
+
+    \hypertarget{adding-items-to-a-list}{%
+\subsection{Adding items to a list}\label{adding-items-to-a-list}}
+
+\hypertarget{appending-items-to-the-end-of-a-list}{%
+\subsubsection{Appending items to the end of a
+list}\label{appending-items-to-the-end-of-a-list}}
+
+We can add an item to a list using the append() method. This method adds
+the new item to the end of the list.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{dogs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{poodle}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{dog} \PY{o+ow}{in} \PY{n}{dogs}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{dog}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{s are cool.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{inserting-items-into-a-list}{%
+\subsubsection{Inserting items into a
+list}\label{inserting-items-into-a-list}}
+
+We can also insert items anywhere we want in a list, using the
+\textbf{insert()} function. We specify the position we want the item to
+have, and everything from that point on is shifted one position to the
+right. In other words, the index of every item after the new item is
+increased by one.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{dogs}\PY{o}{.}\PY{n}{insert}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{poodle}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{dogs}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Note that you have to give the position of the new item first, and then
+the value of the new item. If you do it in the reverse order, you will
+get an error.
+
+    \hypertarget{creating-an-empty-list}{%
+\subsection{Creating an empty list}\label{creating-an-empty-list}}
+
+Now that we know how to add items to a list after it is created, we can
+use lists more dynamically. We are no longer stuck defining our entire
+list at once.
+
+A common approach with lists is to define an empty list, and then let
+your program add items to the list as necessary. This approach works,
+for example, when starting to build an interactive web site. Your list
+of users might start out empty, and then as people register for the site
+it will grow. This is a simplified approach to how web sites actually
+work, but the idea is realistic.
+
+Here is a brief example of how to start with an empty list, start to
+fill it up, and work with the items in the list. The only new thing here
+is the way we define an empty list, which is just an empty set of square
+brackets.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Create an empty list to hold our users.}
+\PY{n}{usernames} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Add some users.}
+\PY{n}{usernames}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bernice}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{usernames}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cody}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{usernames}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaron}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Greet all of our users.}
+\PY{k}{for} \PY{n}{username} \PY{o+ow}{in} \PY{n}{usernames}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Welcome, }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{username}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    If we don't change the order in our list, we can use the list to figure
+out who our oldest and newest users are.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[10,11,12]}
+\PY{c+c1}{\PYZsh{} Create an empty list to hold our users.}
+\PY{n}{usernames} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Add some users.}
+\PY{n}{usernames}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bernice}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{usernames}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cody}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{usernames}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaron}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Greet all of our users.}
+\PY{k}{for} \PY{n}{username} \PY{o+ow}{in} \PY{n}{usernames}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Welcome, }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{username}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Recognize our first user, and welcome our newest user.}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Thank you for being our very first user, }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{usernames}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{And a warm welcome to our newest user, }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{usernames}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Note that the code welcoming our newest user will always work, because
+we have used the index -1. If we had used the index 2 we would always
+get the third user, even as our list of users grows and grows.
+
+    \hypertarget{sorting-a-list}{%
+\subsection{Sorting a List}\label{sorting-a-list}}
+
+We can sort a list alphabetically, in either order.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{students} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bernice}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaron}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cody}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Put students in alphabetical order.}
+\PY{n}{students}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Display the list in its current order.}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Our students are currently in alphabetical order.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{student} \PY{o+ow}{in} \PY{n}{students}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{student}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Put students in reverse alphabetical order.}
+\PY{n}{students}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{reverse}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Display the list in its current order.}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Our students are now in reverse alphabetical order.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{student} \PY{o+ow}{in} \PY{n}{students}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{student}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{sorted-vs.-sort}{%
+\subsubsection{\texorpdfstring{\emph{sorted()}
+vs.~\emph{sort()}}{sorted() vs.~sort()}}\label{sorted-vs.-sort}}
+
+Whenever you consider sorting a list, keep in mind that you can not
+recover the original order. If you want to display a list in sorted
+order, but preserve the original order, you can use the \emph{sorted()}
+function. The \emph{sorted()} function also accepts the optional
+\emph{reverse=True} argument.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{students} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bernice}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaron}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cody}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Display students in alphabetical order, but keep the original order.}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Here is the list in alphabetical order:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{student} \PY{o+ow}{in} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{students}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{student}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Display students in reverse alphabetical order, but keep the original order.}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Here is the list in reverse alphabetical order:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{student} \PY{o+ow}{in} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{students}\PY{p}{,} \PY{n}{reverse}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{student}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Here is the list in its original order:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Show that the list is still in its original order.}
+\PY{k}{for} \PY{n}{student} \PY{o+ow}{in} \PY{n}{students}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{student}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{reversing-a-list}{%
+\subsubsection{Reversing a list}\label{reversing-a-list}}
+
+We have seen three possible orders for a list: - The original order in
+which the list was created - Alphabetical order - Reverse alphabetical
+order
+
+There is one more order we can use, and that is the reverse of the
+original order of the list. The \emph{reverse()} function gives us this
+order.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{students} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bernice}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaron}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cody}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{students}\PY{o}{.}\PY{n}{reverse}\PY{p}{(}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{students}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Note that reverse is permanent, although you could follow up with
+another call to \emph{reverse()} and get back the original order of the
+list.
+
+    \hypertarget{sorting-a-numerical-list}{%
+\subsubsection{Sorting a numerical
+list}\label{sorting-a-numerical-list}}
+
+All of the sorting functions work for numerical lists as well.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{66}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{numbers} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} sort() puts numbers in increasing order.}
+\PY{n}{numbers}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{numbers}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} sort(reverse=True) puts numbers in decreasing order.}
+\PY{n}{numbers}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{reverse}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{numbers}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[1, 2, 3, 4]
+[4, 3, 2, 1]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{89}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{numbers} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} sorted() preserves the original order of the list:}
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{sorted}\PY{p}{(}\PY{n}{numbers}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{numbers}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[1, 2, 3, 4]
+[1, 3, 4, 2]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{numbers} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} The reverse() function also works for numerical lists.}
+\PY{n}{numbers}\PY{o}{.}\PY{n}{reverse}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{numbers}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{finding-the-length-of-a-list}{%
+\subsection{Finding the length of a
+list}\label{finding-the-length-of-a-list}}
+
+You can find the length of a list using the \emph{len()} function.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{usernames} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bernice}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cody}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaron}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{user\PYZus{}count} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{usernames}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{user\PYZus{}count}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    There are many situations where you might want to know how many items in
+a list. If you have a list that stores your users, you can find the
+length of your list at any time, and know how many users you have.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Create an empty list to hold our users.}
+\PY{n}{usernames} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Add some users, and report on how many users we have.}
+\PY{n}{usernames}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bernice}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{user\PYZus{}count} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{usernames}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{We have }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{user\PYZus{}count}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ user!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{usernames}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cody}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{usernames}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaron}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{user\PYZus{}count} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{usernames}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{We have }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{user\PYZus{}count}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ users!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    On a technical note, the \emph{len()} function returns an integer, which
+can't be printed directly with strings. We use the \emph{str()} function
+to turn the integer into a string so that it prints nicely:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{67}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{usernames} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bernice}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cody}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaron}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{user\PYZus{}count} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{usernames}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{This will cause an error: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{user\PYZus{}count}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        TypeError                                 Traceback (most recent call last)
+
+        /var/folders/1\_/2rbdt5292zdb57b821k90d5r0000gn/T/ipykernel\_56860/3778417429.py in <module>
+          2 user\_count = len(usernames)
+          3 
+    ----> 4 print("This will cause an error: " + user\_count)
+    
+
+        TypeError: can only concatenate str (not "int") to str
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{68}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[5]}
+\PY{n}{usernames} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bernice}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cody}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaron}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{user\PYZus{}count} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{usernames}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{This will work: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{user\PYZus{}count}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+This will work: 3
+    \end{Verbatim}
+
+    \hypertarget{working-list}{%
+\paragraph{Working List}\label{working-list}}
+
+\begin{itemize}
+\tightlist
+\item
+  Make a list that includes four careers, such as `programmer' and
+  `truck driver'.
+\item
+  Use the \emph{list.index()} function to find the index of one career
+  in your list.
+\item
+  Use the \emph{in} function to show that this career is in your list.
+\item
+  Use the \emph{append()} function to add a new career to your list.
+\item
+  Use the \emph{insert()} function to add a new career at the beginning
+  of the list.
+\item
+  Use a loop to show all the careers in your list.
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{75}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{careers} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{programmer}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{teacher}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{doctor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cleaner}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{careers}\PY{o}{.}\PY{n}{index}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cleaner}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cleaner}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{careers}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sweeper}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{careers}\PY{p}{)}
+
+\PY{n}{careers}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ceo}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{careers}
+
+\PY{n}{careers}\PY{o}{.}\PY{n}{insert}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{developer}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{careers}
+
+\PY{k}{for} \PY{n}{career} \PY{o+ow}{in} \PY{n}{careers}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{career}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+3
+True
+False
+developer
+programmer
+teacher
+doctor
+cleaner
+ceo
+    \end{Verbatim}
+
+    \hypertarget{starting-from-empty}{%
+\paragraph{Starting From Empty}\label{starting-from-empty}}
+
+\begin{itemize}
+\tightlist
+\item
+  Create the list you ended up with in \emph{Working List}, but this
+  time start your file with an empty list and fill it up using
+  \emph{append()} statements.
+\item
+  Print a statement that tells us what the first career you thought of
+  was.
+\item
+  Print a statement that tells us what the last career you thought of
+  was.
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{79}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{careers} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{programmer}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{teacher}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{doctor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cleaner}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Last career I found was }\PY{l+s+si}{\PYZob{}}\PY{n}{careers}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{First career I found was }\PY{l+s+si}{\PYZob{}}\PY{n}{careers}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Last career I found was cleaner
+First career I found was programmer
+    \end{Verbatim}
+
+    \hypertarget{ordered-working-list}{%
+\paragraph{Ordered Working List}\label{ordered-working-list}}
+
+\begin{itemize}
+\tightlist
+\item
+  Start with the list you created in \emph{Working List}.
+\item
+  You are going to print out the list in a number of different orders.
+\item
+  Each time you print the list, use a for loop rather than printing the
+  raw list.
+\item
+  Print a message each time telling us what order we should see the list
+  in.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Print the list in its original order.
+  \item
+    Print the list in alphabetical order.
+  \item
+    Print the list in its original order.
+  \item
+    Print the list in reverse alphabetical order.
+  \item
+    Print the list in its original order.
+  \item
+    Print the list in the reverse order from what it started.
+  \item
+    Print the list in its original order
+  \item
+    Permanently sort the list in alphabetical order, and then print it
+    out.
+  \item
+    Permanently sort the list in reverse alphabetical order, and then
+    print it out.
+  \end{itemize}
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{92}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{careers} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{programmer}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{teacher}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{doctor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cleaner}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{careers}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{sorted}\PY{p}{(}\PY{n}{careers}\PY{p}{)}\PY{p}{)} 
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{careers}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{sorted}\PY{p}{(}\PY{n}{careers}\PY{p}{,} \PY{n}{reverse}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{careers}\PY{p}{)}
+
+\PY{n}{careers}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{careers}\PY{p}{)}
+
+\PY{n}{careers}\PY{o}{.}\PY{n}{reverse}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{careers}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+['programmer', 'teacher', 'doctor', 'cleaner']
+['cleaner', 'doctor', 'programmer', 'teacher']
+['programmer', 'teacher', 'doctor', 'cleaner']
+['teacher', 'programmer', 'doctor', 'cleaner']
+['programmer', 'teacher', 'doctor', 'cleaner']
+['cleaner', 'doctor', 'programmer', 'teacher']
+['teacher', 'programmer', 'doctor', 'cleaner']
+    \end{Verbatim}
+
+    \hypertarget{ordered-numbers}{%
+\paragraph{Ordered Numbers}\label{ordered-numbers}}
+
+\begin{itemize}
+\tightlist
+\item
+  Make a list of 5 numbers, in a random order.
+\item
+  You are going to print out the list in a number of different orders.
+\item
+  Each time you print the list, use a for loop rather than printing the
+  raw list.
+\item
+  Print a message each time telling us what order we should see the list
+  in.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Print the numbers in the original order.
+  \item
+    Print the numbers in increasing order.
+  \item
+    Print the numbers in the original order.
+  \item
+    Print the numbers in decreasing order.
+  \item
+    Print the numbers in their original order.
+  \item
+    Print the numbers in the reverse order from how they started.
+  \item
+    Print the numbers in the original order.
+  \item
+    Permanently sort the numbers in increasing order, and then print
+    them out.
+  \item
+    Permanently sort the numbers in descreasing order, and then print
+    them out.
+  \end{itemize}
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{101}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{print\PYZus{}list}\PY{p}{(}\PY{n}{items}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{item} \PY{o+ow}{in} \PY{n}{items}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{item}\PY{p}{)}\PY{p}{)}
+        
+\PY{n}{nums} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{9}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Original Order:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{print\PYZus{}list}\PY{p}{(}\PY{n}{nums}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Increasing Order:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{print\PYZus{}list}\PY{p}{(}\PY{n+nb}{sorted}\PY{p}{(}\PY{n}{nums}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Original Order:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{print\PYZus{}list}\PY{p}{(}\PY{n}{nums}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Decreasing Order:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{print\PYZus{}list}\PY{p}{(}\PY{n+nb}{sorted}\PY{p}{(}\PY{n}{nums}\PY{p}{,} \PY{n}{reverse}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Original Order:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{print\PYZus{}list}\PY{p}{(}\PY{n}{nums}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{type}\PY{p}{(}\PY{n}{nums}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Increasing Order:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{nums}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{p}{)}\PY{p}{)} 
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Decreasing Order:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{nums}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{reverse}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Original Order:
+9
+2
+4
+10
+6
+Increasing Order:
+2
+4
+6
+9
+10
+Original Order:
+9
+2
+4
+10
+6
+Decreasing Order:
+10
+9
+6
+4
+2
+Original Order:
+9
+2
+4
+10
+6
+<class 'list'>
+Increasing Order:
+None
+Decreasing Order:
+None
+    \end{Verbatim}
+
+    Exercises --- \#\#\#\# Working List - Make a list that includes four
+careers, such as `programmer' and `truck driver'. - Use the
+\emph{list.index()} function to find the index of one career in your
+list. - Use the \emph{in} function to show that this career is in your
+list. - Use the \emph{append()} function to add a new career to your
+list. - Use the \emph{insert()} function to add a new career at the
+beginning of the list. - Use a loop to show all the careers in your
+list.
+
+\hypertarget{starting-from-empty}{%
+\paragraph{Starting From Empty}\label{starting-from-empty}}
+
+\begin{itemize}
+\tightlist
+\item
+  Create the list you ended up with in \emph{Working List}, but this
+  time start your file with an empty list and fill it up using
+  \emph{append()} statements.
+\item
+  Print a statement that tells us what the first career you thought of
+  was.
+\item
+  Print a statement that tells us what the last career you thought of
+  was.
+\end{itemize}
+
+\hypertarget{ordered-working-list}{%
+\paragraph{Ordered Working List}\label{ordered-working-list}}
+
+\begin{itemize}
+\tightlist
+\item
+  Start with the list you created in \emph{Working List}.
+\item
+  You are going to print out the list in a number of different orders.
+\item
+  Each time you print the list, use a for loop rather than printing the
+  raw list.
+\item
+  Print a message each time telling us what order we should see the list
+  in.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Print the list in its original order.
+  \item
+    Print the list in alphabetical order.
+  \item
+    Print the list in its original order.
+  \item
+    Print the list in reverse alphabetical order.
+  \item
+    Print the list in its original order.
+  \item
+    Print the list in the reverse order from what it started.
+  \item
+    Print the list in its original order
+  \item
+    Permanently sort the list in alphabetical order, and then print it
+    out.
+  \item
+    Permanently sort the list in reverse alphabetical order, and then
+    print it out.
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{ordered-numbers}{%
+\paragraph{Ordered Numbers}\label{ordered-numbers}}
+
+\begin{itemize}
+\tightlist
+\item
+  Make a list of 5 numbers, in a random order.
+\item
+  You are going to print out the list in a number of different orders.
+\item
+  Each time you print the list, use a for loop rather than printing the
+  raw list.
+\item
+  Print a message each time telling us what order we should see the list
+  in.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Print the numbers in the original order.
+  \item
+    Print the numbers in increasing order.
+  \item
+    Print the numbers in the original order.
+  \item
+    Print the numbers in decreasing order.
+  \item
+    Print the numbers in their original order.
+  \item
+    Print the numbers in the reverse order from how they started.
+  \item
+    Print the numbers in the original order.
+  \item
+    Permanently sort the numbers in increasing order, and then print
+    them out.
+  \item
+    Permanently sort the numbers in descreasing order, and then print
+    them out.
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{list-lengths}{%
+\paragraph{List Lengths}\label{list-lengths}}
+
+\begin{itemize}
+\tightlist
+\item
+  Copy two or three of the lists you made from the previous exercises,
+  or make up two or three new lists.
+\item
+  Print out a series of statements that tell us how long each list is.
+\end{itemize}
+
+    \protect\hyperlink{}{top}
+
+    \hypertarget{removing-items-from-a-list}{%
+\section{Removing Items from a List}\label{removing-items-from-a-list}}
+
+Hopefully you can see by now that lists are a dynamic structure. We can
+define an empty list and then fill it up as information comes into our
+program. To become really dynamic, we need some ways to remove items
+from a list when we no longer need them. You can remove items from a
+list through their position, or through their value.
+
+    \hypertarget{removing-items-by-position}{%
+\subsection{Removing items by
+position}\label{removing-items-by-position}}
+
+If you know the position of an item in a list, you can remove that item
+using the \emph{del} command. To use this approach, give the command
+\emph{del} and the name of your list, with the index of the item you
+want to move in square brackets:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{c+c1}{\PYZsh{} Remove the first dog from the list.}
+\PY{k}{del} \PY{n}{dogs}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{dogs}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{removing-items-by-value}{%
+\subsection{Removing items by value}\label{removing-items-by-value}}
+
+You can also remove an item from a list if you know its value. To do
+this, we use the \emph{remove()} function. Give the name of the list,
+followed by the word remove with the value of the item you want to
+remove in parentheses. Python looks through your list, finds the first
+item with this value, and removes it.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{c+c1}{\PYZsh{} Remove australian cattle dog from the list.}
+\PY{n}{dogs}\PY{o}{.}\PY{n}{remove}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{dogs}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Be careful to note, however, that \emph{only} the first item with this
+value is removed. If you have multiple items with the same value, you
+will have some items with this value left in your list.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{letters} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{c}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{c}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{c+c1}{\PYZsh{} Remove the letter a from the list.}
+\PY{n}{letters}\PY{o}{.}\PY{n}{remove}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{letters}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{popping-items-from-a-list}{%
+\subsection{Popping items from a list}\label{popping-items-from-a-list}}
+
+There is a cool concept in programming called ``popping'' items from a
+collection. Every programming language has some sort of data structure
+similar to Python's lists. All of these structures can be used as
+queues, and there are various ways of processing the items in a queue.
+
+One simple approach is to start with an empty list, and then add items
+to that list. When you want to work with the items in the list, you
+always take the last item from the list, do something with it, and then
+remove that item. The \emph{pop()} function makes this easy. It removes
+the last item from the list, and gives it to us so we can work with it.
+This is easier to show with an example:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{last\PYZus{}dog} \PY{o}{=} \PY{n}{dogs}\PY{o}{.}\PY{n}{pop}\PY{p}{(}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{last\PYZus{}dog}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{dogs}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+labrador retriever
+['border collie', 'australian cattle dog']
+    \end{Verbatim}
+
+    This is an example of a first-in, last-out approach. The first item in
+the list would be the last item processed if you kept using this
+approach. We will see a full implementation of this approach later on,
+when we learn about \emph{while} loops.
+
+You can actually pop any item you want from a list, by giving the index
+of the item you want to pop. So we could do a first-in, first-out
+approach by popping the first iem in the list:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[3]}
+\PY{n}{dogs} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{border collie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{australian cattle dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labrador retriever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{first\PYZus{}dog} \PY{o}{=} \PY{n}{dogs}\PY{o}{.}\PY{n}{pop}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{first\PYZus{}dog}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{dogs}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+border collie
+['australian cattle dog', 'labrador retriever']
+    \end{Verbatim}
+
+    Exercises --- \#\#\#\# Famous People - Make a list that includes the
+names of four famous people. - Remove each person from the list, one at
+a time, using each of the four methods we have just seen: - Pop the last
+item from the list, and pop any item except the last item. - Remove one
+item by its position, and one item by its value. - Print out a message
+that there are no famous people left in your list, and print your list
+to prove that it is empty.
+
+    \protect\hyperlink{}{top}
+
+    \hypertarget{want-to-see-what-functions-are}{%
+\section{Want to see what functions
+are?}\label{want-to-see-what-functions-are}}
+
+At this point, you might have noticed we have a fair bit of repetetive
+code in some of our examples. This repetition will disappear once we
+learn how to use functions. If this repetition is bothering you already,
+you might want to go look at
+\href{http://nbviewer.ipython.org/urls/raw.github.com/ehmatthes/intro_programming/master/notebooks/introducing_functions.ipynb}{Introducing
+Functions} before you do any more exercises in this section.
+
+    \hypertarget{slicing-a-list}{%
+\section{Slicing a List}\label{slicing-a-list}}
+
+Since a list is a collection of items, we should be able to get any
+subset of those items. For example, if we want to get just the first
+three items from the list, we should be able to do so easily. The same
+should be true for any three items in the middle of the list, or the
+last three items, or any x items from anywhere in the list. These
+subsets of a list are called \emph{slices}.
+
+To get a subset of a list, we give the position of the first item we
+want, and the position of the first item we do \emph{not} want to
+include in the subset. So the slice \emph{list{[}0:3{]}} will return a
+list containing items 0, 1, and 2, but not item 3. Here is how you get a
+batch containing the first three items.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{usernames} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bernice}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cody}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaron}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dalia}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Grab the first three users in the list.}
+\PY{n}{first\PYZus{}batch} \PY{o}{=} \PY{n}{usernames}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{first\PYZus{}batch}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{user}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Bernice
+Cody
+Aaron
+    \end{Verbatim}
+
+    If you want to grab everything up to a certain position in the list, you
+can also leave the first index blank:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{107}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[5]}
+\PY{n}{usernames} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bernice}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cody}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaron}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dalia}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Grab the first three users in the list.}
+\PY{n}{first\PYZus{}batch} \PY{o}{=} \PY{n}{usernames}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{usernames}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{user}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Bernice
+Cody
+Aaron
+Ever
+Dalia
+    \end{Verbatim}
+
+    When we grab a slice from a list, the original list is not affected:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[7,8,9]}
+\PY{n}{usernames} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bernice}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cody}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaron}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dalia}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Grab the first three users in the list.}
+\PY{n}{first\PYZus{}batch} \PY{o}{=} \PY{n}{usernames}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} The original list is unaffected.}
+\PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{usernames}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{user}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Bernice
+Cody
+Aaron
+Ever
+Dalia
+    \end{Verbatim}
+
+    We can get any segment of a list we want, using the slice method:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{usernames} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bernice}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cody}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaron}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dalia}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Grab a batch from the middle of the list.}
+\PY{n}{middle\PYZus{}batch} \PY{o}{=} \PY{n}{usernames}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{l+m+mi}{4}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{middle\PYZus{}batch}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{user}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Cody
+Aaron
+Ever
+    \end{Verbatim}
+
+    To get all items from one position in the list to the end of the list,
+we can leave off the second index:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{usernames} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bernice}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cody}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaron}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dalia}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Grab all users from the third to the end.}
+\PY{n}{end\PYZus{}batch} \PY{o}{=} \PY{n}{usernames}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{:}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{end\PYZus{}batch}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{user}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Aaron
+Ever
+Dalia
+    \end{Verbatim}
+
+    \hypertarget{copying-a-list}{%
+\subsubsection{Copying a list}\label{copying-a-list}}
+
+You can use the slice notation to make a copy of a list, by leaving out
+both the starting and the ending index. This causes the slice to consist
+of everything from the first item to the last, which is the entire list.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{usernames} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bernice}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cody}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaron}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dalia}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Make a copy of the list.}
+\PY{n}{copied\PYZus{}usernames} \PY{o}{=} \PY{n}{usernames}\PY{p}{[}\PY{p}{:}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The full copied list:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{copied\PYZus{}usernames}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Remove the first two users from the copied list.}
+\PY{k}{del} \PY{n}{copied\PYZus{}usernames}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{k}{del} \PY{n}{copied\PYZus{}usernames}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Two users removed from copied list:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{copied\PYZus{}usernames}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} The original list is unaffected.}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{The original list:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{usernames}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The full copied list:
+         ['bernice', 'cody', 'aaron', 'ever', 'dalia']
+
+Two users removed from copied list:
+         ['aaron', 'ever', 'dalia']
+
+The original list:
+         ['bernice', 'cody', 'aaron', 'ever', 'dalia']
+    \end{Verbatim}
+
+    Exercises --- \#\#\#\# Alphabet Slices - Store the first ten letters of
+the alphabet in a list. - Use a slice to print out the first three
+letters of the alphabet. - Use a slice to print out any three letters
+from the middle of your list. - Use a slice to print out the letters
+from any point in the middle of your list, to the end.
+
+\hypertarget{protected-list}{%
+\paragraph{Protected List}\label{protected-list}}
+
+\begin{itemize}
+\tightlist
+\item
+  Your goal in this exercise is to prove that copying a list protects
+  the original list.
+\item
+  Make a list with three people's names in it.
+\item
+  Use a slice to make a copy of the entire list.
+\item
+  Add at least two new names to the new copy of the list.
+\item
+  Make a loop that prints out all of the names in the original list,
+  along with a message that this is the original list.
+\item
+  Make a loop that prints out all of the names in the copied list, along
+  with a message that this is the copied list.
+\end{itemize}
+
+    \protect\hyperlink{}{top}
+
+    \hypertarget{numerical-lists}{%
+\section{Numerical Lists}\label{numerical-lists}}
+
+There is nothing special about lists of numbers, but there are some
+functions you can use to make working with numerical lists more
+efficient. Let's make a list of the first ten numbers, and start working
+with it to see how we can use numbers in a list.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Print out the first ten numbers.}
+\PY{n}{numbers} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{,} \PY{l+m+mi}{7}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{9}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{number} \PY{o+ow}{in} \PY{n}{numbers}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{number}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+    \end{Verbatim}
+
+    \hypertarget{the-range-function}{%
+\subsection{\texorpdfstring{The \emph{range()}
+function}{The range() function}}\label{the-range-function}}
+
+This works, but it is not very efficient if we want to work with a large
+set of numbers. The \emph{range()} function helps us generate long lists
+of numbers. Here are two ways to do the same thing, using the
+\emph{range} function.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Print the first ten numbers.}
+\PY{k}{for} \PY{n}{number} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{11}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{number}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+    \end{Verbatim}
+
+    The range function takes in a starting number, and an end number. You
+get all integers, up to but not including the end number. You can also
+add a \emph{step} value, which tells the \emph{range} function how big
+of a step to take between numbers:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Print the first ten odd numbers.}
+\PY{k}{for} \PY{n}{number} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{21}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{number}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+1
+3
+5
+7
+9
+11
+13
+15
+17
+19
+    \end{Verbatim}
+
+    If we want to store these numbers in a list, we can use the
+\emph{list()} function. This function takes in a range, and turns it
+into a list:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Create a list of the first ten numbers.}
+\PY{n}{numbers} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{11}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{numbers}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    \end{Verbatim}
+
+    This is incredibly powerful; we can now create a list of the first
+million numbers, just as easily as we made a list of the first ten
+numbers. It doesn't really make sense to print the million numbers here,
+but we can show that the list really does have one million items in it,
+and we can print the last ten items to show that the list is correct.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Store the first million numbers in a list.}
+\PY{n}{numbers} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1000001}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Show the length of the list:}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The list }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{numbers}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{ has }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{numbers}\PY{p}{)}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ numbers in it.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Show the last ten numbers:}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{The last ten numbers in the list are:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{number} \PY{o+ow}{in} \PY{n}{numbers}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{:}\PY{p}{]}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{number}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The list 'numbers' has 1000000 numbers in it.
+
+The last ten numbers in the list are:
+999991
+999992
+999993
+999994
+999995
+999996
+999997
+999998
+999999
+1000000
+    \end{Verbatim}
+
+    There are two things here that might be a little unclear. The expression
+
+\begin{verbatim}
+str(len(numbers))
+\end{verbatim}
+
+takes the length of the \emph{numbers} list, and turns it into a string
+that can be printed.
+
+The expression
+
+\begin{verbatim}
+numbers[-10:]
+\end{verbatim}
+
+gives us a \emph{slice} of the list. The index \texttt{-1} is the last
+item in the list, and the index \texttt{-10} is the item ten places from
+the end of the list. So the slice \texttt{numbers{[}-10:{]}} gives us
+everything from that item to the end of the list.
+
+    \hypertarget{the-min-max-and-sum-functions}{%
+\subsection{\texorpdfstring{The \emph{min()}, \emph{max()}, and
+\emph{sum()}
+functions}{The min(), max(), and sum() functions}}\label{the-min-max-and-sum-functions}}
+
+There are three functions you can easily use with numerical lists. As
+you might expect, the \emph{min()} function returns the smallest number
+in the list, the \emph{max()} function returns the largest number in the
+list, and the \emph{sum()} function returns the total of all numbers in
+the list.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{ages} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{23}\PY{p}{,} \PY{l+m+mi}{16}\PY{p}{,} \PY{l+m+mi}{14}\PY{p}{,} \PY{l+m+mi}{28}\PY{p}{,} \PY{l+m+mi}{19}\PY{p}{,} \PY{l+m+mi}{11}\PY{p}{,} \PY{l+m+mi}{38}\PY{p}{]}
+
+\PY{n}{youngest} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{n}{ages}\PY{p}{)}
+\PY{n}{oldest} \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{n}{ages}\PY{p}{)}
+\PY{n}{total\PYZus{}years} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{ages}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Our youngest reader is }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{youngest}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ years old.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Our oldest reader is }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{oldest}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ years old.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Together, we have }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{total\PYZus{}years}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ years worth of life experience.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Our youngest reader is 11 years old.
+Our oldest reader is 38 years old.
+Together, we have 149 years worth of life experience.
+    \end{Verbatim}
+
+    Exercises --- \#\#\#\# First Twenty - Use the \emph{range()} function to
+store the first twenty numbers (1-20) in a list, and print them out.
+
+\hypertarget{larger-sets}{%
+\paragraph{Larger Sets}\label{larger-sets}}
+
+\begin{itemize}
+\tightlist
+\item
+  Take the \emph{first\_twenty.py} program you just wrote. Change your
+  end number to a much larger number. How long does it take your
+  computer to print out the first million numbers? (Most people will
+  never see a million numbers scroll before their eyes. You can now see
+  this!)
+\end{itemize}
+
+\hypertarget{five-wallets}{%
+\paragraph{Five Wallets}\label{five-wallets}}
+
+\begin{itemize}
+\tightlist
+\item
+  Imagine five wallets with different amounts of cash in them. Store
+  these five values in a list, and print out the following sentences:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    ``The fattest wallet has \$ \emph{value} in it.''
+  \item
+    ``The skinniest wallet has \$ \emph{value} in it.''
+  \item
+    ``All together, these wallets have \$ \emph{value} in them.''
+  \end{itemize}
+\end{itemize}
+
+    \protect\hyperlink{}{top}
+
+    \hypertarget{list-comprehensions}{%
+\section{List Comprehensions}\label{list-comprehensions}}
+
+I thought carefully before including this section. If you are brand new
+to programming, list comprehensions may look confusing at first. They
+are a shorthand way of creating and working with lists. It is good to be
+aware of list comprehensions, because you will see them in other
+people's code, and they are really useful when you understand how to use
+them. That said, if they don't make sense to you yet, don't worry about
+using them right away. When you have worked with enough lists, you will
+want to use comprehensions. For now, it is good enough to know they
+exist, and to recognize them when you see them. If you like them, go
+ahead and start trying to use them now.
+
+\hypertarget{numerical-comprehensions}{%
+\subsection{Numerical Comprehensions}\label{numerical-comprehensions}}
+
+Let's consider how we might make a list of the first ten square numbers.
+We could do it like this:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Store the first ten square numbers in a list.}
+\PY{c+c1}{\PYZsh{} Make an empty list that will hold our square numbers.}
+\PY{n}{squares} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Go through the first ten numbers, square them, and add them to our list.}
+\PY{k}{for} \PY{n}{number} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{11}\PY{p}{)}\PY{p}{:}
+    \PY{n}{new\PYZus{}square} \PY{o}{=} \PY{n}{number}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}
+    \PY{n}{squares}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{new\PYZus{}square}\PY{p}{)}
+    
+\PY{c+c1}{\PYZsh{} Show that our list is correct.}
+\PY{k}{for} \PY{n}{square} \PY{o+ow}{in} \PY{n}{squares}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{square}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+1
+4
+9
+16
+25
+36
+49
+64
+81
+100
+    \end{Verbatim}
+
+    This should make sense at this point. If it doesn't, go over the code
+with these thoughts in mind: - We make an empty list called
+\emph{squares} that will hold the values we are interested in. - Using
+the \emph{range()} function, we start a loop that will go through the
+numbers 1-10. - Each time we pass through the loop, we find the square
+of the current number by raising it to the second power. - We add this
+new value to our list \emph{squares}. - We go through our newly-defined
+list and print out each square.
+
+Now let's make this code more efficient. We don't really need to store
+the new square in its own variable \emph{new\_square}; we can just add
+it directly to the list of squares. The line
+
+\begin{verbatim}
+new_square = number**2
+\end{verbatim}
+
+is taken out, and the next line takes care of the squaring:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[8]}
+\PY{c+c1}{\PYZsh{} Store the first ten square numbers in a list.}
+\PY{c+c1}{\PYZsh{} Make an empty list that will hold our square numbers.}
+\PY{n}{squares} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Go through the first ten numbers, square them, and add them to our list.}
+\PY{k}{for} \PY{n}{number} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{11}\PY{p}{)}\PY{p}{:}
+    \PY{n}{squares}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{number}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+    
+\PY{c+c1}{\PYZsh{} Show that our list is correct.}
+\PY{k}{for} \PY{n}{square} \PY{o+ow}{in} \PY{n}{squares}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{square}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+1
+4
+9
+16
+25
+36
+49
+64
+81
+100
+    \end{Verbatim}
+
+    List comprehensions allow us to collapse the first three lines of code
+into one line. Here's what it looks like:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[2,3]}
+\PY{c+c1}{\PYZsh{} Store the first ten square numbers in a list.}
+\PY{n}{squares} \PY{o}{=} \PY{p}{[}\PY{n}{number}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{k}{for} \PY{n}{number} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{11}\PY{p}{)}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Show that our list is correct.}
+\PY{k}{for} \PY{n}{square} \PY{o+ow}{in} \PY{n}{squares}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{square}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+1
+4
+9
+16
+25
+36
+49
+64
+81
+100
+    \end{Verbatim}
+
+    It should be pretty clear that this code is more efficient than our
+previous approach, but it may not be clear what is happening. Let's take
+a look at everything that is happening in that first line:
+
+We define a list called \emph{squares}.
+
+Look at the second part of what's in square brackets:
+
+\begin{verbatim}
+for number in range(1,11)
+\end{verbatim}
+
+This sets up a loop that goes through the numbers 1-10, storing each
+value in the variable \emph{number}. Now we can see what happens to each
+\emph{number} in the loop:
+
+\begin{verbatim}
+number**2
+\end{verbatim}
+
+Each number is raised to the second power, and this is the value that is
+stored in the list we defined. We might read this line in the following
+way:
+
+squares = {[}raise \emph{number} to the second power, for each
+\emph{number} in the range 1-10{]}
+
+    \hypertarget{another-example}{%
+\subsubsection{Another example}\label{another-example}}
+
+It is probably helpful to see a few more examples of how comprehensions
+can be used. Let's try to make the first ten even numbers, the longer
+way:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Make an empty list that will hold the even numbers.}
+\PY{n}{evens} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Loop through the numbers 1\PYZhy{}10, double each one, and add it to our list.}
+\PY{k}{for} \PY{n}{number} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{11}\PY{p}{)}\PY{p}{:}
+    \PY{n}{evens}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{number}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+    
+\PY{c+c1}{\PYZsh{} Show that our list is correct:}
+\PY{k}{for} \PY{n}{even} \PY{o+ow}{in} \PY{n}{evens}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{even}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+2
+4
+6
+8
+10
+12
+14
+16
+18
+20
+    \end{Verbatim}
+
+    Here's how we might think of doing the same thing, using a list
+comprehension:
+
+evens = {[}multiply each \emph{number} by 2, for each \emph{number} in
+the range 1-10{]}
+
+Here is the same line in code:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[2,3]}
+\PY{c+c1}{\PYZsh{} Make a list of the first ten even numbers.}
+\PY{n}{evens} \PY{o}{=} \PY{p}{[}\PY{n}{number}\PY{o}{*}\PY{l+m+mi}{2} \PY{k}{for} \PY{n}{number} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{11}\PY{p}{)}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{even} \PY{o+ow}{in} \PY{n}{evens}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{even}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+2
+4
+6
+8
+10
+12
+14
+16
+18
+20
+    \end{Verbatim}
+
+    \hypertarget{non-numerical-comprehensions}{%
+\subsection{Non-numerical
+comprehensions}\label{non-numerical-comprehensions}}
+
+We can use comprehensions with non-numerical lists as well. In this
+case, we will create an initial list, and then use a comprehension to
+make a second list from the first one. Here is a simple example, without
+using comprehensions:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Consider some students.}
+\PY{n}{students} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bernice}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaron}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cody}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Let\PYZsq{}s turn them into great students.}
+\PY{n}{great\PYZus{}students} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{student} \PY{o+ow}{in} \PY{n}{students}\PY{p}{:}
+    \PY{n}{great\PYZus{}students}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{student}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ the great!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Let\PYZsq{}s greet each great student.}
+\PY{k}{for} \PY{n}{great\PYZus{}student} \PY{o+ow}{in} \PY{n}{great\PYZus{}students}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hello, }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{great\PYZus{}student}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Hello, Bernice the great!
+Hello, Aaron the great!
+Hello, Cody the great!
+    \end{Verbatim}
+
+    To use a comprehension in this code, we want to write something like
+this:
+
+great\_students = {[}add `the great' to each \emph{student}, for each
+\emph{student} in the list of \emph{students}{]}
+
+Here's what it looks like:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[5,6]}
+\PY{c+c1}{\PYZsh{} Consider some students.}
+\PY{n}{students} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bernice}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaron}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cody}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Let\PYZsq{}s turn them into great students.}
+\PY{n}{great\PYZus{}students} \PY{o}{=} \PY{p}{[}\PY{n}{student}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ the great!}\PY{l+s+s2}{\PYZdq{}} \PY{k}{for} \PY{n}{student} \PY{o+ow}{in} \PY{n}{students}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Let\PYZsq{}s greet each great student.}
+\PY{k}{for} \PY{n}{great\PYZus{}student} \PY{o+ow}{in} \PY{n}{great\PYZus{}students}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hello, }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{great\PYZus{}student}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Hello, Bernice the great!
+Hello, Aaron the great!
+Hello, Cody the great!
+    \end{Verbatim}
+
+    Exercises --- If these examples are making sense, go ahead and try to do
+the following exercises using comprehensions. If not, try the exercises
+without comprehensions. You may figure out how to use comprehensions
+after you have solved each exercise the longer way.
+
+\hypertarget{multiples-of-ten}{%
+\paragraph{Multiples of Ten}\label{multiples-of-ten}}
+
+\begin{itemize}
+\tightlist
+\item
+  Make a list of the first ten multiples of ten (10, 20, 30\ldots{} 90,
+  100). There are a number of ways to do this, but try to do it using a
+  list comprehension. Print out your list.
+\end{itemize}
+
+\hypertarget{cubes}{%
+\paragraph{Cubes}\label{cubes}}
+
+\begin{itemize}
+\tightlist
+\item
+  We saw how to make a list of the first ten squares. Make a list of the
+  first ten cubes (1, 8, 27\ldots{} 1000) using a list comprehension,
+  and print them out.
+\end{itemize}
+
+\hypertarget{awesomeness}{%
+\paragraph{Awesomeness}\label{awesomeness}}
+
+\begin{itemize}
+\tightlist
+\item
+  Store five names in a list. Make a second list that adds the phrase
+  ``is awesome!'' to each name, using a list comprehension. Print out
+  the awesome version of the names.
+\end{itemize}
+
+\hypertarget{working-backwards}{%
+\paragraph{Working Backwards}\label{working-backwards}}
+
+\begin{itemize}
+\item
+  Write out the following code without using a list comprehension:
+
+  plus\_thirteen = {[}number + 13 for number in range(1,11){]}
+\end{itemize}
+
+    \protect\hyperlink{}{top}
+
+    \hypertarget{strings-as-lists}{%
+\section{Strings as Lists}\label{strings-as-lists}}
+
+Now that you have some familiarity with lists, we can take a second look
+at strings. A string is really a list of characters, so many of the
+concepts from working with lists behave the same with strings.
+
+    \hypertarget{strings-as-a-list-of-characters}{%
+\subsection{Strings as a list of
+characters}\label{strings-as-a-list-of-characters}}
+
+We can loop through a string using a \emph{for} loop, just like we loop
+through a list:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{message} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hello!}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{k}{for} \PY{n}{letter} \PY{o+ow}{in} \PY{n}{message}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{letter}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+H
+e
+l
+l
+o
+!
+    \end{Verbatim}
+
+    We can create a list from a string. The list will have one element for
+each character in the string:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{message} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hello world!}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{n}{message\PYZus{}list} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{message}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{message\PYZus{}list}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+['H', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd', '!']
+    \end{Verbatim}
+
+    \hypertarget{slicing-strings}{%
+\subsection{Slicing strings}\label{slicing-strings}}
+
+We can access any character in a string by its position, just as we
+access individual items in a list:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{message} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hello World!}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{first\PYZus{}char} \PY{o}{=} \PY{n}{message}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{last\PYZus{}char} \PY{o}{=} \PY{n}{message}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{first\PYZus{}char}\PY{p}{,} \PY{n}{last\PYZus{}char}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+H !
+    \end{Verbatim}
+
+    We can extend this to take slices of a string:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{32}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{message} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hello World!}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{first\PYZus{}three} \PY{o}{=} \PY{n}{message}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{]}
+\PY{n}{last\PYZus{}three} \PY{o}{=} \PY{n}{message}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{:}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{first\PYZus{}three}\PY{p}{,} \PY{n}{last\PYZus{}three}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Hel ld!
+    \end{Verbatim}
+
+    \hypertarget{finding-substrings}{%
+\subsection{Finding substrings}\label{finding-substrings}}
+
+Now that you have seen what indexes mean for strings, we can search for
+\emph{substrings}. A substring is a series of characters that appears in
+a string.
+
+You can use the \emph{in} keyword to find out whether a particular
+substring appears in a string:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{message} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{I like cats and dogs.}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{dog\PYZus{}present} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dog}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{message}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{dog\PYZus{}present}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+True
+    \end{Verbatim}
+
+    If you want to know where a substring appears in a string, you can use
+the \emph{find()} method. The \emph{find()} method tells you the index
+at which the substring begins.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{message} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{I like cats and dogs.}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{dog\PYZus{}index} \PY{o}{=} \PY{n}{message}\PY{o}{.}\PY{n}{find}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{dog\PYZus{}index}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+16
+    \end{Verbatim}
+
+    Note, however, that this function only returns the index of the first
+appearance of the substring you are looking for. If the substring
+appears more than once, you will miss the other substrings.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[2]}
+\PY{n}{message} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{I like cats and dogs, but I}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{d much rather own a dog.}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{dog\PYZus{}index} \PY{o}{=} \PY{n}{message}\PY{o}{.}\PY{n}{find}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{dog\PYZus{}index}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+16
+    \end{Verbatim}
+
+    If you want to find the last appearance of a substring, you can use the
+\emph{rfind()} function:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[3,4]}
+\PY{n}{message} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{I like cats and dogs, but I}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{d much rather own a dog.}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{last\PYZus{}dog\PYZus{}index} \PY{o}{=} \PY{n}{message}\PY{o}{.}\PY{n}{rfind}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{last\PYZus{}dog\PYZus{}index}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+48
+    \end{Verbatim}
+
+    \hypertarget{replacing-substrings}{%
+\subsection{Replacing substrings}\label{replacing-substrings}}
+
+You can use the \emph{replace()} function to replace any substring with
+another substring. To use the \emph{replace()} function, give the
+substring you want to replace, and then the substring you want to
+replace it with. You also need to store the new string, either in the
+same string variable or in a new variable.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{message} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{I like cats and dogs, but I}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{d much rather own a dog.}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{message} \PY{o}{=} \PY{n}{message}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{snake}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{message}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+I like cats and snakes, but I'd much rather own a snake.
+    \end{Verbatim}
+
+    \hypertarget{counting-substrings}{%
+\subsection{Counting substrings}\label{counting-substrings}}
+
+If you want to know how many times a substring appears within a string,
+you can use the \emph{count()} method.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{38}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{message} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{I like cats and dogs, but I}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{d much rather own a dog.}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{number\PYZus{}dogs} \PY{o}{=} \PY{n}{message}\PY{o}{.}\PY{n}{count}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{number\PYZus{}dogs}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+2
+    \end{Verbatim}
+
+    \hypertarget{splitting-strings}{%
+\subsection{Splitting strings}\label{splitting-strings}}
+
+Strings can be split into a set of substrings when they are separated by
+a repeated character. If a string consists of a simple sentence, the
+string can be split based on spaces. The \emph{split()} function returns
+a list of substrings. The \emph{split()} function takes one argument,
+the character that separates the parts of the string.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{message} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{I like cats and dogs, but I}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{d much rather own a dog.}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{words} \PY{o}{=} \PY{n}{message}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{words}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+['I', 'like', 'cats', 'and', 'dogs,', 'but', "I'd", 'much', 'rather', 'own',
+'a', 'dog.']
+    \end{Verbatim}
+
+    Notice that the punctuation is left in the substrings.
+
+It is more common to split strings that are really lists, separated by
+something like a comma. The \emph{split()} function gives you an easy
+way to turn comma-separated strings, which you can't do much with in
+Python, into lists. Once you have your data in a list, you can work with
+it in much more powerful ways.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{40}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{animals} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dog, cat, tiger, mouse, liger, bear}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{c+c1}{\PYZsh{} Rewrite the string as a list, and store it in the same variable}
+\PY{n}{animals} \PY{o}{=} \PY{n}{animals}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{animals}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+['dog', ' cat', ' tiger', ' mouse', ' liger', ' bear']
+    \end{Verbatim}
+
+    Notice that in this case, the spaces are also ignored. It is a good idea
+to test the output of the \emph{split()} function and make sure it is
+doing what you want with the data you are interested in.
+
+One use of this is to work with spreadsheet data in your Python
+programs. Most spreadsheet applications allow you to dump your data into
+a comma-separated text file. You can read this file into your Python
+program, or even copy and paste from the text file into your program
+file, and then turn the data into a list. You can then process your
+spreadsheet data using a \emph{for} loop.
+
+    \hypertarget{other-string-methods}{%
+\subsection{Other string methods}\label{other-string-methods}}
+
+There are a number of
+\href{http://docs.python.org/3.3/library/stdtypes.html\#string-methods}{other
+string methods} that we won't go into right here, but you might want to
+take a look at them. Most of these methods should make sense to you at
+this point. You might not have use for any of them right now, but it is
+good to know what you can do with strings. This way you will have a
+sense of how to solve certain problems, even if it means referring back
+to the list of methods to remind yourself how to write the correct
+syntax when you need it.
+
+    Exercises --- \#\#\#\# Listing a Sentence - Store a single sentence in a
+variable. Use a for loop to print each character from your sentence on a
+separate line.
+
+\hypertarget{sentence-list}{%
+\paragraph{Sentence List}\label{sentence-list}}
+
+\begin{itemize}
+\tightlist
+\item
+  Store a single sentence in a variable. Create a list from your
+  sentence. Print your raw list (don't use a loop, just print the list).
+\end{itemize}
+
+\hypertarget{sentence-slices}{%
+\paragraph{Sentence Slices}\label{sentence-slices}}
+
+\begin{itemize}
+\tightlist
+\item
+  Store a sentence in a variable. Using slices, print out the first five
+  characters, any five consecutive characters from the middle of the
+  sentence, and the last five characters of the sentence.
+\end{itemize}
+
+\hypertarget{finding-python}{%
+\paragraph{Finding Python}\label{finding-python}}
+
+\begin{itemize}
+\tightlist
+\item
+  Store a sentence in a variable, making sure you use the word
+  \emph{Python} at least twice in the sentence.
+\item
+  Use the \emph{in} keyword to prove that the word \emph{Python} is
+  actually in the sentence.
+\item
+  Use the \emph{find()} function to show where the word \emph{Python}
+  first appears in the sentence.
+\item
+  Use the \emph{rfind()} function to show the last place \emph{Python}
+  appears in the sentence.
+\item
+  Use the \emph{count()} function to show how many times the word
+  \emph{Python} appears in your sentence.
+\item
+  Use the \emph{split()} function to break your sentence into a list of
+  words. Print the raw list, and use a loop to print each word on its
+  own line.
+\item
+  Use the \emph{replace()} function to change \emph{Python} to
+  \emph{Ruby} in your sentence.
+\end{itemize}
+
+    Challenges --- \#\#\#\# Counting DNA Nucleotides -
+\href{http://rosalind.info/problems/locations/}{Project Rosalind} is a
+\href{http://rosalind.info/problems/list-view/}{problem set} based on
+biotechnology concepts. It is meant to show how programming skills can
+help solve problems in genetics and biology. - If you have understood
+this section on strings, you have enough information to solve the first
+problem in Project Rosalind,
+\href{http://rosalind.info/problems/dna/}{Counting DNA Nucleotides}.
+Give the sample problem a try. - If you get the sample problem correct,
+log in and try the full version of the problem!
+
+\hypertarget{transcribing-dna-into-rna}{%
+\paragraph{Transcribing DNA into RNA}\label{transcribing-dna-into-rna}}
+
+\begin{itemize}
+\tightlist
+\item
+  You also have enough information to try the second problem,
+  \href{http://rosalind.info/problems/rna/}{Transcribing DNA into RNA}.
+  Solve the sample problem.
+\item
+  If you solved the sample problem, log in and try the full version!
+\end{itemize}
+
+\hypertarget{complementing-a-strand-of-dna}{%
+\paragraph{Complementing a Strand of
+DNA}\label{complementing-a-strand-of-dna}}
+
+\begin{itemize}
+\tightlist
+\item
+  You guessed it, you can now try the third problem as well:
+  \href{http://rosalind.info/problems/revc/}{Complementing a Strand of
+  DNA}. Try the sample problem, and then try the full version if you are
+  successful.
+\end{itemize}
+
+    \protect\hyperlink{}{top}
+
+    \hypertarget{tuples}{%
+\section{Tuples}\label{tuples}}
+
+Tuples are basically lists that can never be changed. Lists are quite
+dynamic; they can grow as you append and insert items, and they can
+shrink as you remove items. You can modify any element you want to in a
+list. Sometimes we like this behavior, but other times we may want to
+ensure that no user or no part of a program can change a list. That's
+what tuples are for.
+
+Technically, lists are \emph{mutable} objects and tuples are
+\emph{immutable} objects. Mutable objects can change (think of
+\emph{mutations}), and immutable objects can not change.
+
+\hypertarget{defining-tuples-and-accessing-elements}{%
+\subsection{Defining tuples, and accessing
+elements}\label{defining-tuples-and-accessing-elements}}
+
+You define a tuple just like you define a list, except you use
+parentheses instead of square brackets. Once you have a tuple, you can
+access individual elements just like you can with a list, and you can
+loop through the tuple with a \emph{for} loop:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{41}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{colors} \PY{o}{=} \PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{green}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The first color is: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{colors}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{The available colors are:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{color} \PY{o+ow}{in} \PY{n}{colors}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{} }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{color}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The first color is: red
+
+The available colors are:
+- red
+- green
+- blue
+    \end{Verbatim}
+
+    If you try to add something to a tuple, you will get an error:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{42}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{colors} \PY{o}{=} \PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{green}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{colors}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{purple}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        AttributeError                            Traceback (most recent call last)
+
+        /var/folders/1\_/2rbdt5292zdb57b821k90d5r0000gn/T/ipykernel\_56860/1652377402.py in <module>
+          1 colors = ('red', 'green', 'blue')
+    ----> 2 colors.append('purple')
+    
+
+        AttributeError: 'tuple' object has no attribute 'append'
+
+    \end{Verbatim}
+
+    The same kind of thing happens when you try to remove something from a
+tuple, or modify one of its elements. Once you define a tuple, you can
+be confident that its values will not change.
+
+    \hypertarget{using-tuples-to-make-strings}{%
+\subsection{Using tuples to make
+strings}\label{using-tuples-to-make-strings}}
+
+We have seen that it is pretty useful to be able to mix raw English
+strings with values that are stored in variables, as in the following:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{animal} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dog}\PY{l+s+s1}{\PYZsq{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{I have a }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{animal} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    This was especially useful when we had a series of similar statements to
+make:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{animals} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cat}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bear}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{k}{for} \PY{n}{animal} \PY{o+ow}{in} \PY{n}{animals}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{I have a }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{animal} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    I like this approach of using the plus sign to build strings because it
+is fairly intuitive. We can see that we are adding several smaller
+strings together to make one longer string. This is intuitive, but it is
+a lot of typing. There is a shorter way to do this, using
+\emph{placeholders}.
+
+Python ignores most of the characters we put inside of strings. There
+are a few characters that Python pays attention to, as we saw with
+strings such as ``\t" and''\n``. Python also pays attention to''\%s''
+and ``\%d''. These are placeholders. When Python sees the ``\%s''
+placeholder, it looks ahead and pulls in the first argument after the \%
+sign:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{animal} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dog}\PY{l+s+s1}{\PYZsq{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{I have a }\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZpc{}} \PY{n}{animal}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    This is a much cleaner way of generating strings that include values. We
+compose our sentence all in one string, and then tell Python what values
+to pull into the string, in the appropriate places.
+
+This is called \emph{string formatting}, and it looks the same when you
+use a list:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{animals} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cat}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bear}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{k}{for} \PY{n}{animal} \PY{o+ow}{in} \PY{n}{animals}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{I have a }\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZpc{}} \PY{n}{animal}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    If you have more than one value to put into the string you are
+composing, you have to pack the values into a tuple:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{animals} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cat}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bear}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{I have a }\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s2}{, a }\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s2}{, and a }\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZpc{}} \PY{p}{(}\PY{n}{animals}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{animals}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{animals}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{string-formatting-with-numbers}{%
+\subsubsection{String formatting with
+numbers}\label{string-formatting-with-numbers}}
+
+If you recall, printing a number with a string can cause an error:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{number} \PY{o}{=} \PY{l+m+mi}{23}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{My favorite number is }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{number} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Python knows that you could be talking about the value 23, or the
+characters `23'. So it throws an error, forcing us to clarify that we
+want Python to treat the number as a string. We do this by
+\emph{casting} the number into a string using the \emph{str()} function:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[3]}
+\PY{n}{number} \PY{o}{=} \PY{l+m+mi}{23}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{My favorite number is }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{number}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    The format string ``\%d'' takes care of this for us. Watch how clean
+this code is:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[3]}
+\PY{n}{number} \PY{o}{=} \PY{l+m+mi}{23}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{My favorite number is }\PY{l+s+si}{\PYZpc{}d}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZpc{}} \PY{n}{number}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    If you want to use a series of numbers, you pack them into a tuple just
+like we saw with strings:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{numbers} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{7}\PY{p}{,} \PY{l+m+mi}{23}\PY{p}{,} \PY{l+m+mi}{42}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{My favorite numbers are }\PY{l+s+si}{\PYZpc{}d}\PY{l+s+s2}{, }\PY{l+s+si}{\PYZpc{}d}\PY{l+s+s2}{, and }\PY{l+s+si}{\PYZpc{}d}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZpc{}} \PY{p}{(}\PY{n}{numbers}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{numbers}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{numbers}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Just for clarification, look at how much longer the code is if you use
+concatenation instead of string formatting:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}highlight=[3]}
+\PY{n}{numbers} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{7}\PY{p}{,} \PY{l+m+mi}{23}\PY{p}{,} \PY{l+m+mi}{42}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{My favorite numbers are }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{numbers}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{, }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{numbers}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{, and }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{numbers}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    You can mix string and numerical placeholders in any order you want.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{names} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{eric}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ever}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{numbers} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{23}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{s favorite number is }\PY{l+s+si}{\PYZpc{}d}\PY{l+s+s2}{, and }\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{s favorite number is }\PY{l+s+si}{\PYZpc{}d}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZpc{}} \PY{p}{(}\PY{n}{names}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{numbers}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{names}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{numbers}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    There are more sophisticated ways to do string formatting in Python 3,
+but we will save that for later because it's a bit less intuitive than
+this approach. For now, you can use whichever approach consistently gets
+you the output that you want to see.
+
+    Exercises ---
+
+\hypertarget{gymnast-scores}{%
+\paragraph{Gymnast Scores}\label{gymnast-scores}}
+
+\begin{itemize}
+\tightlist
+\item
+  A gymnast can earn a score between 1 and 10 from each judge; nothing
+  lower, nothing higher. All scores are integer values; there are no
+  decimal scores from a single judge.
+\item
+  Store the possible scores a gymnast can earn from one judge in a
+  tuple.
+\item
+  Print out the sentence, ``The lowest possible score is \_\_\_, and the
+  highest possible score is \_\_\_.'' Use the values from your tuple.
+\item
+  Print out a series of sentences, ``A judge can give a gymnast \_\_\_
+  points.''
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Don't worry if your first sentence reads ``A judge can give a
+    gymnast 1 points.''
+  \item
+    However, you get 1000 bonus internet points if you can use a for
+    loop, and have correct grammar. Section \ref{hints_gymnast_scores}
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{revision-with-tuples}{%
+\paragraph{Revision with Tuples}\label{revision-with-tuples}}
+
+\begin{itemize}
+\tightlist
+\item
+  Choose a program you have already written that uses string
+  concatenation.
+\item
+  Save the program with the same filename, but add \emph{\_tuple.py} to
+  the end. For example, \emph{gymnast\_scores.py} becomes
+  \emph{gymnast\_scores\_tuple.py}.
+\item
+  Rewrite your string sections using \emph{\%s} and \emph{\%d} instead
+  of concatenation.
+\item
+  Repeat this with two other programs you have already written.
+\end{itemize}
+
+    \protect\hyperlink{}{top}
+
+    \hypertarget{coding-style-pep-8}{%
+\section{Coding Style: PEP 8}\label{coding-style-pep-8}}
+
+You are now starting to write Python programs that have a little
+substance. Your programs are growing a little longer, and there is a
+little more structure to your programs. This is a really good time to
+consider your overall style in writing code.
+
+\hypertarget{why-do-we-need-style-conventions}{%
+\subsection{Why do we need style
+conventions?}\label{why-do-we-need-style-conventions}}
+
+The people who originally developed Python made some of their decisions
+based on the realization that code is read much more often than it is
+written. The original developers paid as much attention to making the
+language easy to read, as well as easy to write. Python has gained a lot
+of respect as a programming language because of how readable the code
+is. You have seen that Python uses indentation to show which lines in a
+program are grouped together. This makes the structure of your code
+visible to anyone who reads it. There are, however, some styling
+decisions we get to make as programmers that can make our programs more
+readable for ourselves, and for others.
+
+There are several audiences to consider when you think about how
+readable your code is.
+
+\hypertarget{yourself-6-months-from-now}{%
+\paragraph{Yourself, 6 months from
+now}\label{yourself-6-months-from-now}}
+
+\begin{itemize}
+\tightlist
+\item
+  You know what you are thinking when you write code for the first time.
+  But how easily will you recall what you were thinking when you come
+  back to that code tomorrow, next week, or six months from now? We want
+  our code to be as easy to read as possible six months from now, so we
+  can jump back into our projects when we want to.
+\end{itemize}
+
+\hypertarget{other-programmers-you-might-want-to-collaborate-with}{%
+\paragraph{Other programmers you might want to collaborate
+with}\label{other-programmers-you-might-want-to-collaborate-with}}
+
+\begin{itemize}
+\tightlist
+\item
+  Every significant project is the result of collaboration these days.
+  If you stay in programming, you will work with others in jobs and in
+  open source projects. If you write readable code with good commments,
+  people will be happy to work with you in any setting.
+\end{itemize}
+
+\hypertarget{potential-employers}{%
+\paragraph{Potential employers}\label{potential-employers}}
+
+\begin{itemize}
+\tightlist
+\item
+  Most people who hire programmers will ask to see some code you have
+  written, and they will probably ask you to write some code during your
+  interview. If you are in the habit of writing code that is easy to
+  read, you will do well in these situations.
+\end{itemize}
+
+\hypertarget{what-is-a-pep}{%
+\subsection{What is a PEP?}\label{what-is-a-pep}}
+
+A PEP is a \emph{Python Enhancement Proposal}. When people want to
+suggest changes to the actual Python language, someone drafts a Python
+Enhancement Proposal. One of the earliest PEPs was a collection of
+guidelines for writing code that is easy to read. It was PEP 8, the
+\href{http://www.python.org/dev/peps/pep-0008/}{Style Guide for Python
+Code}. There is a lot in there that won't make sense to you for some
+time yet, but there are some suggestions that you should be aware of
+from the beginning. Starting with good style habits now will help you
+write clean code from the beginning, which will help you make sense of
+your code as well.
+
+\hypertarget{basic-python-style-guidelines}{%
+\subsection{Basic Python style
+guidelines}\label{basic-python-style-guidelines}}
+
+\hypertarget{indentation}{%
+\paragraph{Indentation}\label{indentation}}
+
+\begin{itemize}
+\tightlist
+\item
+  Use 4 spaces for indentation. This is enough space to give your code
+  some visual structure, while leaving room for multiple indentation
+  levels. There are configuration settings in most editors to
+  automatically convert tabs to 4 spaces, and it is a good idea to check
+  this setting. On Geany, this is under
+  Edit\textgreater Preferences\textgreater Editor\textgreater Indentation;
+  set Width to 4, and Type to \emph{Spaces}.
+\end{itemize}
+
+\hypertarget{line-length}{%
+\paragraph{Line Length}\label{line-length}}
+
+\begin{itemize}
+\item
+  Use up to 79 characters per line of code, and 72 characters for
+  comments. This is a style guideline that some people adhere to and
+  others completely ignore. This used to relate to a limit on the
+  display size of most monitors. Now almost every monitor is capable of
+  showing much more than 80 characters per line. But we often work in
+  terminals, which are not always high-resolution. We also like to have
+  multiple code files open, next to each other. It turns out this is
+  still a useful guideline to follow in most cases. There is a secondary
+  guideline of sticking to 99 characters per line, if you want longer
+  lines.
+
+  Many editors have a setting that shows a vertical line that helps you
+  keep your lines to a certain length. In Geany, you can find this
+  setting under
+  Edit\textgreater Preferences\textgreater Editor\textgreater Display.
+  Make sure ``Long Line Marker'' is enabled, and set ``Column'' to 79.
+\end{itemize}
+
+\hypertarget{blank-lines}{%
+\paragraph{Blank Lines}\label{blank-lines}}
+
+\begin{itemize}
+\tightlist
+\item
+  Use single blank lines to break up your code into meaningful blocks.
+  You have seen this in many examples so far. You can use two blank
+  lines in longer programs, but don't get excessive with blank lines.
+\end{itemize}
+
+\hypertarget{comments}{%
+\paragraph{Comments}\label{comments}}
+
+\begin{itemize}
+\tightlist
+\item
+  Use a single space after the pound sign at the beginning of a line. If
+  you are writing more than one paragraph, use an empty line with a
+  pound sign between paragraphs.
+\end{itemize}
+
+\hypertarget{naming-variables}{%
+\paragraph{Naming Variables}\label{naming-variables}}
+
+\begin{itemize}
+\tightlist
+\item
+  Name variables and program files using only lowercase letters,
+  underscores, and numbers. Python won't complain or throw errors if you
+  use capitalization, but you will mislead other programmers if you use
+  capital letters in variables at this point.
+\end{itemize}
+
+That's all for now. We will go over more style guidelines as we
+introduce more complicated programming structures. If you follow these
+guidelines for now, you will be well on your way to writing readable
+code that professionals will respect.
+
+    Exercises --- \#\#\#\# Skim PEP 8 - If you haven't done so already, skim
+\href{http://www.python.org/dev/peps/pep-0008/\#block-comments}{PEP 8 -
+Style Guide for Python Code}. As you continue to learn Python, go back
+and look at this every once in a while. I can't stress enough that many
+good programmers will take you much more seriously from the start if you
+are following community-wide conventions as you write your code.
+
+\hypertarget{implement-pep-8}{%
+\paragraph{Implement PEP 8}\label{implement-pep-8}}
+
+\begin{itemize}
+\tightlist
+\item
+  Take three of your longest programs, and add the extension
+  \emph{\_pep8.py} to the filename of each program. Revise your code so
+  that it meets the styling conventions listed above.
+\end{itemize}
+
+    \protect\hyperlink{}{top}
+
+    \hypertarget{overall-challenges}{%
+\section{Overall Challenges}\label{overall-challenges}}
+
+\hypertarget{programming-words}{%
+\paragraph{Programming Words}\label{programming-words}}
+
+\begin{itemize}
+\tightlist
+\item
+  Make a list of the most important words you have learned in
+  programming so far. You should have terms such as list,
+\item
+  Make a corresponding list of definitions. Fill your list with
+  `definition'.
+\item
+  Use a for loop to print out each word and its corresponding
+  definition.
+\item
+  Maintain this program until you get to the section on Python's
+  Dictionaries.
+\end{itemize}
+
+    \protect\hyperlink{}{top}
+
+    \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\href{http://nbviewer.ipython.org/urls/raw.github.com/ehmatthes/intro_programming/master/notebooks/var_string_num.ipynb}{Previous:
+Variables, Strings, and Numbers} \textbar{}
+\href{http://nbviewer.ipython.org/urls/raw.github.com/ehmatthes/intro_programming/master/notebooks/index.ipynb}{Home}
+\textbar{}
+\href{http://nbviewer.ipython.org/urls/raw.github.com/ehmatthes/intro_programming/master/notebooks/introducing_functions.ipynb}{Next:
+Introducing Functions}
+
+    \hypertarget{hints}{%
+\section{Hints}\label{hints}}
+
+These are placed at the bottom, so you can have a chance to solve
+exercises without seeing any hints.
+
+\hypertarget{gymnast-scores}{%
+\paragraph{Gymnast Scores}\label{gymnast-scores}}
+
+\begin{itemize}
+\tightlist
+\item
+  Hint: Use a slice.
+\end{itemize}
+
+    \protect\hyperlink{}{top}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
