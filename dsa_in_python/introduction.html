@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>index</title>
+<title>Introduction</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13082,51 +13082,80 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="ETE-2324:-Data-Structures-and-Algorithms">ETE 2324: Data Structures and Algorithms<a class="anchor-link" href="#ETE-2324:-Data-Structures-and-Algorithms">&#182;</a></h1>
+<h1 id="Definitions">Definitions<a class="anchor-link" href="#Definitions">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Contents">Contents<a class="anchor-link" href="#Contents">&#182;</a></h2><ul>
-<li>Introduction to DSA<ul>
-<li>Reading: <a href="https://runestone.academy/runestone/books/published/pythonds3/Introduction/toctree.html">Chapter 1</a></li>
-<li>Notebook:</li>
-<li>Lectures: <a href="index.pdf">PDF</a> <a href="index.html">HTML</a> <a href="index.tex">Latex</a></li>
-</ul>
-</li>
-</ul>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Textbook">Textbook<a class="anchor-link" href="#Textbook">&#182;</a></h2><ul>
-<li><a href="https://runestone.academy/runestone/books/published/pythonds3/index.html">Problem Solving with Algorithms and Data Structures using Python</a></li>
-<li>Cormen, Thomas, Charles Leiserson, Ronald Rivest, and Clifford Stein. Introduction to Algorithms. 3rd ed. MIT Press, 2009. ISBN: 9780262033848.</li>
-</ul>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Additional-Resourcess:">Additional Resourcess:<a class="anchor-link" href="#Additional-Resourcess:">&#182;</a></h2><h2 id="-----How-to-install-python-and-jupyter">   - How to install python and jupyter<a class="anchor-link" href="#-----How-to-install-python-and-jupyter">&#182;</a></h2>
-<pre><code>  - 
-
-</code></pre>
 <ul>
-<li>Python Tutorial<ul>
-<li>Part 1: <a href="python_p1.ipnyb">Notebook</a> <a href="python_p1.html">HTML</a></li>
-<li>Part 2: <a href="python_p2.ipnyb">Notebook</a> <a href="python_p2.html">HTML</a></li>
-<li>Part 3: <a href="python_p3.ipnyb">Notebook</a> <a href="python_p3.html">HTML</a></li>
-<li>List in Python: <a href="python_list.ipnyb">Notebook</a> <a href="python_list.html">HTML</a></li>
+<li><strong>Data structure</strong> is a systematic way of organizing and accessing data.</li>
+<li>An <strong>algorithm</strong> is a step-by-step procedure for performing some task in a finite amount of time.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Motivations">Motivations<a class="anchor-link" href="#Motivations">&#182;</a></h1><ul>
+<li><strong>Algorithms are fundamental to all areas of Computing</strong><ul>
+<li>Algorithms are the backbone of computer science.<ul>
+<li>Operating Systems</li>
+<li>Networking</li>
+<li>Cyber Security </li>
 </ul>
 </li>
+<li>Algorithms and the computational perspective (the “computational lens”) has also been fruitfully applied to other areas, such as <ul>
+<li>physics (e.g. quantum computing), </li>
+<li>economics (e.g. algorithmic gametheory), and </li>
+<li>biology (e.g. for studying evolutions, as a surprisingly efficient algorithm that searches the space of genotypes).</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Algorithms are useful</strong><ul>
+<li>Much of the progress that has occurred in tech/industry is due to the dual developments of improved hardware (a la “Moore’s Law”)</li>
+<li>In fact, the faster computers get, the bigger the discrepancy is between what can be accomplished with fast algorithms vs what can be accomplished with slow algorithms.</li>
+<li>Industry needs to continue developing new algorithms for the problems of tomorrow, and you can help
+contribute.</li>
+</ul>
+</li>
+<li><strong>Algorithms are fun!</strong><ul>
+<li>The design and analysis of algorithms requires a combination of creativity and mathematical precision. </li>
+<li>It is both an art and a science, and hopefully at least some of you will come to love this combination.</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Algorithms-and-Programs">Algorithms and Programs<a class="anchor-link" href="#Algorithms-and-Programs">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>It is important that you do not mix up these two concepts.  </li>
+<li><p>An algorithm algorithm is an <strong>abstract concept</strong> to solve a given problem.</p>
+</li>
+<li><p>In contrast, a program is a <strong>concrete</strong> implementation of an algorithm.</p>
+</li>
+<li><p>In order to implement an algorithm as a program we have to cover every detail, be it trivial or not.</p>
+</li>
+<li><p>On the other hand,  to specify an algorithm it is often sufficient to describe just the interesting aspects.</p>
+</li>
+<li><p>The rest can then be filled in by a competent programmer.</p>
+</li>
+<li>Therefore, a <code>specification</code> of an algorithm often <strong>abstracts</strong> from minor details. </li>
 </ul>
 
 </div>

@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>index</title>
+<title>python_p2</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13082,49 +13082,33 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="ETE-2324:-Data-Structures-and-Algorithms">ETE 2324: Data Structures and Algorithms<a class="anchor-link" href="#ETE-2324:-Data-Structures-and-Algorithms">&#182;</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Contents">Contents<a class="anchor-link" href="#Contents">&#182;</a></h2><ul>
-<li>Introduction to DSA<ul>
-<li>Reading: <a href="https://runestone.academy/runestone/books/published/pythonds3/Introduction/toctree.html">Chapter 1</a></li>
-<li>Notebook:</li>
-<li>Lectures: <a href="index.pdf">PDF</a> <a href="index.html">HTML</a> <a href="index.tex">Latex</a></li>
+<h2 id="Namespaces">Namespaces<a class="anchor-link" href="#Namespaces">&#182;</a></h2><ul>
+<li>a namespace is a mapping from names to objects</li>
+<li>a namespace can be implemented in different ways<ul>
+<li>currently most are implemented as dictionaries</li>
+</ul>
+</li>
+<li>there is no relation between names in different namespaces</li>
+<li>a.b: b is an attribute of the object a<ul>
+<li>attributes can be read-only or writable</li>
+<li>attributes may be deleted with del statement</li>
+</ul>
+</li>
+<li>namespaces are created at different times </li>
+<li>namespaces can have different lifetimes<ul>
+<li>built-in names are contained in a namespace created at interpreter start up and never deleted</li>
+<li>global namespace for a module </li>
+</ul>
+</li>
+<li>local namespace for a function is created at the function call<ul>
+<li>and forgotten when the function exit (i.e., return or raise an exception)</li>
 </ul>
 </li>
 </ul>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Textbook">Textbook<a class="anchor-link" href="#Textbook">&#182;</a></h2><ul>
-<li><a href="https://runestone.academy/runestone/books/published/pythonds3/index.html">Problem Solving with Algorithms and Data Structures using Python</a></li>
-<li>Cormen, Thomas, Charles Leiserson, Ronald Rivest, and Clifford Stein. Introduction to Algorithms. 3rd ed. MIT Press, 2009. ISBN: 9780262033848.</li>
-</ul>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Additional-Resourcess:">Additional Resourcess:<a class="anchor-link" href="#Additional-Resourcess:">&#182;</a></h2><h2 id="-----How-to-install-python-and-jupyter">   - How to install python and jupyter<a class="anchor-link" href="#-----How-to-install-python-and-jupyter">&#182;</a></h2>
-<pre><code>  - 
-
-</code></pre>
-<ul>
-<li>Python Tutorial<ul>
-<li>Part 1: <a href="python_p1.ipnyb">Notebook</a> <a href="python_p1.html">HTML</a></li>
-<li>Part 2: <a href="python_p2.ipnyb">Notebook</a> <a href="python_p2.html">HTML</a></li>
-<li>Part 3: <a href="python_p3.ipnyb">Notebook</a> <a href="python_p3.html">HTML</a></li>
-<li>List in Python: <a href="python_list.ipnyb">Notebook</a> <a href="python_list.html">HTML</a></li>
+<h2 id="Scopes">Scopes<a class="anchor-link" href="#Scopes">&#182;</a></h2><ul>
+<li>a scope is a textual region where an unqualified reference to a name attempts to find the name in the namespace</li>
+<li>scopes are determined statically but used dynamically<ul>
+<li>local names, non-local non-global names, global names, built-in names </li>
 </ul>
 </li>
 </ul>
@@ -13134,13 +13118,1860 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">f0</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">g0</span><span class="p">():</span>
+        <span class="k">return</span> <span class="s2">&quot;g0 is scoped&quot;</span>
+    <span class="k">return</span> <span class="n">g0</span><span class="p">()</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">g0</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">NameError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">f0</span><span class="p">(),</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>name &#39;g0&#39; is not defined
+
+g0 is scoped
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[170]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="c1"># scope names</span>
+<span class="k">def</span> <span class="nf">scope_test</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">do_local</span><span class="p">():</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="s2">&quot;local&quot;</span>
+
+    <span class="k">def</span> <span class="nf">do_nonlocal</span><span class="p">():</span>
+        <span class="k">nonlocal</span> <span class="n">var</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="s2">&quot;change&quot;</span>
+
+    <span class="k">def</span> <span class="nf">do_global</span><span class="p">():</span>
+        <span class="k">global</span> <span class="n">var</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="s2">&quot;changes var value&quot;</span>
+
+    <span class="n">var</span> <span class="o">=</span> <span class="s2">&quot;unchanged&quot;</span>
+    <span class="n">do_local</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;local assignment leaves var&quot;</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span>
+    <span class="n">do_nonlocal</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;nonlocal assignment makes var&quot;</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span>
+    <span class="n">do_global</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;global assignment does not&quot;</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span><span class="s2">&quot;var value in current scope&quot;</span><span class="p">)</span>
+    
+<span class="n">scope_test</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;global assignment&quot;</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span><span class="s2">&quot;in global scope&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>local assignment leaves var unchanged
+nonlocal assignment makes var change
+global assignment does not change var value in current scope
+global assignment changes var value in global scope
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Comprehensions">Comprehensions<a class="anchor-link" href="#Comprehensions">&#182;</a></h2><ul>
+<li>python can implement expressions that allow sequences to be built from other sequences</li>
+<li>comprehensions consist of: <ul>
+<li>input sequence</li>
+<li>variable representing members of the input sequence</li>
+<li>optional predicate expression</li>
+<li>output expression producing an output sequence</li>
+</ul>
+</li>
+<li>comprehensions can be made with: <ul>
+<li>list, nested list, set, dictionaries</li>
+<li>generators (or generator comprehension)</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[65]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="n">l1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">l2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">l1_p_l2</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">+</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span><span class="n">l2</span><span class="p">)]</span> <span class="c1"># list comprehension</span>
+<span class="n">l1_p_l2_</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">+</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span><span class="n">l2</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">&gt;</span><span class="mi">4</span><span class="p">]</span> <span class="c1"># with predicate</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">l1_p_l2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">l1_p_l2_</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[2, 5, 4, 7, 6, 9]
+[5, 7, 6, 9]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[48]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="n">l1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">l2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+<span class="c1"># list comprehension</span>
+<span class="n">v12</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="n">j</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span><span class="n">l2</span><span class="p">)]</span> <span class="c1"># i==j vector 1 or 0</span>
+<span class="c1"># list comprehension can be nested</span>
+<span class="n">m12</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span> <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="n">j</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">l1</span><span class="p">]</span>\
+                         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">l2</span><span class="p">]</span> <span class="c1"># i==j matrix 1 or 0</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">v12[i]=1 if l1[i]=l2[i]</span><span class="se">\n</span><span class="s2"> -&gt; &quot;</span><span class="p">,</span> <span class="n">v12</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">m12[i][j]=1 if l1[i]=l2[j]</span><span class="se">\n</span><span class="s2"> -&gt; &quot;</span><span class="p">,</span> <span class="n">m12</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+v12[i]=1 if l1[i]=l2[i]
+ -&gt;  [0, 1, 0]
+
+m12[i][j]=1 if l1[i]=l2[j]
+ -&gt;  [[0, 0, 0], [0, 1, 0], [0, 0, 0]]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[51]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Mickey&#39;</span><span class="p">,</span><span class="s1">&#39;Minnie&#39;</span><span class="p">,</span><span class="s1">&#39;Donald&#39;</span><span class="p">,</span><span class="s1">&#39;Daisy&#39;</span><span class="p">,</span><span class="s1">&#39;Goofy&#39;</span><span class="p">,</span><span class="s1">&#39;Pluto&#39;</span><span class="p">]</span>
+<span class="c1"># set comprehension</span>
+<span class="n">m_char_set</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span> <span class="k">if</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;M&#39;</span><span class="p">}</span> <span class="c1"># M* characters</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">m_char_set</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{&#39;Minnie&#39;, &#39;Mickey&#39;}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[67]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="n">names</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Mickey&#39;</span><span class="p">:</span><span class="s1">&#39;mouse&#39;</span><span class="p">,</span><span class="s1">&#39;Minnie&#39;</span><span class="p">:</span><span class="s1">&#39;mouse&#39;</span><span class="p">,</span>\
+         <span class="s1">&#39;Donald&#39;</span><span class="p">:</span><span class="s1">&#39;duck&#39;</span><span class="p">,</span><span class="s1">&#39;Daisy&#39;</span><span class="p">:</span><span class="s1">&#39;duck&#39;</span><span class="p">,</span>\
+         <span class="s1">&#39;Goofy&#39;</span><span class="p">:</span><span class="s1">&#39;dog&#39;</span><span class="p">,</span><span class="s1">&#39;Pluto&#39;</span><span class="p">:</span><span class="s1">&#39;dog&#39;</span><span class="p">}</span>
+<span class="c1"># dictionary comprehension</span>
+<span class="n">ducks_char_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span> <span class="k">if</span> <span class="n">names</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;duck&#39;</span><span class="p">}</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ducks_char_dict</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{&#39;Daisy&#39;, &#39;Donald&#39;}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Generator-comprehension">Generator comprehension<a class="anchor-link" href="#Generator-comprehension">&#182;</a></h2><ul>
+<li>generators are iterators that: <ul>
+<li>can be iterated only once </li>
+<li>do not store values</li>
+<li>generate values on the fly  </li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[75]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="n">squares</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;squares is&quot;</span><span class="p">,</span><span class="n">squares</span><span class="p">,</span><span class="s2">&quot;of type&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">squares</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1st loop over squares -&gt;&quot;</span><span class="p">,[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">squares</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2nd loop over squares -&gt;&quot;</span><span class="p">,[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">squares</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>squares is &lt;generator object &lt;genexpr&gt; at 0x7f633aebe780&gt; of type &lt;class &#39;generator&#39;&gt;
+1st loop over squares -&gt; [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+2nd loop over squares -&gt; []
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="next-keyword">next keyword<a class="anchor-link" href="#next-keyword">&#182;</a></h2><ul>
+<li>retrieve the next item from an iterator </li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[102]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="n">squares</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">squares</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">squares</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">squares</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">squares</span><span class="p">])</span>     
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0
+1
+4
+[]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="yield-keyword">yield keyword<a class="anchor-link" href="#yield-keyword">&#182;</a></h2><ul>
+<li>can be used only in the body of a function definition</li>
+<li>causes the function to return a generator </li>
+<li>yield vs return<ul>
+<li>return transfers the control of execution to the point where the function was called</li>
+<li>yield implies that the tranfer of control is temporary and voluntary</li>
+<li>functions yield when they expects to regain control in the future</li>
+<li>function with these capabilities are called generators</li>
+</ul>
+</li>
+<li>conceptually it performs the opposite operation of next(): <ul>
+<li>next retrieves an item and removes it from the generator</li>
+<li>yield accumulates an item in the generator, ready to be iterated</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[113]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">def</span> <span class="nf">odd_numbers</span><span class="p">(</span><span class="n">numbers</span><span class="p">):</span>
+    <span class="n">odds</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">:</span> 
+        <span class="k">if</span> <span class="n">x</span><span class="o">%</span><span class="k">2</span>!=0:
+            <span class="n">odds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">odds</span> <span class="c1"># odds contains ALL odd numbers</span>
+
+<span class="n">odds</span> <span class="o">=</span> <span class="n">odd_numbers</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>       
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;odds is&quot;</span><span class="p">,</span><span class="n">odds</span><span class="p">,</span><span class="s2">&quot;of type&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">odds</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1st loop over odds -&gt;&quot;</span><span class="p">,[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">odds</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2nd loop over odds -&gt;&quot;</span><span class="p">,[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">odds</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>odds is [1, 3, 5, 7, 9] of type &lt;class &#39;list&#39;&gt;
+1st loop over odds -&gt; [1, 3, 5, 7, 9]
+2nd loop over odds -&gt; [1, 3, 5, 7, 9]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[114]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">def</span> <span class="nf">odd_numbers</span><span class="p">(</span><span class="n">numbers</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">x</span><span class="o">%</span><span class="k">2</span>!=0:
+            <span class="k">yield</span> <span class="n">x</span> <span class="c1"># x is one odd number </span>
+            
+<span class="n">odds</span> <span class="o">=</span> <span class="n">odd_numbers</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>  
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;odds is&quot;</span><span class="p">,</span><span class="n">odds</span><span class="p">,</span><span class="s2">&quot;of type&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">odds</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1st loop over odds -&gt;&quot;</span><span class="p">,[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">odds</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2nd loop over odds -&gt;&quot;</span><span class="p">,[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">odds</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>odds is &lt;generator object odd_numbers at 0x7f635006a150&gt; of type &lt;class &#39;generator&#39;&gt;
+1st loop over odds -&gt; [1, 3, 5, 7, 9]
+2nd loop over odds -&gt; []
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Lambda-functions">Lambda functions<a class="anchor-link" href="#Lambda-functions">&#182;</a></h2><ul>
+<li>anonymous functions</li>
+<li>needs definition of keys (input parameters) </li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="c1"># ex. polynomial function</span>
+<span class="k">def</span> <span class="nf">pol</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+    <span class="k">return</span>  <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">sum</span><span class="p">([</span><span class="n">_w</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">_w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">w</span><span class="p">)])</span>
+
+<span class="c1"># a + b*x + c*x^2    </span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">pol</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>  <span class="c1"># {a,b,c} = {1,2,3}   </span>
+<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>       <span class="c1"># -&gt; 1 + (2*2) + (3*(2*2)) = 17</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>17
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Generic-arguments-functions">Generic arguments functions<a class="anchor-link" href="#Generic-arguments-functions">&#182;</a></h2><ul>
+<li>operator *: refers to positional arguments</li>
+<li>and **: : refers to keywords arguments</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="o">*</span><span class="n">positional</span><span class="p">,</span> <span class="o">**</span><span class="n">keywords</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Positional:&quot;</span><span class="p">,</span> <span class="n">positional</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Keywords:&quot;</span><span class="p">,</span> <span class="n">keywords</span><span class="p">)</span>
+    
+<span class="n">foo</span><span class="p">(</span><span class="s1">&#39;1st&#39;</span><span class="p">,</span> <span class="s1">&#39;2nd&#39;</span><span class="p">,</span> <span class="s1">&#39;3rd&#39;</span><span class="p">)</span>
+<span class="n">foo</span><span class="p">(</span><span class="n">par1</span><span class="o">=</span><span class="s1">&#39;1st&#39;</span><span class="p">,</span> <span class="n">par2</span><span class="o">=</span><span class="s1">&#39;2nd&#39;</span><span class="p">,</span> <span class="n">par3</span><span class="o">=</span><span class="s1">&#39;3rd&#39;</span><span class="p">)</span>
+<span class="n">foo</span><span class="p">(</span><span class="s1">&#39;1st&#39;</span><span class="p">,</span> <span class="n">par2</span><span class="o">=</span><span class="s1">&#39;2nd&#39;</span><span class="p">,</span> <span class="n">par3</span><span class="o">=</span><span class="s1">&#39;3rd&#39;</span><span class="p">)</span>
+<span class="n">foo</span><span class="p">(</span><span class="n">par1</span><span class="o">=</span><span class="s1">&#39;1st_key&#39;</span><span class="p">,</span><span class="o">*</span><span class="s1">&#39;1st_pos&#39;</span><span class="p">,</span> <span class="n">par2</span><span class="o">=</span><span class="s1">&#39;2nd_key&#39;</span><span class="p">)</span>
+<span class="n">foo</span><span class="p">(</span><span class="n">par1</span><span class="o">=</span><span class="s1">&#39;1st_key&#39;</span><span class="p">,</span><span class="o">*</span><span class="p">[</span><span class="s1">&#39;1st_pos&#39;</span><span class="p">],</span> <span class="n">par2</span><span class="o">=</span><span class="s1">&#39;2nd_key&#39;</span><span class="p">,</span><span class="o">*</span><span class="p">[</span><span class="s1">&#39;2st_pos&#39;</span><span class="p">,</span><span class="s1">&#39;3rd_pos&#39;</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Positional: (&#39;1st&#39;, &#39;2nd&#39;, &#39;3rd&#39;)	Keywords: {}
+Positional: ()	Keywords: {&#39;par1&#39;: &#39;1st&#39;, &#39;par2&#39;: &#39;2nd&#39;, &#39;par3&#39;: &#39;3rd&#39;}
+Positional: (&#39;1st&#39;,)	Keywords: {&#39;par2&#39;: &#39;2nd&#39;, &#39;par3&#39;: &#39;3rd&#39;}
+Positional: (&#39;1&#39;, &#39;s&#39;, &#39;t&#39;, &#39;_&#39;, &#39;p&#39;, &#39;o&#39;, &#39;s&#39;)	Keywords: {&#39;par1&#39;: &#39;1st_key&#39;, &#39;par2&#39;: &#39;2nd_key&#39;}
+Positional: (&#39;1st_pos&#39;, &#39;2st_pos&#39;, &#39;3rd_pos&#39;)	Keywords: {&#39;par1&#39;: &#39;1st_key&#39;, &#39;par2&#39;: &#39;2nd_key&#39;}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="The-Standard-Library:-&quot;batteries-included&quot;-philosophy">The Standard Library: "batteries included" philosophy<a class="anchor-link" href="#The-Standard-Library:-&quot;batteries-included&quot;-philosophy">&#182;</a></h2><ul>
+<li>operating system interface: os, shutil</li>
+<li>file wildcards: glob</li>
+<li>command line arguments: sys.argv</li>
+<li>error output redirection: sys.stderr</li>
+<li>regular expressions: re </li>
+<li>math: math, random, statistics</li>
+<li>sql query language: sqlite3</li>
+<li>comma separated value format: csv</li>
+<li>data interchange format: json</li>
+<li>internet access: urllib.request, smtplib</li>
+<li>dates and times: datetime</li>
+<li>data compression: zlib, gzip, bz2, lzma, zipfile and tarfile</li>
+<li>profiling performance: timeit, profile, pstats </li>
+<li>quality control: doctest, unittest</li>
+<li>...</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Import-a-module">Import a module<a class="anchor-link" href="#Import-a-module">&#182;</a></h2><ul>
+<li>import module [as] followed by a module name <ul>
+<li>imports the module referred as that name</li>
+<li>customary but not required to place import statements at the beginning of a module/script</li>
+</ul>
+</li>
+<li>from import keywords <ul>
+<li>pros: less typing and more control over which items can be accessed </li>
+<li>cons: lose context (i.e., you call fun() instead of module.fun()) </li>
+<li>the namespace can be cluttered by import * (anything) </li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;</span> <span class="p">[</span><span class="k">as</span> <span class="o">&lt;</span><span class="n">alias</span><span class="o">&gt;</span><span class="p">]</span> 
+<span class="kn">from</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;</span> <span class="kn">import</span> <span class="o">&lt;</span><span class="n">submodule</span><span class="o">&gt;</span>
+<span class="kn">from</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">import math&quot;</span><span class="p">,</span><span class="s2">&quot;# include math&quot;</span>\
+      <span class="s2">&quot;</span><span class="se">\n</span><span class="si">%r</span><span class="s2">eset -f&quot;</span><span class="p">,</span> <span class="s2">&quot;# cleans the environment&quot;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">reset</span> -f
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">print(dir())&quot;</span><span class="p">,</span> <span class="s2">&quot;# math should not be listed&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">dir</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">import math&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">print(dir())&quot;</span><span class="p">,</span> <span class="s2">&quot;# now math is listed&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">dir</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">print(dir(math))&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="n">math</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;math.__name__ -&gt;&quot;</span><span class="p">,</span><span class="n">math</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;math.sin(math.pi/2) -&gt;&quot;</span><span class="p">,</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">math</span> <span class="k">as</span> <span class="nn">m</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;import math as m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;m.__name__ -&gt;&quot;</span><span class="p">,</span><span class="n">m</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;m.sin(m.pi/2) -&gt;&quot;</span><span class="p">,</span><span class="n">m</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sin</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;from math import sin&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sin(3.14/2) -&gt;&quot;</span><span class="p">,</span><span class="n">sin</span><span class="p">(</span><span class="mf">3.14</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="o">*</span> <span class="c1"># now I know pi!</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;from math import * # now I know pi!&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pi is&quot;</span><span class="p">,</span><span class="n">pi</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Modules">Modules<a class="anchor-link" href="#Modules">&#182;</a></h2><ul>
+<li>definitions in python files might be reused (i.e., imported) <ul>
+<li>those files are called modules</li>
+<li>every python file is potentially a module</li>
+<li>every module can be run as a script</li>
+</ul>
+</li>
+<li>global variable names are global within the module</li>
+<li>modules have name, i.e. the file name without the suffix .py</li>
+<li>module's name is assigned to the global variable __name__<ul>
+<li>when a module is run as a script, __name__ == "__main__"</li>
+</ul>
+</li>
+</ul>
+<h2 id="Packages">Packages<a class="anchor-link" href="#Packages">&#182;</a></h2><ul>
+<li>a package is a module that contains other modules: any folder containing .py files can be a package<ul>
+<li>folders containing an __init__.py file (even empty) are packages for python </li>
+<li>the __init__.py file prevents unintentionally hiding of names in the module search path</li>
+</ul>
+</li>
+</ul>
+<h4 id="subpackages-and-submodules-are-packages-and-modules-contained-by-other-packages-or-modules">subpackages and submodules are packages and modules contained by other packages or modules<a class="anchor-link" href="#subpackages-and-submodules-are-packages-and-modules-contained-by-other-packages-or-modules">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Structure-of-a-python-Package">Structure of a python Package<a class="anchor-link" href="#Structure-of-a-python-Package">&#182;</a></h2>
+<pre><code>txt
+package/
+    __init__.py
+    module1.py
+    module2.py
+    subpackage/
+        __init__.py
+        submodule1.py
+        submodule2.py</code></pre>
+<hr>
+<ul>
+<li>packages are structured modules using "dotted module names"<ul>
+<li>A.B: A is a package named A while B is a subpackage (or submodule) named B</li>
+</ul>
+</li>
+<li>__init__.py can just be an empty file or execute initialization code for the package or set the __all__ variable<ul>
+<li>__all__ variable is a list of module names that are imported when <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">package</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>tree modules/myFirstPackage/
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre><span class="ansi-blue-intense-fg ansi-bold">modules/myFirstPackage/</span>
+├── biggerModule.py
+├── import_usefulSubModule_from_subPackage1.py
+├── __init__.py
+├── myFirstModule.py
+├── <span class="ansi-blue-intense-fg ansi-bold">__pycache__</span>
+├── runModuleAsScript.py
+├── <span class="ansi-blue-intense-fg ansi-bold">subPackage_1</span>
+│   ├── __init__.py
+│   ├── <span class="ansi-blue-intense-fg ansi-bold">__pycache__</span>
+│   └── usefulSubModule.py
+├── <span class="ansi-blue-intense-fg ansi-bold">subPackage_2</span>
+│   ├── __init__.py
+│   ├── needs_subPackage_1.py
+│   └── <span class="ansi-blue-intense-fg ansi-bold">__pycache__</span>
+└── <span class="ansi-blue-intense-fg ansi-bold">subPackage_3</span>
+    ├── __init__.py
+    ├── needs_subPackage_1.py
+    └── <span class="ansi-blue-intense-fg ansi-bold">__pycache__</span>
+
+7 directories, 11 files
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id=".pyc-files-and-__pycache__-folder">.pyc files and __pycache__ folder<a class="anchor-link" href="#.pyc-files-and-__pycache__-folder">&#182;</a></h2><ul>
+<li>what are .pyc files?<ul>
+<li>.pyc contain the compiled bytecode of Python source files</li>
+<li>python interpreter prefers loading .pyc </li>
+</ul>
+</li>
+<li>a .pyc is created<ul>
+<li>only for an imported .py </li>
+<li>only if its timestamp differs from .py 's </li>
+</ul>
+</li>
+<li>why .pyc?<ul>
+<li>the execution time would not change...</li>
+<li>but loading time is shorter for a .pyc file </li>
+<li>small scripts may spend more time in loading/compiling than in executing</li>
+</ul>
+</li>
+<li>__pycache__ was introduced in python3.2 to store the .pyc files<ul>
+<li>different python implementations store in there with different desinences (e.g., "cpython-35")</li>
+<li>the .pyc file in the same folder of .py is the one loaded (it is a renamed copy for the proper python implementation)</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="modules/myFirstPackage/myFirstModule.py"><a href="modules/myFirstPackage/myFirstModule.py">modules/myFirstPackage/myFirstModule.py</a><a class="anchor-link" href="#modules/myFirstPackage/myFirstModule.py">&#182;</a></h3><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f0</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">f1</span><span class="p">()</span> <span class="c1"># f1 is in scope</span>
+
+<span class="k">def</span> <span class="nf">f1</span><span class="p">():</span>
+    <span class="k">return</span> <span class="vm">__name__</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="kn">from</span> <span class="nn">modules.myFirstPackage.myFirstModule</span> <span class="kn">import</span> <span class="o">*</span> <span class="c1"># this means f0 and f1</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">List imported modules:&#39;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">who</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">f0</span><span class="p">(),</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+List imported modules: f0	 f1	 
+
+modules.myFirstPackage.myFirstModule
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="kn">import</span> <span class="nn">modules.myFirstPackage.myFirstModule</span> <span class="k">as</span> <span class="nn">m1</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">List imported modules:&#39;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">who</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">m1</span><span class="o">.</span><span class="n">f0</span><span class="p">(),</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="c1"># __name__ != &quot;__main__&quot; </span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+List imported modules: m1	 
+
+modules.myFirstPackage.myFirstModule
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Run-module-as-a-script">Run module as a script<a class="anchor-link" href="#Run-module-as-a-script">&#182;</a></h2><ul>
+<li>__name__ changes to "__main__"</li>
+</ul>
+<h3 id="modules/runModuleAsScript.py"><a href="modules/runModuleAsScript.py">modules/runModuleAsScript.py</a><a class="anchor-link" href="#modules/runModuleAsScript.py">&#182;</a></h3><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">myFirstModule</span> <span class="k">as</span> <span class="nn">m</span>
+
+<span class="k">def</span> <span class="nf">f0</span><span class="p">():</span>
+    <span class="k">return</span> <span class="vm">__name__</span>
+
+<span class="k">def</span> <span class="nf">f1</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="vm">__name__</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;this module&#39;s name is &quot;</span><span class="o">+</span><span class="n">f0</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sys module&#39;s name is &quot;</span><span class="o">+</span><span class="n">f1</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[78]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span> python modules/myFirstPackage/runModuleAsScript.py
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre> -----  I am running MyFirstModule.py as a module -----  
+this module&#39;s name is __main__
+sys module&#39;s name is myFirstModule
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="__all__-list">__all__ list<a class="anchor-link" href="#__all__-list">&#182;</a></h2><ul>
+<li>__all__ overrides * during import </li>
+</ul>
+<h3 id="modules/myFirstPackage/biggerModule.py"><a href="modules/myFirstPackage/biggerModule.py">modules/myFirstPackage/biggerModule.py</a><a class="anchor-link" href="#modules/myFirstPackage/biggerModule.py">&#182;</a></h3><div class="highlight"><pre><span></span><span class="n">__all__</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;f0&#39;</span><span class="p">]</span> 
+
+<span class="k">def</span> <span class="nf">f0</span><span class="p">():</span>
+    <span class="k">return</span> 
+
+<span class="k">def</span> <span class="nf">f1</span><span class="p">():</span>
+    <span class="k">return</span> 
+
+<span class="k">def</span> <span class="nf">f2</span><span class="p">():</span>
+    <span class="k">return</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f 
+<span class="kn">from</span> <span class="nn">modules.myFirstPackage.biggerModule</span> <span class="kn">import</span> <span class="o">*</span> <span class="c1"># __all__ is imported</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">List imported modules:&#39;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">who</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+List imported modules: f0	 
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Intra-package-references">Intra-package references<a class="anchor-link" href="#Intra-package-references">&#182;</a></h2><ul>
+<li>relative imports use a module's __name__ to determine module's position in the package hierarchy </li>
+</ul>
+<h3 id="modules/myFirstPackage/subPackage_1/usefulSubModule.py"><a href="modules/myFirstPackage/subPackage_1/usefulSubModule.py">modules/myFirstPackage/subPackage_1/usefulSubModule.py</a><a class="anchor-link" href="#modules/myFirstPackage/subPackage_1/usefulSubModule.py">&#182;</a></h3><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">usefulFunction</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s2">&quot;I can use this usefulFunction&quot;</span>
+</pre></div>
+<h3 id="modules/myFirstPackage/import_usefulSubModule_from_subPackage1.py"><a href="modules/myFirstPackage/import_usefulSubModule_from_subPackage1.py">modules/myFirstPackage/import_usefulSubModule_from_subPackage1.py</a><a class="anchor-link" href="#modules/myFirstPackage/import_usefulSubModule_from_subPackage1.py">&#182;</a></h3><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">subPackage_1.usefulSubModule</span> <span class="k">as</span> <span class="nn">sm</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">usefulFunction</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls modules/myFirstPackage/
+<span class="nb">print</span><span class="p">()</span>
+<span class="o">!</span>ls modules/myFirstPackage/subPackage_1/
+<span class="nb">print</span><span class="p">()</span>
+<span class="o">!</span>python modules/myFirstPackage/import_usefulSubModule_from_subPackage1.py
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>biggerModule.py				    myFirstModule.py	  subPackage_1
+import_usefulSubModule_from_subPackage1.py  __pycache__		  subPackage_2
+__init__.py				    runModuleAsScript.py  subPackage_3
+
+__init__.py  __pycache__  usefulSubModule.py
+
+I can use this usefulFunction
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Issue-while-importing-top-packages">Issue while importing top packages<a class="anchor-link" href="#Issue-while-importing-top-packages">&#182;</a></h2><ul>
+<li>ValueError for relative import <ul>
+<li>scripts can't import relative because __name__ is __main__</li>
+<li>relative import makes sense only for a package</li>
+</ul>
+</li>
+<li>place scripts that runs the module outside the package directory</li>
+</ul>
+<h3 id="modules/myFirstPackage/subPackage_2/needs_subPackage_1.py"><a href="modules/myFirstPackage/subPackage_2/needs_subPackage_1.py">modules/myFirstPackage/subPackage_2/needs_subPackage_1.py</a><a class="anchor-link" href="#modules/myFirstPackage/subPackage_2/needs_subPackage_1.py">&#182;</a></h3><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">..subPackage_1</span> <span class="kn">import</span> <span class="n">usefulSubModule</span> <span class="k">as</span> <span class="n">s</span>
+
+<span class="k">def</span> <span class="nf">f0</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">usefulFunction</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">f0</span><span class="p">())</span>
+</pre></div>
+<h3 id="modules/test_relative_paths.py-"><a href="modules/test_relative_paths.py">modules/test_relative_paths.py </a><a class="anchor-link" href="#modules/test_relative_paths.py-">&#182;</a></h3><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">myFirstPackage.subPackage_2.needs_subPackage_1</span> <span class="k">as</span> <span class="nn">s</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">f0</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>python modules/myFirstPackage/subPackage_2/needs_subPackage_1.py
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Traceback (most recent call last):
+  File &#34;modules/myFirstPackage/subPackage_2/needs_subPackage_1.py&#34;, line 1, in &lt;module&gt;
+    from ..subPackage_1 import usefulSubModule as s
+ValueError: attempted relative import beyond top-level package
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>python modules/test_relative_paths.py
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>I can use this usefulFunction
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="PYTHONPATH">PYTHONPATH<a class="anchor-link" href="#PYTHONPATH">&#182;</a></h2><ul>
+<li>default search path for module files</li>
+<li>the format is the same as the shell’s PATH<ul>
+<li>one or more directory pathnames separated by os.pathsep</li>
+</ul>
+</li>
+<li>the search path can be manipulated from within a Python program as the variable sys.path <ul>
+<li>using modules os and sys you can add package path into subpackages and submodules</li>
+</ul>
+</li>
+</ul>
+<h3 id="modules/myFirstPackage/subPackage_3/needs_subPackage_1.py-"><a href="modules/myFirstPackage/subPackage_3/needs_subPackage_1.py">modules/myFirstPackage/subPackage_3/needs_subPackage_1.py </a><a class="anchor-link" href="#modules/myFirstPackage/subPackage_3/needs_subPackage_1.py-">&#182;</a></h3><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">sys</span>
+<span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+<span class="n">this_subpackage_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">file_path</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">this_package_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_subpackage_path</span><span class="p">,</span><span class="s1">&#39;../..&#39;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">this_package_path</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">myFirstPackage.subPackage_1</span> <span class="kn">import</span> <span class="n">usefulSubModule</span> <span class="k">as</span> <span class="n">s</span>
+
+<span class="k">def</span> <span class="nf">f0</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">usefulFunction</span><span class="p">()</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">f0</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>python modules/myFirstPackage/subPackage_3/needs_subPackage_1.py
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>I can use this usefulFunction
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Object-Oriented-Programming-in-Python">Object Oriented Programming in Python<a class="anchor-link" href="#Object-Oriented-Programming-in-Python">&#182;</a></h2><ul>
+<li>a class is a mean to bundle data and functionalities together <ul>
+<li>each class instance has attributes attached to it for maintaining its state</li>
+<li>each class instance has methodes fot modifying its states</li>
+<li>creating a new class creates a new type of object</li>
+</ul>
+</li>
+<li>objects can contain arbitrary amounts and kinds of data</li>
+<li>classes are created at runtime and can be modified after creation</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Class-definition-syntax">Class definition syntax<a class="anchor-link" href="#Class-definition-syntax">&#182;</a></h2><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ClassName</span><span class="p">(</span><span class="o">&lt;</span><span class="n">base_class</span><span class="o">&gt;</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    docstring (documentation)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="o">&lt;</span><span class="n">statement</span><span class="o">-</span><span class="mi">1</span><span class="o">&gt;</span>
+    <span class="o">...</span>
+    <span class="o">&lt;</span><span class="n">statement</span><span class="o">-</span><span class="n">N</span><span class="o">&gt;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">class</span> <span class="nc">square</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get one side, compute perimeter and area</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">side</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">side</span><span class="o">**</span><span class="mi">2</span>
+    <span class="k">def</span> <span class="nf">perimeter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="mi">4</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">side</span>
+    
+<span class="n">s</span> <span class="o">=</span> <span class="n">square</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">area</span><span class="p">())</span>      <span class="c1"># equal to 0</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">perimeter</span><span class="p">())</span> <span class="c1"># equal to 0</span>
+<span class="n">s</span><span class="o">.</span><span class="n">side</span> <span class="o">=</span> <span class="mi">5</span>    <span class="c1"># &lt;-- setting side = 5</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">area</span><span class="p">())</span>      <span class="c1"># equal to 25</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">perimeter</span><span class="p">())</span> <span class="c1"># equal to 20</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0
+0
+25
+20
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Class-features">Class features<a class="anchor-link" href="#Class-features">&#182;</a></h2><ul>
+<li>when a class definition is entered a new namespace is created and used as local scope<ul>
+<li>all assignments to local variables go into this new namespace</li>
+<li>self.name refers to the name of this new namespace </li>
+</ul>
+</li>
+<li>class support two operations: <ul>
+<li>obj.name: attribute references (as for namespace)</li>
+<li>inst = obj(): class instantiation to create a new instance of the class  </li>
+</ul>
+</li>
+<li>base_class: the class from which ClassName inherits all references </li>
+<li>object keyword: basic object in python<ul>
+<li>in python 2.x inheriting from object includes perks</li>
+<li>in python 3.x all classes inherits from objects by default</li>
+<li>for code compatibility it is suggested to explicitly inherit from object</li>
+</ul>
+</li>
+</ul>
+<h2 id="Special-attributes">Special attributes<a class="anchor-link" href="#Special-attributes">&#182;</a></h2><ul>
+<li>__init__(self[,...]): automatically invoked by class instantiation (i.e., the constructor)</li>
+<li>__del__(self): automatically invoked when the object should be destroyed (i.e., the destructor) </li>
+<li>__doc__: docstring of the class</li>
+<li>__class__: reference to the type of the current instance</li>
+<li>__str__(self), __repr__(self): called by print(obj)</li>
+<li>__bases__: tuple with all base classes</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[50]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">class</span> <span class="nc">square</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get one side, compute perimeter and area</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">side</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">side</span> <span class="o">=</span> <span class="n">side</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+        <span class="k">return</span> <span class="s2">&quot;area=&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">())</span><span class="o">+</span><span class="s2">&quot; perimeter=&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">perimeter</span><span class="p">())</span>
+    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">side</span><span class="o">**</span><span class="mi">2</span>
+    <span class="k">def</span> <span class="nf">perimeter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="mi">4</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">side</span>
+    
+<span class="n">sq</span> <span class="o">=</span> <span class="p">[</span><span class="n">square</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">square</span><span class="p">(</span><span class="mi">6</span><span class="p">)]</span>
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sq</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">area</span><span class="p">())</span>      <span class="c1"># equal to ...</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">perimeter</span><span class="p">())</span> <span class="c1"># equal to ...</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="c1"># calls __str__ or __repr__</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>25
+20
+area=25 perimeter=20
+36
+24
+area=36 perimeter=24
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Class-and-Instance-variables">Class and Instance variables<a class="anchor-link" href="#Class-and-Instance-variables">&#182;</a></h2><ul>
+<li>instance variables are for data unique to each instance</li>
+<li>class variables are shared by all instances of the class</li>
+</ul>
+<h2 id="Method-objects">Method objects<a class="anchor-link" href="#Method-objects">&#182;</a></h2><ul>
+<li>the first argument in method definition links the object itself (i.e., the C++ this)<ul>
+<li>using self for this argument is just a (very common) convention </li>
+<li>this argument should not be passed to method, if the method definition is inside the class statement</li>
+</ul>
+</li>
+<li>a method with no arguments cannot be called by the class instances<ul>
+<li>can be used just by the class itself (i.e., __class__)</li>
+</ul>
+</li>
+<li>methods (functions in general) can be assigned to a name</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[47]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">class</span> <span class="nc">myClass</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;create this class&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;delete this class&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">fun</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>      <span class="k">return</span> <span class="s2">&quot;call this fun&quot;</span>    
+    <span class="k">def</span> <span class="nf">fun2</span><span class="p">():</span>         <span class="k">return</span> <span class="s2">&quot;call this other fun&quot;</span>  
+    
+
+<span class="k">def</span> <span class="nf">do_stuff</span><span class="p">():</span>        
+    <span class="n">o</span> <span class="o">=</span> <span class="n">myClass</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">fun</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">fun2</span><span class="p">())</span> <span class="c1"># fun2 does not have a reference to class, cannot be called by object o</span>
+
+<span class="n">do_stuff</span><span class="p">()</span>  
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>create this class
+call this fun
+call this other fun
+delete this class
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Operators-overloading">Operators overloading<a class="anchor-link" href="#Operators-overloading">&#182;</a></h2><h3 id="Math-operators">Math operators<a class="anchor-link" href="#Math-operators">&#182;</a></h3><ul>
+<li>__add__(self, other): +</li>
+<li>__mul__(self, other): *</li>
+<li>__sub__(self, other): -</li>
+<li>__mod__(self, other): %</li>
+<li>__truediv__(self, other): /</li>
+</ul>
+<h3 id="Comparison-operators">Comparison operators<a class="anchor-link" href="#Comparison-operators">&#182;</a></h3><ul>
+<li>__eq__(self, other): ==</li>
+<li>__ne__(self, other): !=</li>
+<li>__lt__(self, other): &lt;</li>
+<li>__le__(self, other): &lt;=</li>
+<li>__gt__(self, other): &gt;</li>
+<li>__ge__(self, other): &gt;= </li>
+</ul>
+<h3 id="Others">Others<a class="anchor-link" href="#Others">&#182;</a></h3><ul>
+<li>__len__(self): len </li>
+<li>__bool__(self): invoked by if statement of bool function  </li>
+<li>__nonzero__(self): as __bool__(self) for python2</li>
+<li>__iter__(self): invoked by loops</li>
+<li>__contains__(self, value): invoked by in</li>
+<li>__getitem__(self, key): invoked by reading obj[key]</li>
+<li>__setitem__(self, key,value): invoked by writing obj[key]</li>
+<li>__delitem__(self, key): invoked by deleting obj[key]</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[54]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">class</span> <span class="nc">mynum</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="o">==</span><span class="n">other</span><span class="o">.</span><span class="n">value</span>
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="o">+</span><span class="n">other</span><span class="o">.</span><span class="n">value</span>
+    <span class="k">def</span> <span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;__bool__ (or __nonzero__) was invoked&quot;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="n">__nonzero__</span><span class="o">=</span><span class="fm">__bool__</span> <span class="c1"># compatible with python2</span>
+    
+<span class="n">a</span> <span class="o">=</span> <span class="n">mynum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">mynum</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="o">==</span><span class="n">b</span><span class="p">)</span> <span class="c1">#1==2: False</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">)</span>  <span class="c1">#3   </span>
+<span class="k">if</span> <span class="n">a</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;by if&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>False
+3
+__bool__ (or __nonzero__) was invoked by if
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[60]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">class</span> <span class="nc">mylist</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">l</span><span class="o">=</span><span class="p">[]):</span>         <span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="o">=</span><span class="n">l</span>
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>               <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">idx</span><span class="p">,</span><span class="n">value</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">=</span><span class="n">value</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">idx</span><span class="p">):</span>       <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">idx</span><span class="p">):</span> <span class="c1"># bugged if idx==-1: why?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">idx</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>              <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="fm">__iter__</span><span class="p">()</span>
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>    <span class="k">return</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">list</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>               <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>          <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
+
+<span class="n">l</span> <span class="o">=</span> <span class="n">mylist</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span> <span class="c1"># use __init__</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;l is&#39;</span><span class="p">,</span><span class="nb">type</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
+<span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># use append</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>    <span class="c1"># use __str__</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="c1"># use __getitem__ and __str__</span>
+
+<span class="n">l</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">=-</span><span class="mi">3</span>     <span class="c1"># use __setitem__</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> 
+<span class="k">del</span> <span class="n">l</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>    <span class="c1"># use __delitem__</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">l</span><span class="p">:</span> <span class="c1"># use __iter__ and __contains__</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">len(l):&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">))</span> <span class="c1"># use __len__ and __str__</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>l is &lt;class &#39;__main__.mylist&#39;&gt;
+[0, 1, 2, 3, 4, 5]
+3
+-3
+0;1;2;4;5;
+len(l): 5
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Important-remarks">Important remarks<a class="anchor-link" href="#Important-remarks">&#182;</a></h2><ul>
+<li>attributes can be defined outside of the class statement<ul>
+<li>users can add new attributes that were not defined by developers</li>
+</ul>
+</li>
+<li>attributes can be overriden!!<ul>
+<li>developers should avoid name conflicts</li>
+<li>users should use data attributes with care</li>
+</ul>
+</li>
+<li>methods is an attribute: it can also be defined outside of the class statement<ul>
+<li>methods defined inside override methods defined outside</li>
+<li>last inside definitions override previous definitions</li>
+<li>data attributes override method attributes </li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[69]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f 
+<span class="k">class</span> <span class="nc">empty</span><span class="p">():</span> 
+    <span class="k">pass</span> <span class="c1"># this class is empty</span>
+         <span class="c1"># still a user could add new attributes </span>
+
+<span class="n">e</span> <span class="o">=</span> <span class="n">empty</span><span class="p">()</span>
+<span class="n">pre</span> <span class="o">=</span> <span class="nb">dir</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="n">e</span><span class="o">.</span><span class="n">attr1</span><span class="o">=</span><span class="mi">1</span>         <span class="c1"># user is defining a new attribute </span>
+<span class="n">e</span><span class="o">.</span><span class="n">attr2</span><span class="o">=</span><span class="s1">&#39;attr2&#39;</span>   <span class="c1"># user is defining a new attribute</span>
+<span class="n">post</span> <span class="o">=</span> <span class="nb">dir</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">post</span><span class="p">)</span><span class="o">-</span><span class="nb">set</span><span class="p">(</span><span class="n">pre</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{&#39;attr1&#39;, &#39;attr2&#39;}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[75]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f 
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="s2">&quot;outside&quot;</span> 
+<span class="k">class</span> <span class="nc">dumb</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>    
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="s2">&quot;inside&quot;</span> <span class="c1"># methods defined inside override methods defined outside </span>
+
+<span class="n">d</span> <span class="o">=</span> <span class="n">dumb</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">f</span><span class="p">())</span> <span class="c1"># invokes the inside definition</span>
+<span class="n">d</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">d</span><span class="p">))</span> <span class="c1"># invokes the inside definition</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>inside
+outside
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="exercises-to-do">exercises to do<a class="anchor-link" href="#exercises-to-do">&#182;</a></h2><ul>
+<li>define Point(...): <ul>
+<li>receives a list of two numeric values (i.e.: the coordinates), otherwise raise err</li>
+<li>method isnumeric(self,c): returns c if numeric, otherwise raise err</li>
+<li>method is2D(self,coord): returns coord if Point is 2D, otherwise raise err</li>
+</ul>
+</li>
+<li>define Shape(...): <ul>
+<li>receives a list of type Point, otherwise raise err</li>
+<li>method ispoint(self,p): returns p if Point, otherwise raise err</li>
+<li>define any other method you may need</li>
+</ul>
+</li>
+<li>define Circle(...), Segment(...), Triangle(...): <ul>
+<li>Circle.__init__(self,center,radius): center is a Point (only 1 Point), radius is a numeric, otherwise raise err</li>
+<li>Segment.__init__(self,points): points is a list of 2 only Points, otherwise raise err</li>
+<li>Triangle.__init__(self,points): points is a list of 3 only Points, otherwise raise err</li>
+<li>method checkNpoints(...): raise err if an instance was defined with the wrong number of points</li>
+<li>method calc_perimeter(self): returns the value of perimeter </li>
+<li>method calc_area(self): returns the value of the area</li>
+<li>define any other method you may need</li>
+</ul>
+</li>
+</ul>
+<h4 id="follow-the-order-for-implementation-(and-use-inheritance-and-super())">follow the order for implementation (and use inheritance and super())<a class="anchor-link" href="#follow-the-order-for-implementation-(and-use-inheritance-and-super())">&#182;</a></h4><h4 id="cause-exceptions-of-type-Lecture2Err-when-raising-an-error">cause exceptions of type Lecture2Err when raising an error<a class="anchor-link" href="#cause-exceptions-of-type-Lecture2Err-when-raising-an-error">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="EXTRA">EXTRA<a class="anchor-link" href="#EXTRA">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Functional-programming-paradigm">Functional programming paradigm<a class="anchor-link" href="#Functional-programming-paradigm">&#182;</a></h2><ul>
+<li>a sequence is any iterable object <ul>
+<li>iterables are objects that contain an __iter__ or __getitem__ method</li>
+<li>you can retreive an iterable using an iterator</li>
+<li>iterators are objects that define a __next__ method</li>
+</ul>
+</li>
+<li>a container is an iterable, hence a sequence (the reverse is not true)</li>
+<li><p>ex: range(0,1e10) does not return a container but an iterable:</p>
+<ul>
+<li>it does not contain 1e10 elements!</li>
+<li>it generates the value one after the other</li>
+</ul>
+</li>
+<li><p>this paradigm is based on three built-in functions</p>
+<ul>
+<li>filter(cond,seq): applies a condition to a sequence</li>
+<li>map(fun,seq): applies a function to all elements of a sequence</li>
+<li>functools.reduce(fun,seq): applies function of two arguments to the items of a sequence</li>
+</ul>
+</li>
+<li>filter and map return iterables (not lists or tuples)</li>
+<li>functools.reduce returns a single value</li>
+<li>advantage: the order of execution is not important</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="n">l</span>  <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>               <span class="c1"># 0,1,...,9</span>
+<span class="n">l2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">%</span><span class="k">2</span>,l)) # 1,3,5,7,9
+<span class="n">l3</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">,</span><span class="n">l</span><span class="p">))</span> <span class="c1"># 1,2,3,4,5</span>
+<span class="n">l4</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">%</span><span class="k">2</span>,l))  # 10 elements 1 or 0
+<span class="n">l5</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">,</span><span class="n">l</span><span class="p">))</span>  <span class="c1"># 10 elements True or False</span>
+<span class="n">lp1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">l</span><span class="p">))</span> <span class="c1"># 10 elements l+1</span>
+<span class="n">l6</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:</span> <span class="n">x</span><span class="o">&lt;</span><span class="n">y</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">lp1</span><span class="p">))</span> <span class="c1"># 10 elements all True</span>
+<span class="n">l7</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">,</span><span class="n">l</span><span class="p">)</span> <span class="c1"># y is next(x)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;l:       </span><span class="se">\n</span><span class="s1">  </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;l%2:     </span><span class="se">\n</span><span class="s1">  </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">l2</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;l&lt;5:     </span><span class="se">\n</span><span class="s1">  </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">l3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;el%2:    </span><span class="se">\n</span><span class="s1">  </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">l4</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;el&lt;5:    </span><span class="se">\n</span><span class="s1">  </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">l5</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;el&lt;el+1: </span><span class="se">\n</span><span class="s1">  </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">l6</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;sum(el): </span><span class="se">\n</span><span class="s1">  </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">l7</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>l:       
+  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+l%2:     
+  [1, 3, 5, 7, 9]
+l&lt;5:     
+  [0, 1, 2, 3, 4]
+el%2:    
+  [0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
+el&lt;5:    
+  [True, True, True, True, True, False, False, False, False, False]
+el&lt;el+1: 
+  [True, True, True, True, True, True, True, True, True, True]
+sum(el): 
+  45
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 

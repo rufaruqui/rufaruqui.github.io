@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>index</title>
+<title>python_p3</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13082,49 +13082,340 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="ETE-2324:-Data-Structures-and-Algorithms">ETE 2324: Data Structures and Algorithms<a class="anchor-link" href="#ETE-2324:-Data-Structures-and-Algorithms">&#182;</a></h1>
+<h2 id="Naming-conventions">Naming conventions<a class="anchor-link" href="#Naming-conventions">&#182;</a></h2><ul>
+<li>_single_leading_underscore: weak "internal use" indicator<ul>
+<li>e.g., from M import * does not import objects whose names start with an underscore</li>
+</ul>
+</li>
+<li>single_trailing_underscore_: use to avoid conflicts with keywords</li>
+<li>__double_leading_underscore: used to name a class attribute<ul>
+<li>invokes name mangling (inside class Class __par is accessible, outside it becomes _Class__par)</li>
+</ul>
+</li>
+<li>__double_leading_and_trailing_underscore__: "magic" objects or attributes such as __init__: should be never invented by user</li>
+</ul>
+
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span> <span class="n">__id</span> <span class="o">=</span> <span class="s2">&quot;id of class A&quot;</span> <span class="c1"># not part of A&#39;s API</span>
+<span class="k">class</span> <span class="nc">B</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>      <span class="n">__id</span> <span class="o">=</span> <span class="s2">&quot;id of class B&quot;</span> <span class="c1"># not part of B&#39;s API, the name is the same for coincidence</span>
+                                        <span class="c1"># thanks to name mangling, __id is not overwritten </span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">B</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;__id&#39;</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>    <span class="c1"># False __id is hidden</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_A__id&#39;</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>  <span class="c1"># True  __id can be exposed through name mangling</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_A__id</span><span class="p">)</span> <span class="c1"># relative to A</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">_B__id</span><span class="p">)</span> <span class="c1"># relative to B</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>False
+True
+id of class A
+id of class B
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Contents">Contents<a class="anchor-link" href="#Contents">&#182;</a></h2><ul>
-<li>Introduction to DSA<ul>
-<li>Reading: <a href="https://runestone.academy/runestone/books/published/pythonds3/Introduction/toctree.html">Chapter 1</a></li>
-<li>Notebook:</li>
-<li>Lectures: <a href="index.pdf">PDF</a> <a href="index.html">HTML</a> <a href="index.tex">Latex</a></li>
+<h2 id="Introduction-to-decorators">Introduction to decorators<a class="anchor-link" href="#Introduction-to-decorators">&#182;</a></h2><ul>
+<li>functions in python (as we have seen)<ul>
+<li>can be assigned to names</li>
+<li>can be defined inside other functions</li>
+<li>can be passed as parameters to other functions</li>
+<li>can return other functions</li>
+</ul>
+</li>
+<li>decorators are wrappers that modify the behavior of the code (e.g., of a function)<ul>
+<li>i.e., decorators target an object and increase its original functionality, so "decorating" it </li>
+<li>a decorator is passed the original object being defined and returns a modified object </li>
 </ul>
 </li>
 </ul>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">myFun</span><span class="p">():</span>  
+    <span class="sd">&#39;&#39;&#39;whatever behavior&#39;&#39;&#39;</span>
+    <span class="k">pass</span>
+<span class="k">def</span> <span class="nf">decoration</span><span class="p">():</span>  
+    <span class="sd">&#39;&#39;&#39;whatever decoration&#39;&#39;&#39;</span>
+    <span class="k">pass</span>
+<span class="n">myFun</span> <span class="o">=</span> <span class="n">decoration</span><span class="p">(</span><span class="n">myFun</span><span class="p">)</span>
+</pre></div>
+<h4 id="the-&quot;syntactic-sugar&quot;-to-make-decorators-cleaner-to-read,-python-use-the-keyword-@">the "syntactic sugar" to make decorators cleaner to read, python use the keyword @<a class="anchor-link" href="#the-&quot;syntactic-sugar&quot;-to-make-decorators-cleaner-to-read,-python-use-the-keyword-@">&#182;</a></h4><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">decoration</span><span class="p">():</span>  
+    <span class="sd">&#39;&#39;&#39;whatever decoration&#39;&#39;&#39;</span>
+    <span class="k">pass</span>
+<span class="nd">@decoration</span>
+<span class="k">def</span> <span class="nf">myFun</span><span class="p">():</span>  
+    <span class="sd">&#39;&#39;&#39;whatever behavior&#39;&#39;&#39;</span>
+    <span class="k">pass</span>
+</pre></div>
+<h4 id="multiple-decorations-can-be-chained">multiple decorations can be chained<a class="anchor-link" href="#multiple-decorations-can-be-chained">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[187]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">def</span> <span class="nf">who_just_arrived</span><span class="p">():</span> <span class="k">return</span> <span class="s2">&quot;jacopo&quot;</span>   <span class="c1"># this is a function</span>
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">whoever_I_want_to_greet</span><span class="p">):</span>       <span class="c1"># functions can be passed as parameters</span>
+    <span class="k">def</span> <span class="nf">hi</span><span class="p">():</span> <span class="k">return</span> <span class="s2">&quot;hi &quot;</span>                <span class="c1"># functions can be defined inside other functions</span>
+    <span class="k">return</span> <span class="n">hi</span><span class="p">()</span><span class="o">+</span><span class="n">whoever_I_want_to_greet</span><span class="p">()</span> <span class="c1"># functions can return other functions           </span>
+
+<span class="n">say_hi_to_</span> <span class="o">=</span> <span class="n">greet</span><span class="p">(</span><span class="n">who_just_arrived</span><span class="p">)</span>      <span class="c1"># functions can be assigned to names</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">say_hi_to_</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>hi jacopo
+</pre>
+</div>
+</div>
 
 </div>
 </div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>         <span class="c1"># decoration inputs the function!</span>
+    <span class="k">def</span> <span class="nf">func_wrapper</span><span class="p">(</span><span class="n">name</span><span class="p">):</span> <span class="c1"># wrappers inputs the function&#39;s parameter(s)</span>
+        <span class="c1"># check http://ascii-table.com/ansi-escape-sequences.php</span>
+        <span class="k">return</span>   <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m</span><span class="si">{0}</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+        <span class="c1"># equals &quot;\033[1m&quot;+func(name)+&quot;\033[0m&quot; </span>
+    <span class="k">return</span> <span class="n">func_wrapper</span>
+
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;hi </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+<span class="n">my_greet</span> <span class="o">=</span> <span class="n">decorate</span><span class="p">(</span><span class="n">greet</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">greet</span><span class="p">(</span><span class="s2">&quot;jacopo&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">my_greet</span><span class="p">(</span><span class="s2">&quot;jacopo&quot;</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>hi jacopo
+<span class="ansi-bold">hi jacopo</span>
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">func_wrapper</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="c1"># check http://ascii-table.com/ansi-escape-sequences.php</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m</span><span class="si">{0}</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">func_wrapper</span>
+
+<span class="nd">@decorate</span>  
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">):</span> <span class="c1"># -&gt; greet = decorate(greet)</span>
+    <span class="k">return</span> <span class="s2">&quot;hi </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">greet</span><span class="p">(</span><span class="s2">&quot;jacopo&quot;</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre><span class="ansi-bold">hi jacopo</span>
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[225]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">def</span> <span class="nf">decorate_red</span><span class="p">(</span><span class="n">func</span><span class="p">):</span> <span class="c1"># makes greet red</span>
+    <span class="k">def</span> <span class="nf">func_wrapper</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[91m</span><span class="si">{0}</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">func_wrapper</span>
+
+<span class="k">def</span> <span class="nf">decorate_bold</span><span class="p">(</span><span class="n">func</span><span class="p">):</span> <span class="c1"># makes greet bold</span>
+    <span class="k">def</span> <span class="nf">func_wrapper</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="c1"># check http://ascii-table.com/ansi-escape-sequences.php</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m</span><span class="si">{0}</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">func_wrapper</span>
+
+<span class="nd">@decorate_bold</span>
+<span class="nd">@decorate_red</span>
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">):</span> <span class="c1"># -&gt; greet = decorate_bold(decorate_red(greet))</span>
+    <span class="k">return</span> <span class="s2">&quot;hi </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">greet</span><span class="p">(</span><span class="s2">&quot;jacopo&quot;</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre><span class="ansi-red-intense-fg ansi-bold">hi jacopo</span>
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">def</span> <span class="nf">formatting</span><span class="p">(</span><span class="n">how_to_format</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">etiquette_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">func_wrapper</span><span class="p">(</span><span class="n">name</span><span class="p">):</span> 
+            <span class="c1"># check http://ascii-table.com/ansi-escape-sequences.php</span>
+            <span class="k">if</span> <span class="n">how_to_format</span><span class="o">==</span><span class="s1">&#39;RED&#39;</span><span class="p">:</span> 
+                <span class="k">return</span>   <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[91m</span><span class="si">{0}</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>                
+            <span class="k">if</span> <span class="n">how_to_format</span><span class="o">==</span><span class="s1">&#39;BOLD&#39;</span><span class="p">:</span> 
+                <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m</span><span class="si">{0}</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">how_to_format</span><span class="o">==</span><span class="s1">&#39;UNDERLINE&#39;</span><span class="p">:</span> 
+                <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[4m</span><span class="si">{0}</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>            
+        <span class="k">return</span> <span class="n">func_wrapper</span>
+    <span class="k">return</span> <span class="n">etiquette_decorator</span>
+
+<span class="nd">@formatting</span><span class="p">(</span><span class="s2">&quot;RED&quot;</span><span class="p">)</span>        <span class="c1"># you can pass arguments to decorators functions</span>
+<span class="nd">@formatting</span><span class="p">(</span><span class="s2">&quot;BOLD&quot;</span><span class="p">)</span>
+<span class="nd">@formatting</span><span class="p">(</span><span class="s2">&quot;UNDERLINE&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;hi </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">greet</span><span class="p">(</span><span class="s1">&#39;jacopo&#39;</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre><span class="ansi-red-intense-fg ansi-bold ansi-underline">hi jacopo</span>
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Textbook">Textbook<a class="anchor-link" href="#Textbook">&#182;</a></h2><ul>
-<li><a href="https://runestone.academy/runestone/books/published/pythonds3/index.html">Problem Solving with Algorithms and Data Structures using Python</a></li>
-<li>Cormen, Thomas, Charles Leiserson, Ronald Rivest, and Clifford Stein. Introduction to Algorithms. 3rd ed. MIT Press, 2009. ISBN: 9780262033848.</li>
+<h2 id="Data-encapsulation">Data encapsulation<a class="anchor-link" href="#Data-encapsulation">&#182;</a></h2><ul>
+<li>many object-oriented languages stress to have getter, setter and deleter methods to access private attributes</li>
+<li>this is called data encapsulation <ul>
+<li>it does not hide attributes (nothing in python can do that)</li>
 </ul>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Additional-Resourcess:">Additional Resourcess:<a class="anchor-link" href="#Additional-Resourcess:">&#182;</a></h2><h2 id="-----How-to-install-python-and-jupyter">   - How to install python and jupyter<a class="anchor-link" href="#-----How-to-install-python-and-jupyter">&#182;</a></h2>
-<pre><code>  - 
-
-</code></pre>
-<ul>
-<li>Python Tutorial<ul>
-<li>Part 1: <a href="python_p1.ipnyb">Notebook</a> <a href="python_p1.html">HTML</a></li>
-<li>Part 2: <a href="python_p2.ipnyb">Notebook</a> <a href="python_p2.html">HTML</a></li>
-<li>Part 3: <a href="python_p3.ipnyb">Notebook</a> <a href="python_p3.html">HTML</a></li>
-<li>List in Python: <a href="python_list.ipnyb">Notebook</a> <a href="python_list.html">HTML</a></li>
+</li>
+<li>code loses readability: why should data be encapsulated?<ul>
+<li>to isolate code changes that depends on a specific attribute's value</li>
 </ul>
 </li>
 </ul>
@@ -13134,16 +13425,1633 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[61]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f 
+<span class="k">class</span> <span class="nc">Fruit</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>  <span class="c1"># implementation using setter,    </span>
+                      <span class="c1">#                      getter, </span>
+                      <span class="c1">#                      deleter</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_set_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>     <span class="c1"># setter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="k">def</span> <span class="nf">_get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>          <span class="c1"># getter</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+    <span class="k">def</span> <span class="nf">_del_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>          <span class="c1"># deleter</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_colour</span>                        
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+        <span class="k">return</span> <span class="s2">&quot;this fruit is an &quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">Fruit</span><span class="p">(</span><span class="s1">&#39;apple&#39;</span><span class="p">))</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>this fruit is an apple
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Using-property()-to-encapsulate-data">Using property() to encapsulate data<a class="anchor-link" href="#Using-property()-to-encapsulate-data">&#182;</a></h2><ul>
+<li>property(getter,setter[,deleter,docstring]): <ul>
+<li>built-in function </li>
+<li>proxy any attribute access to getter, setter, deleter and docstring</li>
+</ul>
+</li>
+<li>properties can embed customized actions when they are accessed</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f 
+<span class="k">class</span> <span class="nc">Fruit</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">_name</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_set_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Fruit name cannot be changed once set&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>          
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+    <span class="k">def</span> <span class="nf">_del_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>          
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+        <span class="k">return</span> <span class="s2">&quot;this fruit is an &quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+        
+    <span class="c1"># assign properties</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_name</span><span class="p">,</span>\
+                    <span class="n">_set_name</span><span class="p">,</span>\
+                    <span class="n">_del_name</span><span class="p">,</span>\
+                    <span class="s1">&#39;name is property of Fruit&#39;</span><span class="p">)</span>
+    
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">Fruit</span><span class="p">(</span><span class="s1">&#39;apple&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span> 
+    <span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;pear&#39;</span>     
+<span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; -&gt; err: &#39;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>this fruit is an apple
+ -&gt; err:  Fruit name cannot be changed once set
+apple
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Property-decorations">Property decorations<a class="anchor-link" href="#Property-decorations">&#182;</a></h2><ul>
+<li>you can use decorators to invoke property() <ul>
+<li>you mark a function instead of call property() at the end of the class definition</li>
+<li>you can avoid underscore prefixes </li>
+<li>(more readable)</li>
+</ul>
+</li>
+<li>@property decorates the getter of the attribute \$foo</li>
+<li>@\$foo.setter decorates the setter</li>
+<li>@\$foo.deleter decorates the deleter</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f 
+<span class="k">class</span> <span class="nc">Fruit</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span> <span class="c1"># re-implementation using property decorators</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="nd">@property</span>    
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>     
+        <span class="sd">&#39;&#39;&#39;name is property of Fruit&#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+    <span class="nd">@name</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">:</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Fruit name cannot be changed once set&#39;</span><span class="p">)</span>        
+    <span class="nd">@name</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>          
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+        <span class="k">return</span> <span class="s2">&quot;this fruit is an &quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span>        
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">Fruit</span><span class="p">(</span><span class="s1">&#39;apple&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span> 
+    <span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;pear&#39;</span>
+<span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; -&gt; err: &#39;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>this fruit is an apple
+ -&gt; err:  Fruit name cannot be changed once set
+apple
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Why-properties-are-useful">Why properties are useful<a class="anchor-link" href="#Why-properties-are-useful">&#182;</a></h2><ul>
+<li>methods should implement an action <ul>
+<li>(commonly named with verbs)</li>
+</ul>
+</li>
+<li>data attributes do not not implement an action <ul>
+<li>(commonly named with a noun)</li>
+</ul>
+</li>
+<li>properties differs from data attributes because...<ul>
+<li>they can embed customized actions when they are accessed </li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">class</span> <span class="nc">Values</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>     
+    <span class="n">_positive</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>    <span class="o">=</span> <span class="n">data</span>   
+        <span class="bp">self</span><span class="o">.</span><span class="n">positive</span> <span class="o">=</span> <span class="n">data</span> <span class="c1"># calls the setter</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">positive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;getting self._positive&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_positive</span>
+    <span class="nd">@positive</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">positive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span> 
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;setting self._positive&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_positive</span><span class="p">:</span>  <span class="c1"># prevents the use of this setter outside of this class</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_positive</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span> <span class="k">if</span> <span class="n">d</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">]</span>
+        
+<span class="n">v</span> <span class="o">=</span> <span class="n">Values</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="p">)</span>  
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">positive</span><span class="p">)</span>  <span class="c1"># calls the setter only the first time, then only the getter</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>setting self._positive
+getting self._positive
+[1, 2, 3]
+getting self._positive
+[1, 2, 3]
+getting self._positive
+[1, 2, 3]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Inheritance">Inheritance<a class="anchor-link" href="#Inheritance">&#182;</a></h2><ul>
+<li>a new class can inherit attributes from one or more "base" classes<ul>
+<li>this new class is called derived class</li>
+<li>the base class must be in a scope containing the derived class</li>
+</ul>
+</li>
+<li>if a requested attribute is not found in the class, the search proceeds to look in the base class   <ul>
+<li>this rule is applied recursively if base classe is derived itself</li>
+</ul>
+</li>
+<li>a derived class can override methods of a base class<ul>
+<li>a method of a base class may end up calling a method of a derived class</li>
+<li>this behaviour is equivalent to C++ virtual classes</li>
+<li>the overriden base class method can be invoked explicitly (baseClass.methosName(self,args)) </li>
+</ul>
+</li>
+<li>sometimes overriden methods have a lot in commons with the relative base definition<ul>
+<li>super() is a built-in function that can be used to extend the base class method</li>
+</ul>
+</li>
+</ul>
+<h4 id="isinstance(inst,class):-True-if-inst-is-an-instance-of-of-class-or-derived">isinstance(inst,class): True if inst is an instance of of class or derived<a class="anchor-link" href="#isinstance(inst,class):-True-if-inst-is-an-instance-of-of-class-or-derived">&#182;</a></h4><h4 id="issubclass(subClass,class):-True-if-subClass-derived-from-class">issubclass(subClass,class): True if subClass derived from class<a class="anchor-link" href="#issubclass(subClass,class):-True-if-subClass-derived-from-class">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">f0</span><span class="p">()</span> <span class="c1"># calls A.f0()</span>
+    <span class="k">def</span> <span class="nf">f0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="s2">&quot;f0 is a method of class A&quot;</span>
+<span class="k">class</span> <span class="nc">B</span><span class="p">(</span><span class="n">A</span><span class="p">):</span> 
+    <span class="k">def</span> <span class="nf">f0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="s2">&quot;f0 is a method of class B&quot;</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>    
+<span class="n">b</span> <span class="o">=</span> <span class="n">B</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">f</span><span class="p">())</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">f</span><span class="p">())</span> <span class="c1"># b.f()-&gt;a.f()-&gt;(self).f0() == b.f0()</span>
+             <span class="c1"># b inherits b from class A and calls A.f0()</span>
+             <span class="c1"># however, A.f0() was overriden by B.f0()! </span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>f0 is a method of class A
+f0 is a method of class B
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">pass</span>
+<span class="k">class</span> <span class="nc">B</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>       <span class="c1"># inherits from A</span>
+    <span class="k">pass</span>
+<span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>  <span class="c1"># does not inherit from A</span>
+    <span class="k">pass</span>
+<span class="k">class</span> <span class="nc">D</span><span class="p">(</span><span class="n">B</span><span class="p">):</span>       <span class="c1"># inherits from B, which inherits from A</span>
+    <span class="k">pass</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nb">issubclass</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="n">A</span><span class="p">))</span> <span class="c1"># True</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">issubclass</span><span class="p">(</span><span class="n">C</span><span class="p">,</span><span class="n">A</span><span class="p">))</span> <span class="c1"># False</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">issubclass</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="n">A</span><span class="p">))</span> <span class="c1"># True</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>True
+False
+True
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">B</span><span class="p">()</span>   <span class="c1"># B inherits from A</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="n">B</span><span class="p">))</span> <span class="c1"># True </span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="n">A</span><span class="p">))</span> <span class="c1"># True </span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">B</span><span class="p">))</span> <span class="c1"># False </span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>True
+True
+False
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="HAS-A-!=-IS-A">HAS A != IS A<a class="anchor-link" href="#HAS-A-!=-IS-A">&#182;</a></h2><ul>
+<li>a class HAS attributes that define a specific behavior </li>
+<li>DO NOT USE INHERITANCE JUST TO REUSE IMPLEMENTATION OF A METHOD OR AN ATTRIBUTE<ul>
+<li>conceptually Inheritance implements IS A </li>
+<li>Inheritance should never be used to implement HAS A</li>
+<li>the derived class IS the same kind of the base class with additional features </li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Multiple-inheritance">Multiple inheritance<a class="anchor-link" href="#Multiple-inheritance">&#182;</a></h2><ul>
+<li>a class can be derived by multiple base class</li>
+<li>search for attributes is depth-first, left-to-right <ul>
+<li>Method Resolution Order algorithm </li>
+<li>base class should be accessed only once, otherwise TypeError is raised</li>
+</ul>
+</li>
+<li>type(obj).mro(): returns the order in which the methods accessed by obj are searched </li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span> 
+    <span class="k">def</span> <span class="nf">f_c</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="s2">&quot;C has f_c&quot;</span>
+<span class="k">class</span> <span class="nc">B</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span> 
+    <span class="k">def</span> <span class="nf">f_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="s2">&quot;B has f_b&quot;</span>
+<span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="n">C</span><span class="p">):</span> 
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="s2">&quot;A IS both B and C&quot;</span>
+    <span class="k">pass</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">f_b</span><span class="p">())</span> <span class="c1"># inherited from B</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">f_c</span><span class="p">())</span> <span class="c1"># inherited from C</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>A IS both B and C
+B has f_b
+C has f_c
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="super()-and-Method-Resolution-Order">super() and Method Resolution Order<a class="anchor-link" href="#super()-and-Method-Resolution-Order">&#182;</a></h2><ul>
+<li>super() means super(NextBaseClass,self)<ul>
+<li>MRO rules what means "next" </li>
+<li>diamond structure: what is method order?
+<pre><code>txt
+|               A.f()
+|              / \
+|             /   \
+|            /     \
+|           B.f()   C.f()
+|            \     / 
+|             \   /  
+|              \ /   
+|               D.f()</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[64]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">class</span> <span class="nc">D</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span> 
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="s2">&quot;D&quot;</span>
+<span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="n">D</span><span class="p">):</span> 
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="s2">&quot;C&quot;</span>    
+<span class="k">class</span> <span class="nc">B</span><span class="p">(</span><span class="n">D</span><span class="p">):</span> 
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="s2">&quot;B&quot;</span>
+<span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="n">C</span><span class="p">):</span>    <span class="k">pass</span>
+<span class="k">class</span> <span class="nc">A2</span><span class="p">(</span><span class="n">C</span><span class="p">,</span><span class="n">B</span><span class="p">):</span>   <span class="k">pass</span>
+
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">f</span><span class="p">())</span> <span class="c1"># B or C?  B</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">mro</span><span class="p">())</span>
+
+<span class="n">a2</span> <span class="o">=</span> <span class="n">A2</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a2</span><span class="o">.</span><span class="n">f</span><span class="p">())</span> <span class="c1"># B or C? C </span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A2</span><span class="o">.</span><span class="n">mro</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>B
+[&lt;class &#39;__main__.A&#39;&gt;, &lt;class &#39;__main__.B&#39;&gt;, &lt;class &#39;__main__.C&#39;&gt;, &lt;class &#39;__main__.D&#39;&gt;, &lt;class &#39;object&#39;&gt;]
+C
+[&lt;class &#39;__main__.A2&#39;&gt;, &lt;class &#39;__main__.C&#39;&gt;, &lt;class &#39;__main__.B&#39;&gt;, &lt;class &#39;__main__.D&#39;&gt;, &lt;class &#39;object&#39;&gt;]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[61]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">b</span> <span class="o">=</span> <span class="n">B</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">a2</span><span class="p">,</span><span class="n">b</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">f</span><span class="p">())</span> <span class="c1"># gets the MRO for object i, </span>
+                          <span class="c1"># call the f() for the class next to the MRO with respect to B</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>C
+D
+D
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Polymorphism">Polymorphism<a class="anchor-link" href="#Polymorphism">&#182;</a></h2><ul>
+<li>polymorphism is the provision of a single interface to entities of different types: <ul>
+<li>subtyping: supported with inheritance</li>
+<li>parametric polymorphism: supported with generic programming (e.g., templates)  </li>
+<li>ad hoc polymorphism: supported in many languages using function overloading </li>
+</ul>
+</li>
+<li>implementation aspects<ul>
+<li>the implementation is static if selected at compile time (e.g. C++ templates, macros or function overloading) </li>
+<li>the implementation is dynamic if selected at run time (e.g. virtual functions, abstract base classes)</li>
+</ul>
+</li>
+</ul>
+<h2 id="Polymorphism-in-python">Polymorphism in python<a class="anchor-link" href="#Polymorphism-in-python">&#182;</a></h2><ul>
+<li>subtyping (via inheritance)</li>
+<li>duck typing</li>
+<li>abstract base classes  (optional)</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Subtyping-and-duck-typing">Subtyping and duck typing<a class="anchor-link" href="#Subtyping-and-duck-typing">&#182;</a></h2><ul>
+<li>a subtype is a datatype that is related to another datatype, i.e. the supertype, i.e. the interface<ul>
+<li>multiple subtype can refere to the same interface</li>
+<li>polymorphic subtyping is a good reason to use inheritance </li>
+</ul>
+</li>
+<li>duck typing mimics subtyping without implementing inheritance<ul>
+<li>"If it walks like a duck and it quacks like a duck, then it must be a duck."</li>
+</ul>
+</li>
+</ul>
+<h4 id="in-normal-programming-style,-suitability-is-assumed-to-be-determined-by-an-object's-type-only">in normal programming style, suitability is assumed to be determined by an object's type only<a class="anchor-link" href="#in-normal-programming-style,-suitability-is-assumed-to-be-determined-by-an-object's-type-only">&#182;</a></h4><h4 id="in-duck-typing's-style,-suitability-is-determined-by-the-interface-(i.e.,-the-presence-of-certain-methods-and-properties)">in duck typing's style, suitability is determined by the interface (i.e., the presence of certain methods and properties)<a class="anchor-link" href="#in-duck-typing's-style,-suitability-is-determined-by-the-interface-(i.e.,-the-presence-of-certain-methods-and-properties)">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">class</span> <span class="nc">Animal</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>  <span class="c1"># interface class</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">animalSound</span>
+<span class="k">class</span> <span class="nc">Tiger</span><span class="p">(</span><span class="n">Animal</span><span class="p">):</span>
+    <span class="n">animalSound</span><span class="o">=</span><span class="s2">&quot;roarrrrs&quot;</span> 
+<span class="k">class</span> <span class="nc">Dog</span><span class="p">(</span><span class="n">Animal</span><span class="p">):</span>
+    <span class="n">animalSound</span><span class="o">=</span><span class="s2">&quot;whoooofs&quot;</span>
+<span class="k">class</span> <span class="nc">Bird</span><span class="p">(</span><span class="n">Animal</span><span class="p">):</span>
+    <span class="n">animalSound</span><span class="o">=</span><span class="s2">&quot;tweets&quot;</span>  
+
+<span class="k">def</span> <span class="nf">I_hear_</span><span class="p">(</span><span class="n">something</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;I hear... a &#39;</span><span class="o">+</span>\
+          <span class="n">something</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>\
+          <span class="s1">&#39;which&#39;</span><span class="p">,</span><span class="n">something</span><span class="o">.</span><span class="n">call</span><span class="p">())</span>     
+<span class="n">al</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">al</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Tiger</span><span class="p">())</span>
+<span class="n">al</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Dog</span><span class="p">())</span>
+<span class="n">al</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Bird</span><span class="p">())</span>
+
+<span class="k">for</span> <span class="n">this_animal</span> <span class="ow">in</span> <span class="n">al</span><span class="p">:</span>
+    <span class="c1"># the interface method is invoked dynamically</span>
+    <span class="n">I_hear_</span><span class="p">(</span><span class="n">this_animal</span><span class="p">)</span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>I hear... a Tiger which roarrrrs
+I hear... a Dog which whoooofs
+I hear... a Bird which tweets
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">class</span> <span class="nc">Animal</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>  <span class="c1"># interface class</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">animalSound</span>
+    
+<span class="c1"># duck typing example: </span>
+<span class="c1"># Duck is not subclass of Animal, but has the same interface</span>
+<span class="k">class</span> <span class="nc">Duck</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span> 
+    <span class="n">animalSound</span><span class="o">=</span><span class="s2">&quot;definitely quacks like a duck&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">animalSound</span>    
+    
+<span class="k">def</span> <span class="nf">I_hear_</span><span class="p">(</span><span class="n">something</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;I hear... a &#39;</span><span class="o">+</span>\
+          <span class="n">something</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>\
+          <span class="s1">&#39;which&#39;</span><span class="p">,</span><span class="n">something</span><span class="o">.</span><span class="n">call</span><span class="p">())</span> 
+    
+<span class="n">I_hear_</span><span class="p">(</span><span class="n">Duck</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>I hear... a Duck which definitely quacks like a duck
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[78]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="k">class</span> <span class="nc">multiple_of_</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>                        <span class="c1"># I am duck-typing the class Container </span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">number</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">number</span><span class="o">=</span><span class="n">number</span>  <span class="c1"># constructor to indroduce an attribute number</span>
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>                      <span class="c1"># method that defines which number belongs to this class</span>
+        <span class="k">if</span> <span class="n">x</span><span class="o">&lt;</span><span class="bp">self</span><span class="o">.</span><span class="n">number</span><span class="p">:</span> <span class="k">return</span> <span class="kc">False</span>             <span class="c1"># by definition, multiple of x should not be smaller than x </span>
+        <span class="k">if</span> <span class="n">x</span><span class="o">%</span><span class="k">self</span>.number==0: return True           # if multiple of number, then it belongs to this class
+        <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="kc">False</span>                         <span class="c1"># otherwise it does not</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+        <span class="k">return</span> <span class="s1">&#39;is multiple of &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number</span><span class="p">)</span>
+
+<span class="n">m10</span> <span class="o">=</span> <span class="n">multiple_of_</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">m9</span> <span class="o">=</span> <span class="n">multiple_of_</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">m8</span> <span class="o">=</span> <span class="n">multiple_of_</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">m7</span> <span class="o">=</span> <span class="n">multiple_of_</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">31</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="n">m7</span><span class="p">,</span><span class="n">m8</span><span class="p">,</span><span class="n">m9</span><span class="p">,</span><span class="n">m10</span><span class="p">]:</span>             
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">j</span><span class="p">:</span>                
+            <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>7 is multiple of 7
+8 is multiple of 8
+9 is multiple of 9
+10 is multiple of 10
+14 is multiple of 7
+16 is multiple of 8
+18 is multiple of 9
+20 is multiple of 10
+21 is multiple of 7
+24 is multiple of 8
+27 is multiple of 9
+28 is multiple of 7
+30 is multiple of 10
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="removed-abc-from-this-lecture">removed abc from this lecture<a class="anchor-link" href="#removed-abc-from-this-lecture">&#182;</a></h3><h2 id="Duck-typing-limits-and-abstract-base-classes-(ABCs)">Duck typing limits and abstract base classes (ABCs)<a class="anchor-link" href="#Duck-typing-limits-and-abstract-base-classes-(ABCs)">&#182;</a></h2><ul>
+<li>duck typing does not verify whether the class satisfies your requirements or not<ul>
+<li>the concept of abstract classes extends duck typing</li>
+<li>an abstract class defines a set of attributes that a class must implement (i.e., limits the duck-type flexibility)</li>
+</ul>
+</li>
+<li>collections module contains many ABCs implementations<ul>
+<li>e.g., the Container class</li>
+<li>to duck-type an ABC some methods must be defines: check this using __abstractmethods__ </li>
+</ul>
+</li>
+<li>abc module provides the infrastructure to define new ABC classes<ul>
+<li>uses decorators</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="How-to-define-a-context-manager-class">How to define a context manager class<a class="anchor-link" href="#How-to-define-a-context-manager-class">&#182;</a></h2><ul>
+<li>a context manager class must define two methods: <ul>
+<li>__enter__(self): enter the runtime context </li>
+<li>__exit__(self, exc_type, exc_value, traceback): exit the runtime context</li>
+</ul>
+</li>
+<li>useful to embed a specific protocol </li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f 
+<span class="k">class</span> <span class="nc">myErr</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span> <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">CManager</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;__enter__&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>    
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;__exit__:&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span> <span class="c1"># if False no exception is considered</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;# with no interrupt&#39;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">CManager</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;doing something with &#39;</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;done something</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>    
+    
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;# with interrupt&#39;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">CManager</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;doing something with &#39;</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="n">myErr</span><span class="p">(</span><span class="s1">&#39;err msg&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;unreachable&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;done something&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre># with no interrupt
+__enter__
+doing something with  &lt;__main__.CManager object at 0x7ffb0c46b470&gt;
+__exit__: None None
+done something
+
+# with interrupt
+__enter__
+doing something with  &lt;__main__.CManager object at 0x7ffb0c46b2b0&gt;
+__exit__: &lt;class &#39;__main__.myErr&#39;&gt; err msg
+done something
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="contextlib-module">contextlib module<a class="anchor-link" href="#contextlib-module">&#182;</a></h2><ul>
+<li>decorator @contextmanager: combined with yield, can be used to define context manager even without defining a class</li>
+<li>ContextDecorator: base class to enable a context manager to be used as a decorator</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[131]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">tag</span><span class="p">(</span><span class="n">name</span><span class="p">):</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">{}</span><span class="s2">&gt; &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">),</span><span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">yield</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &lt;/</span><span class="si">{}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">),</span><span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    
+<span class="k">with</span> <span class="n">tag</span><span class="p">(</span><span class="s2">&quot;thisTag&quot;</span><span class="p">):</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;something&quot;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>    
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;thisTag&gt; something &lt;/thisTag&gt;</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">ContextDecorator</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="k">class</span> <span class="nc">Timer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span>
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">exc</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="mi">1000</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__t2</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">__t1</span><span class="p">),</span><span class="s1">&#39;ms&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    
+<span class="k">with</span> <span class="n">Timer</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>         
+        <span class="k">with</span> <span class="n">Timer</span><span class="p">():</span> 
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;whole time: &quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0.18143653869628906 ms
+0.028133392333984375 ms
+0.3943443298339844 ms
+0.10967254638671875 ms
+0.10013580322265625 ms
+0.09894371032714844 ms
+0.10061264038085938 ms
+0.09894371032714844 ms
+0.09870529174804688 ms
+0.09918212890625 ms
+whole time: 
+3.642559051513672 ms
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">ContextDecorator</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="k">class</span> <span class="nc">Timer</span><span class="p">(</span><span class="n">ContextDecorator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span>
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">exc</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="mi">1000</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__t2</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">__t1</span><span class="p">),</span><span class="s1">&#39;ms&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+<span class="nd">@Timer</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">fun</span><span class="p">():</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="nd">@Timer</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">ten_times_fun</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span> 
+        <span class="n">fun</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;whole time: &quot;</span><span class="p">)</span>
+    
+<span class="n">ten_times_fun</span><span class="p">()</span>        
+    
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0.11539459228515625 ms
+0.030517578125 ms
+0.2498626708984375 ms
+0.15091896057128906 ms
+0.12159347534179688 ms
+0.12111663818359375 ms
+0.12254714965820312 ms
+0.12087821960449219 ms
+0.12087821960449219 ms
+0.12111663818359375 ms
+whole time: 
+4.659891128540039 ms
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Iterable,-sequences-and-iterators">Iterable, sequences and iterators<a class="anchor-link" href="#Iterable,-sequences-and-iterators">&#182;</a></h2><ul>
+<li>an iterable is an object with __iter__() method<ul>
+<li>__iter__() normally return the class itself</li>
+</ul>
+</li>
+<li>a sequence is an iterable with __getitem__() and __len__() methods <ul>
+<li>e.g., list, str, tuple are sequences </li>
+</ul>
+</li>
+<li>an iterator is an iterable with __next__() method<ul>
+<li>__next__() contains the logic to obtain the next element </li>
+<li>__next__() should raise StopIteration() when no elements are left</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f 
+<span class="k">class</span> <span class="nc">CapitalChars_Iterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>     
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">string</span><span class="p">):</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_string</span> <span class="o">=</span> <span class="n">string</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_index</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_string</span><span class="p">):</span> 
+            <span class="k">raise</span> <span class="ne">StopIteration</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_string</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_index</span><span class="p">]</span><span class="o">.</span><span class="n">isupper</span><span class="p">():</span>            
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_index</span>
+        <span class="c1"># else returns None        </span>
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>        
+        <span class="k">return</span> <span class="bp">self</span>
+
+<span class="nb">print</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">CapitalChars_Iterator</span><span class="p">(</span><span class="s1">&#39;SiSsA&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[0, 2, 4]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Unit-testing-framework">Unit testing framework<a class="anchor-link" href="#Unit-testing-framework">&#182;</a></h2><p>Why test?</p>
+<ul>
+<li><p>testing is a crucial aspects of software development</p>
+<ul>
+<li>it ensures code works as the developer thinks</li>
+<li>it ensures code still works after changes </li>
+<li>in teamwork, it helps planning, understanding and sharing requirements</li>
+</ul>
+</li>
+<li><p>tests should be devised before the software development</p>
+</li>
+<li>python has a built-in test library: unittest</li>
+</ul>
+<p>Workflow</p>
+<ul>
+<li>0) import the module to be tested</li>
+<li>1) define your class derived from unittest: the TestCase</li>
+<li>2) fill it with test functions whose names start with 'test_'</li>
+<li>3) run tests using unittest.main([argv,exit]): argv and SystemExit in case an exception is raised</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="TestCase-methods-to-run-the-test">TestCase methods to run the test<a class="anchor-link" href="#TestCase-methods-to-run-the-test">&#182;</a></h2><ul>
+<li>setUpModule(), tearDownModule(): called at first and at last in module, run once </li>
+<li>setUpClass(), tearDownClass: called at first and at last in class, run once, must be decorated @classmethod </li>
+<li>setUp(), tearDown(): execute before/after any TestCase method</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="k">class</span> <span class="nc">Err</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span> <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">setUpModule</span><span class="p">():</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;setUpModule&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">tearDownModule</span><span class="p">():</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;tearDownModule&quot;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Example1</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; setUpClass Example1&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  setUp&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   test1&quot;</span><span class="p">)</span>        
+    <span class="k">def</span> <span class="nf">test2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   test2&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">Err</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  tearDown&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">tearDownClass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; tearDownClass Example1&quot;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Example2</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span> 
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; setUpClass Example2&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">tearDownClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; tearDownClass Example2&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test3</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   test3&quot;</span><span class="p">)</span>        
+    
+<span class="nb">print</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;first-arg-is-ignored&#39;</span><span class="p">],</span> <span class="n">exit</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>.E.</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>setUpModule
+ setUpClass Example1
+  setUp
+   test1
+  tearDown
+  setUp
+   test2
+  tearDown
+ tearDownClass Example1
+ setUpClass Example2
+   test3
+ tearDownClass Example2
+tearDownModule
+&lt;unittest.main.TestProgram object at 0x7fa7580837b8&gt;
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>
+======================================================================
+ERROR: test2 (__main__.Example1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File &#34;&lt;ipython-input-30-9b56c873b00a&gt;&#34;, line 16, in test2
+    raise Err(&#39;error&#39;)
+TypeError: object() takes no parameters
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.004s
+
+FAILED (errors=1)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="TestCase-assert-methods">TestCase assert methods<a class="anchor-link" href="#TestCase-assert-methods">&#182;</a></h2><p>Most common asserts</p>
+<ul>
+<li>assertFalse(x[,msg]), assertTrue(x[,msg]) </li>
+<li>assertEqual(a,b[,msg]), assertNotEqual(a,b[,msg]),assertGreater(a,b[,msg]), assertGreaterEqual(a,b[,msg]),assertLess(a,b[,msg]), assertLessEqual(a,b[,msg])  </li>
+<li>assertIs(a,b[,msg]), assertIsNot(a,b[,msg]), assertIsNone(x[,msg]), assertIsNotNone(x[,msg]), </li>
+<li>assertIn(a,b[,msg]), assertNotIn(a,b[,msg])</li>
+<li>assertIsInstance(a,b[,msg]), assertNotIsInstance(a,b[,msg])</li>
+</ul>
+<p>Type-specific asserts</p>
+<ul>
+<li>assertMultiLineEqual(a,b[,msg]), assertSequenceEqual(a,b[,msg]), assertListEqual(a,b[,msg]), assertTupleEqual(a,b[,msg]), assertSetEqual(a,b[,msg]), assertDictEqual(a,b[,msg])</li>
+</ul>
+<p>It is possible to check if Exceptions, Warnings or Logs were invoked</p>
+<ul>
+<li>assertRaises(exc, fun, *args, **kwds) <ul>
+<li>fun(*args,**kwds) raises exception exc</li>
+</ul>
+</li>
+<li>assertRaisesRegex(exc, fun, *args, **kwds) <ul>
+<li>fun(*args,**kwds) raises exception exc and message matches regex r</li>
+</ul>
+</li>
+<li>assertWarns(warn, fun, *args, **kwds) <ul>
+<li>fun(*args,**kwds) raises warning warn</li>
+</ul>
+</li>
+<li>assertWarnsRegex()<ul>
+<li>fun(*args,**kwds) raises warning warn and message matches regex r</li>
+</ul>
+</li>
+<li>assertLogs(logger,level)  -- TODO<ul>
+<li>the with block logs on logger with minimum level</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[65]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f 
+<span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="k">def</span> <span class="nf">fun_raising_TypeError</span><span class="p">():</span> <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;type error&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">fun_raising_WarningMsg</span><span class="p">():</span> <span class="k">raise</span> <span class="ne">Warning</span><span class="p">(</span><span class="s1">&#39;warning message&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Test</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span><span class="n">fun_raising_TypeError</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">Warning</span><span class="p">,</span><span class="n">fun_raising_WarningMsg</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test3</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># should fail</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span><span class="n">fun_raising_WarningMsg</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;first-arg-is-ignored&#39;</span><span class="p">],</span> <span class="n">exit</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>                        
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>..E</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;unittest.main.TestProgram object at 0x7f796036d278&gt;
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>
+======================================================================
+ERROR: test3 (__main__.Test)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File &#34;&lt;ipython-input-65-a467d41f55bd&gt;&#34;, line 13, in test3
+    self.assertRaises(TypeError,fun_raising_WarningMsg)
+  File &#34;/home/jaky/miniconda3/envs/py36/lib/python3.6/unittest/case.py&#34;, line 733, in assertRaises
+    return context.handle(&#39;assertRaises&#39;, args, kwargs)
+  File &#34;/home/jaky/miniconda3/envs/py36/lib/python3.6/unittest/case.py&#34;, line 178, in handle
+    callable_obj(*args, **kwargs)
+  File &#34;&lt;ipython-input-65-a467d41f55bd&gt;&#34;, line 5, in fun_raising_WarningMsg
+    def fun_raising_WarningMsg(): raise Warning(&#39;warning message&#39;)
+Warning: warning message
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.015s
+
+FAILED (errors=1)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Skip-decorators">Skip decorators<a class="anchor-link" href="#Skip-decorators">&#182;</a></h2><p>Tests usefulness could be conditioned to conditions (e.g., platforms, libraries' version, ...)</p>
+<ul>
+<li>@unittest.skip(reason): skips the test</li>
+<li>@unittest.skipIf(condition, reason): skips if condition is True</li>
+<li>@unittest.skipUnless(condition, reason):  skips unless condition is True</li>
+<li>@unittest.expectedFailure: marks (but does not count) as failure </li>
+<li>exception unittest.SkipTest(reason): to skip from inside the test </li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[678]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f
+<span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="n">trueCondition</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">falseCondition</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="nd">@unittest</span><span class="o">.</span><span class="n">skipIf</span><span class="p">(</span><span class="n">trueCondition</span><span class="p">,</span>\
+                     <span class="s2">&quot;good reason to skip test1&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">pass</span>
+    <span class="nd">@unittest</span><span class="o">.</span><span class="n">skipUnless</span><span class="p">(</span><span class="n">falseCondition</span><span class="p">,</span>\
+                         <span class="s2">&quot;good reason to skip test2&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">pass</span>    
+    <span class="k">def</span> <span class="nf">test3</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;test3&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="kc">True</span><span class="p">:</span> <span class="k">raise</span> <span class="n">unittest</span><span class="o">.</span><span class="n">SkipTest</span><span class="p">(</span><span class="s2">&quot;this makes test3 useless&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;not going to be printed&quot;</span><span class="p">)</span>
+    
+<span class="nb">print</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;first-arg-is-ignored&#39;</span><span class="p">],</span> <span class="n">exit</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>sss</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>test3
+&lt;unittest.main.TestProgram object at 0x7f4b5ff04668&gt;
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>
+----------------------------------------------------------------------
+Ran 3 tests in 0.002s
+
+OK (skipped=3)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Iterate-tests-using-subtests">Iterate tests using subtests<a class="anchor-link" href="#Iterate-tests-using-subtests">&#182;</a></h2><ul>
+<li>you can distinguish similar tests inside the body of the same test method using subTest<ul>
+<li>subTest([msg=None,**params]): test can be nested as context manager</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">reset</span> -f 
+<span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="k">global</span> <span class="n">ListOfIntegers</span> 
+<span class="n">ListOfIntegers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="s1">&#39;7&#39;</span><span class="p">,</span><span class="s1">&#39;8&#39;</span><span class="p">,</span><span class="s1">&#39;9&#39;</span><span class="p">]</span> \
+                            <span class="c1"># &#39;7&#39; and</span>
+                            <span class="c1">#     &#39;8&#39; and </span>
+                            <span class="c1">#         &#39;9&#39; are not integers</span>
+
+<span class="k">class</span> <span class="nc">Test</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ListOfIntegers</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">subTest</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">i</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;first-arg-is-ignored&#39;</span><span class="p">],</span> <span class="n">exit</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>                
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;unittest.main.TestProgram object at 0x7f99940d9128&gt;
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>
+======================================================================
+FAIL: test_list (__main__.Test) (value=&#39;7&#39;)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File &#34;&lt;ipython-input-6-4c54590060b2&gt;&#34;, line 13, in test_list
+    self.assertEqual(type(i), type(1))
+AssertionError: &lt;class &#39;str&#39;&gt; != &lt;class &#39;int&#39;&gt;
+
+======================================================================
+FAIL: test_list (__main__.Test) (value=&#39;8&#39;)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File &#34;&lt;ipython-input-6-4c54590060b2&gt;&#34;, line 13, in test_list
+    self.assertEqual(type(i), type(1))
+AssertionError: &lt;class &#39;str&#39;&gt; != &lt;class &#39;int&#39;&gt;
+
+======================================================================
+FAIL: test_list (__main__.Test) (value=&#39;9&#39;)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File &#34;&lt;ipython-input-6-4c54590060b2&gt;&#34;, line 13, in test_list
+    self.assertEqual(type(i), type(1))
+AssertionError: &lt;class &#39;str&#39;&gt; != &lt;class &#39;int&#39;&gt;
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=3)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Exercises">Exercises<a class="anchor-link" href="#Exercises">&#182;</a></h2>
+</div>
+</div>
 </div>
     </div>
   </div>

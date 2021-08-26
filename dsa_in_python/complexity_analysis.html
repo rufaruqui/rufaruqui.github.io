@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>index</title>
+<title>comlexity_analysis</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13082,32 +13082,22 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="ETE-2324:-Data-Structures-and-Algorithms">ETE 2324: Data Structures and Algorithms<a class="anchor-link" href="#ETE-2324:-Data-Structures-and-Algorithms">&#182;</a></h1>
+<h1 id="The-Complexity-of-Algorithims">The Complexity of Algorithims<a class="anchor-link" href="#The-Complexity-of-Algorithims">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Contents">Contents<a class="anchor-link" href="#Contents">&#182;</a></h2><ul>
-<li>Introduction to DSA<ul>
-<li>Reading: <a href="https://runestone.academy/runestone/books/published/pythonds3/Introduction/toctree.html">Chapter 1</a></li>
-<li>Notebook:</li>
-<li>Lectures: <a href="index.pdf">PDF</a> <a href="index.html">HTML</a> <a href="index.tex">Latex</a></li>
-</ul>
-</li>
-</ul>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Textbook">Textbook<a class="anchor-link" href="#Textbook">&#182;</a></h2><ul>
-<li><a href="https://runestone.academy/runestone/books/published/pythonds3/index.html">Problem Solving with Algorithms and Data Structures using Python</a></li>
-<li>Cormen, Thomas, Charles Leiserson, Ronald Rivest, and Clifford Stein. Introduction to Algorithms. 3rd ed. MIT Press, 2009. ISBN: 9780262033848.</li>
-</ul>
+<h2 id="Motivation">Motivation<a class="anchor-link" href="#Motivation">&#182;</a></h2><p>Sometimes it is necessary to have a precise understanding of the complexity of an algorithm.   In order to obtain this understanding we could proceed as follows:<br>
+ <ol>
+    <li>We implement the algorithm in a given programming language.</li>
+    <li> We count how many additions, multiplications, assignments, etc.~are needed</li>
+    for an input of a given size.  Additionally, we have to count all storage accesses.</li>
+    <li> We look up the amount of time that is needed for the different operations in the processor handbook.</li>
+    <li> Using the information discovered in the previous two steps we predict the running
+    time of our algorithm for given input.</li>
+</ol></p>
 
 </div>
 </div>
@@ -13115,22 +13105,130 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Additional-Resourcess:">Additional Resourcess:<a class="anchor-link" href="#Additional-Resourcess:">&#182;</a></h2><h2 id="-----How-to-install-python-and-jupyter">   - How to install python and jupyter<a class="anchor-link" href="#-----How-to-install-python-and-jupyter">&#182;</a></h2>
-<pre><code>  - 
-
-</code></pre>
-<ul>
-<li>Python Tutorial<ul>
-<li>Part 1: <a href="python_p1.ipnyb">Notebook</a> <a href="python_p1.html">HTML</a></li>
-<li>Part 2: <a href="python_p2.ipnyb">Notebook</a> <a href="python_p2.html">HTML</a></li>
-<li>Part 3: <a href="python_p3.ipnyb">Notebook</a> <a href="python_p3.html">HTML</a></li>
-<li>List in Python: <a href="python_list.ipnyb">Notebook</a> <a href="python_list.html">HTML</a></li>
-</ul>
-</li>
-</ul>
+<h3 id="Naive-Approach">Naive Approach<a class="anchor-link" href="#Naive-Approach">&#182;</a></h3><p>$S~=~1+2+3+ ...+n$</p>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+
+
+<span class="k">def</span> <span class="nf">sum_of_n_2</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="n">the_sum</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">the_sum</span> <span class="o">=</span> <span class="n">the_sum</span> <span class="o">+</span> <span class="n">i</span>
+
+    <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">the_sum</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sum is </span><span class="si">%d</span><span class="s2"> required </span><span class="si">%10.6f</span><span class="s2"> seconds&quot;</span> <span class="o">%</span> <span class="n">sum_of_n_2</span><span class="p">(</span><span class="mi">10000</span><span class="p">))</span>
+    
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Sum is 50005000 required   0.000823 seconds
+Sum is 50005000 required   0.000839 seconds
+Sum is 50005000 required   0.000982 seconds
+Sum is 50005000 required   0.000876 seconds
+Sum is 50005000 required   0.000861 seconds
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Alternative-Approach">Alternative Approach<a class="anchor-link" href="#Alternative-Approach">&#182;</a></h3><p>$S~=~1 + 2   +  3+ ...+n$</p>
+<p>$S~=~n + (n-1) + (n- 2)+ .... + 1$</p>
+<p>$2S = (n+1) + (n+1)+ .... + (n+1) = n * (n +1)$</p>
+<p>$S = \frac{n* (n+1)} {2}$</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">sum_of_n_3</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="n">the_sum</span> <span class="o">=</span> <span class="p">((</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">n</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span>
+
+    <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">the_sum</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;V2: Sum is </span><span class="si">%d</span><span class="s2"> required </span><span class="si">%10.6f</span><span class="s2"> seconds&quot;</span> <span class="o">%</span> <span class="n">sum_of_n_3</span><span class="p">(</span><span class="mi">10000</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>V2: Sum is 50005000 required   0.000002 seconds
+V2: Sum is 50005000 required   0.000001 seconds
+V2: Sum is 50005000 required   0.000001 seconds
+V2: Sum is 50005000 required   0.000001 seconds
+V2: Sum is 50005000 required   0.000000 seconds
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
