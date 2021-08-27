@@ -374,25 +374,68 @@
 \section{The Complexity of
 Algorithims}\label{the-complexity-of-algorithims}}
 
+\begin{itemize}
+\tightlist
+\item
+  Primary analysis tool
+
+  \begin{itemize}
+  \tightlist
+  \item
+    characterizing the running times of algorithms and data structure
+    operations
+  \item
+    Space usage\\
+  \end{itemize}
+\item
+  Running time is a natural measure of ``goodness,''
+
+  \begin{itemize}
+  \tightlist
+  \item
+    time is a precious resource
+  \item
+    computer solutions should run as fast as possible
+  \end{itemize}
+\end{itemize}
+
     \#\# Motivation
 
-Sometimes it is necessary to have a precise understanding of the
-complexity of an algorithm. In order to obtain this understanding we
-could proceed as follows:
+\begin{itemize}
+\item
+  Sometimes it is necessary to have a precise understanding of the
+  complexity of an algorithm.
+\item
+  In order to obtain this understanding we could proceed as follows:\\
 
-We implement the algorithm in a given programming language.
+  We implement the algorithm in a given programming language.
 
-We count how many additions, multiplications, assignments,
-etc.\textasciitilde are needed
+  We count how many additions, multiplications, assignments,
+  etc.\textasciitilde are needed
 
-for an input of a given size. Additionally, we have to count all storage
-accesses.
+  for an input of a given size. Additionally, we have to count all
+  storage accesses.
 
-We look up the amount of time that is needed for the different
-operations in the processor handbook.
+  We look up the amount of time that is needed for the different
+  operations in the processor handbook.
 
-Using the information discovered in the previous two steps we predict
-the running time of our algorithm for given input.
+  Using the information discovered in the previous two steps we predict
+  the running time of our algorithm for given input.
+\end{itemize}
+
+    \hypertarget{experimental-studies}{%
+\subsubsection{Experimental Studies}\label{experimental-studies}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ time }\ImportTok{import}\NormalTok{ time}
+
+\NormalTok{start time }\OperatorTok{=}\NormalTok{ time( ) }\CommentTok{\# record the starting time}
+\NormalTok{run algorithm    }
+\NormalTok{end time }\OperatorTok{=}\NormalTok{ time( )   }\CommentTok{\# record the ending time}
+\NormalTok{elapsed }\OperatorTok{=}\NormalTok{ end time − start time }\CommentTok{\# compute the elapsed time}
+\end{Highlighting}
+\end{Shaded}
 
     \hypertarget{naive-approach}{%
 \subsubsection{Naive Approach}\label{naive-approach}}
@@ -400,7 +443,7 @@ the running time of our algorithm for given input.
 \(S~=~1+2+3+ ...+n\)
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{1}{\boxspacing}
+\prompt{In}{incolor}{5}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{k+kn}{import} \PY{n+nn}{time}
 
@@ -423,11 +466,11 @@ the running time of our algorithm for given input.
 \end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-Sum is 50005000 required   0.000867 seconds
-Sum is 50005000 required   0.001106 seconds
-Sum is 50005000 required   0.000802 seconds
-Sum is 50005000 required   0.000840 seconds
-Sum is 50005000 required   0.000822 seconds
+Sum is 50005000 required   0.000770 seconds
+Sum is 50005000 required   0.000787 seconds
+Sum is 50005000 required   0.000781 seconds
+Sum is 50005000 required   0.000788 seconds
+Sum is 50005000 required   0.000713 seconds
     \end{Verbatim}
 
     \hypertarget{alternative-approach}{%
@@ -442,7 +485,7 @@ Sum is 50005000 required   0.000822 seconds
 \(S = \frac{n* (n+1)} {2}\)
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{2}{\boxspacing}
+\prompt{In}{incolor}{6}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{k}{def} \PY{n+nf}{sum\PYZus{}of\PYZus{}n\PYZus{}3}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{:}
     \PY{n}{start} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
@@ -459,13 +502,241 @@ Sum is 50005000 required   0.000822 seconds
 \end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-V2: Sum is 50005000 required   0.000001 seconds
-V2: Sum is 50005000 required   0.000001 seconds
+V2: Sum is 50005000 required   0.000002 seconds
 V2: Sum is 50005000 required   0.000000 seconds
 V2: Sum is 50005000 required   0.000000 seconds
+V2: Sum is 50005000 required   0.000001 seconds
 V2: Sum is 50005000 required   0.000001 seconds
     \end{Verbatim}
 
+    \hypertarget{moving-beyond-experimental-analysis}{%
+\subsection{Moving Beyond Experimental
+Analysis}\label{moving-beyond-experimental-analysis}}
+
+\begin{itemize}
+\item
+  Our goal is to develop an approach to analyzing the efficiency of
+  algorithms that:
+
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \tightlist
+  \item
+    Allows us to evaluate the relative efficiency of any two algorithms
+    in a way that is independent of the hardware and software
+    environment.
+  \item
+    Is performed by studying a high-level description of the algorithm
+    without need for implementation.
+  \item
+    Takes into account all possible inputs.
+  \end{enumerate}
+\item ~
+  \hypertarget{counting-primitive-operations}{%
+  \subsubsection{Counting Primitive
+  Operations}\label{counting-primitive-operations}}
+\item ~
+  \hypertarget{measuring-operations-as-a-function-of-input-size}{%
+  \subsubsection{Measuring Operations as a Function of Input
+  Size}\label{measuring-operations-as-a-function-of-input-size}}
+\item ~
+  \hypertarget{focusing-on-the-worst-case-input}{%
+  \subsubsection{Focusing on the Worst-Case
+  Input}\label{focusing-on-the-worst-case-input}}
+\end{itemize}
+
+    \hypertarget{counting-primitive-operations}{%
+\subsubsection{Counting Primitive
+Operations}\label{counting-primitive-operations}}
+
+\begin{itemize}
+\tightlist
+\item
+  Perform analysis directly on a high-level description of the algorithm
+\item
+  Identify and analyse primitive operations - \textbf{a primitive
+  operation is low-level instruction with an execution time that is
+  constant} e.g.,
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Assigning an identifier to an object
+  \item
+    Determining the object associated with an identifier
+  \item
+    Performing an arithmetic operation (for example, adding two numbers)
+    • Comparing two numbers
+  \item
+    Accessing a single element of a Python list by index
+  \item
+    Calling a function (excluding operations executed within the
+    function) • Returning from a function.
+  \end{itemize}
+\item
+  A primitive operation is basic operation that is executed by the
+  hardware
+\item
+  Many of our primitive operations may be translated to a small number
+  of instructions.
+\item
+  Instead of trying to determine the specific execution time of each
+  primitive operation, we will count
+
+  \begin{itemize}
+  \tightlist
+  \item
+    how many primitive operations are executed
+  \item
+    use this number \(t\) as a measure of the running time of the
+    algorithm.
+  \end{itemize}
+\end{itemize}
+
+    \hypertarget{measuring-operations-as-a-function-of-input-size}{%
+\subsubsection{Measuring Operations as a Function of Input
+Size}\label{measuring-operations-as-a-function-of-input-size}}
+
+\begin{itemize}
+\tightlist
+\item
+  Capture the order of growth of an algorithm's running time
+\item
+  A function \(f(n)\) that characterizes the number of primitive
+  operations that are performed as a function of the input size n
+\end{itemize}
+
+    \hypertarget{focusing-on-the-worst-case-input}{%
+\subsubsection{Focusing on the Worst-Case
+Input}\label{focusing-on-the-worst-case-input}}
+
+\begin{itemize}
+\item
+  \textbf{Worst-case:} \(T(n)\) The maximum steps/time/memory taken by
+  an algorithm to complete the solution for inputs of size \(n\)
+\item
+  \textbf{Average-case:} The expected time over all inputs with the same
+  characteristics (e.g.~size).
+\item
+  \textbf{Best-case:} The performance in ideal situations. Rarely used.
+\end{itemize}
+
+Worst-case analysis is much easier than average-case analysis, as it
+requires only the ability to identify the worst-case input, which is
+often simple.
+
+When analysing algorithmic performance, we ignore computational
+resources (e.g. CPU speed); we only care about the growth of \(T(n)\) as
+\(n \rightarrow \infty\)
+
+This is called the \textbf{asymptotic behaviour}
+
+    \begin{figure}
+\centering
+\includegraphics{complexity/fig3.2.png}
+\caption{Runtime Analysis}
+\end{figure}
+
+    \hypertarget{growth-function}{%
+\subsection{Growth Function}\label{growth-function}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \(f(x) = n\) (constant function)
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  for any argument \(n\), the constant function \(f(n)\) assigns the
+  value \(c\).
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  \(f(n) = log_b(n)\) (logarithmic function)
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  \(x=\log_bn\) if and only if \(b^x = n\).
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  \(f(x) = sqrt(x)\) (square root function)
+\item
+  \(f(x) = x\) (linear function)
+\item
+  \(f(x) = nlog(n)\) (log-linear function)
+\item
+  \(f(x) = x^2\) (quadratic function)
+\item
+  \(f(x) = x^3\) (cubic function)
+\item
+  \(f(x) = a^x, \forall a > 1\) (exponential function)
+\end{enumerate}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} remember to evaluate this cell first!}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pylab} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{math}
+\PY{k+kn}{import} \PY{n+nn}{timeit}
+\PY{k+kn}{import} \PY{n+nn}{random}
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{count} \PY{o}{=} \PY{l+m+mi}{50}
+\PY{n}{xs} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mf}{0.1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{count}\PY{p}{)}
+\PY{n}{ys\PYZus{}const}        \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{count}
+\PY{n}{ys\PYZus{}log}          \PY{o}{=} \PY{p}{[}\PY{n}{math}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{x}\PY{p}{)} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{xs}\PY{p}{]}
+\PY{n}{ys\PYZus{}linear}       \PY{o}{=} \PY{p}{[}\PY{n}{x} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{xs}\PY{p}{]}
+\PY{n}{ys\PYZus{}linearithmic} \PY{o}{=} \PY{p}{[}\PY{n}{x} \PY{o}{*} \PY{n}{math}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{x}\PY{p}{)} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{xs}\PY{p}{]}
+\PY{n}{ys\PYZus{}quadratic}    \PY{o}{=} \PY{p}{[}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{xs}\PY{p}{]}
+\PY{n}{ys\PYZus{}cubic}    \PY{o}{=} \PY{p}{[}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{xs}\PY{p}{]}
+\PY{n}{ys\PYZus{}exp}    \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{3}\PY{o}{*}\PY{o}{*}\PY{n}{x} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{xs}\PY{p}{]}
+
+
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{xs}\PY{p}{,} \PY{n}{ys\PYZus{}const}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{c}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Constant}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{xs}\PY{p}{,} \PY{n}{ys\PYZus{}log}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Logarithmic}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{xs}\PY{p}{,} \PY{n}{ys\PYZus{}linear}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Linear}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{xs}\PY{p}{,} \PY{n}{ys\PYZus{}linearithmic}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Linear Arthmatic}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{xs}\PY{p}{,} \PY{n}{ys\PYZus{}quadratic}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Quadratic}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{xs}\PY{p}{,} \PY{n}{ys\PYZus{}cubic}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cubic}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{xs}\PY{p}{,} \PY{n}{ys\PYZus{}exp}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}p}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Exponential}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<matplotlib.legend.Legend at 0x12b063730>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{complexity_analysis_files/complexity_analysis_14_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
