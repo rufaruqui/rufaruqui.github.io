@@ -13246,7 +13246,8 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Experimental-Studies">Experimental Studies<a class="anchor-link" href="#Experimental-Studies">&#182;</a></h3><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<h3 id="Experimental-Studies">Experimental Studies<a class="anchor-link" href="#Experimental-Studies">&#182;</a></h3><p>If an algorithm has been implemented, we can study its running time by executing it on various test inputs and recording the time spent during each execution.</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
 
 <span class="n">start</span> <span class="n">time</span> <span class="o">=</span> <span class="n">time</span><span class="p">(</span> <span class="p">)</span> <span class="c1"># record the starting time</span>
 <span class="n">run</span> <span class="n">algorithm</span>    
@@ -13260,7 +13261,7 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Naive-Approach">Naive Approach<a class="anchor-link" href="#Naive-Approach">&#182;</a></h3><p>$S~=~1+2+3+ ...+n$</p>
+<h2 id="Calculate-Arithmetic-Sum:">Calculate Arithmetic Sum:<a class="anchor-link" href="#Calculate-Arithmetic-Sum:">&#182;</a></h2><h3 id="Naive-Approach:-using-a-loop">Naive Approach: using a loop<a class="anchor-link" href="#Naive-Approach:-using-a-loop">&#182;</a></h3><p>$S~=~1+2+3+ ...+n$</p>
 
 </div>
 </div>
@@ -13322,8 +13323,9 @@ Sum is 50005000 required   0.001019 seconds
 <h3 id="Alternative-Approach">Alternative Approach<a class="anchor-link" href="#Alternative-Approach">&#182;</a></h3><p>$S~=~1 + 2   +  3+ ...+n$</p>
 <p>$S~=~n + (n-1) + (n- 2)+ .... + 1$</p>
 <p>$2S = (n+1) + (n+1)+ .... + (n+1) = n * (n +1)$</p>
-<p>$S = \frac{n* (n+1)} {2}$</p>
-
+$$
+S = \frac{n* (n+1)} {2}
+$$
 </div>
 </div>
 </div></section></section><section><section>
@@ -13400,9 +13402,18 @@ V2: Sum is 50005000 required   0.000001 seconds
 <li>Calling a function (excluding operations executed within the function) • Returning from a function.</li>
 </ul>
 </li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Counting-Primitive-Operations">Counting Primitive Operations<a class="anchor-link" href="#Counting-Primitive-Operations">&#182;</a></h3><ul>
 <li>A primitive operation is basic operation that is executed by the hardware </li>
 <li>Many of our primitive operations may be translated to a small number of instructions. </li>
-<li>Instead of trying to determine the specific execution time of each primitive operation, we will count   <ul>
+<li>Instead of trying to determine the specific execution time of each primitive operation, we will count    <ul>
 <li>how many primitive operations are executed</li>
 <li>use this number $t$ as a measure of the running time of the algorithm.</li>
 </ul>
@@ -13607,7 +13618,7 @@ f(n) = a_0 +a_1n+a_2n^2 +a_3n^3 +···+a_dn^d
 </div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">count</span> <span class="o">=</span> <span class="mi">50</span>
@@ -13619,9 +13630,6 @@ f(n) = a_0 +a_1n+a_2n^2 +a_3n^3 +···+a_dn^d
 <span class="n">ys_quadratic</span>    <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">]</span>
 <span class="n">ys_cubic</span>    <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">**</span><span class="mi">3</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">]</span>
 <span class="n">ys_exp</span>    <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="o">**</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">]</span>
-
-
-
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys_const</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Constant&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys_log</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Logarithmic&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys_linear</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Linear&#39;</span><span class="p">)</span>
@@ -13642,13 +13650,13 @@ f(n) = a_0 +a_1n+a_2n^2 +a_3n^3 +···+a_dn^d
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[35]:</div>
+    <div class="prompt output_prompt">Out[41]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.legend.Legend at 0x10fe95d60&gt;</pre>
+<pre>&lt;matplotlib.legend.Legend at 0x10fdeca30&gt;</pre>
 </div>
 
 </div>
@@ -13978,52 +13986,50 @@ False
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">sorted</span><span class="p">(</span><span class="n">S1</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[40]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>[2, 3, 4, 12, 19, 34]</pre>
-</div>
-
-</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Simple-Justification-Techniques">Simple Justification Techniques<a class="anchor-link" href="#Simple-Justification-Techniques">&#182;</a></h2><ul>
+<li><strong>Counter Example</strong>:<ul>
+<li>Some claims are of the generic form, “There is an element x in a set S that has property P.” </li>
+<li>To justify such a claim, we only need to produce a particular x in S that has property P. </li>
+<li>Likewise, some hard-to-believe claims are of the generic form, <em>“Every element x in a set S has property P.”</em> </li>
+<li>To justify that such a claim is false, we only need to produce a particular x from S that does not have property P. </li>
+<li>Such an instance is called a counterexample.</li>
+</ul>
+</li>
+</ul>
 
 </div>
 </div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Simple-Justification-Techniques">Simple Justification Techniques<a class="anchor-link" href="#Simple-Justification-Techniques">&#182;</a></h2><ul>
+<li><strong>Proof by Contradiction</strong><ul>
+<li>In applying the justification by con- tradiction technique, we establish that a statement q is true by first supposing that q is false and then showing that this assumption leads to a contradiction</li>
+</ul>
+</li>
+</ul>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Simple-Justification-Techniques">Simple Justification Techniques<a class="anchor-link" href="#Simple-Justification-Techniques">&#182;</a></h2><ul>
+<li><strong>Proof by Induction</strong><ul>
+<li>Most of these above claims are equivalent to saying some statement $q(n)$ is true “for all $n \ge 1$.” </li>
+<li>The <strong>Induction</strong> technique amounts to showing that, for any particular $n \ge 1$, there is a finite sequence of implications that starts with something known to be true and ultimately leads to showing that $q(n)$ is true.</li>
+</ul>
+</li>
+</ul>
 
-    </div>
 </div>
 </div>
-
 </div></section></section>
 </div>
 </div>
