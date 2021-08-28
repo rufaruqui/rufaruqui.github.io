@@ -13082,7 +13082,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="The-Complexity-of-Algorithims">The Complexity of Algorithims<a class="anchor-link" href="#The-Complexity-of-Algorithims">&#182;</a></h1><ul>
+<h1 id="The-Analysis-of-Algorithims">The Analysis of Algorithims<a class="anchor-link" href="#The-Analysis-of-Algorithims">&#182;</a></h1><ul>
 <li>Primary analysis tool<ul>
 <li>characterizing the running times of algorithms and data structure operations</li>
 <li>Space usage  </li>
@@ -13142,7 +13142,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
@@ -13178,11 +13178,11 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Sum is 50005000 required   0.000770 seconds
-Sum is 50005000 required   0.000787 seconds
-Sum is 50005000 required   0.000781 seconds
-Sum is 50005000 required   0.000788 seconds
-Sum is 50005000 required   0.000713 seconds
+<pre>Sum is 50005000 required   0.000841 seconds
+Sum is 50005000 required   0.001362 seconds
+Sum is 50005000 required   0.001088 seconds
+Sum is 50005000 required   0.001040 seconds
+Sum is 50005000 required   0.001048 seconds
 </pre>
 </div>
 </div>
@@ -13204,7 +13204,7 @@ Sum is 50005000 required   0.000713 seconds
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">sum_of_n_3</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
@@ -13234,8 +13234,8 @@ Sum is 50005000 required   0.000713 seconds
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>V2: Sum is 50005000 required   0.000002 seconds
-V2: Sum is 50005000 required   0.000000 seconds
+<pre>V2: Sum is 50005000 required   0.000001 seconds
+V2: Sum is 50005000 required   0.000001 seconds
 V2: Sum is 50005000 required   0.000000 seconds
 V2: Sum is 50005000 required   0.000001 seconds
 V2: Sum is 50005000 required   0.000001 seconds
@@ -13327,7 +13327,7 @@ CPU speed); we only care about the growth of $T(n)$ as $n \rightarrow \infty$</p
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="complexity/fig3.2.png" alt="Runtime Analysis"></p>
+<p><img src="fig3.2.png" alt="Runtime Analysis"></p>
 
 </div>
 </div>
@@ -13355,9 +13355,120 @@ CPU speed); we only care about the growth of $T(n)$ as $n \rightarrow \infty$</p
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Math-Review">Math Review<a class="anchor-link" href="#Math-Review">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Exponentiation">Exponentiation<a class="anchor-link" href="#Exponentiation">&#182;</a></h3><p>Exponents have a number of important properties, including:</p>
+<p>\begin{align}
+        b^0 &amp;= 1 \\
+        b^1 &amp;= b \\
+        b^{1/2} &amp;= b^{0.5} = \sqrt{b} \\
+        b^{-1} &amp;= \frac{1}{b} \\
+        b^a \cdot b^c &amp;= b^{a + c} \\
+        (b^a)^c &amp;= b^{ac}
+    \end{align}</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Logarithms">Logarithms<a class="anchor-link" href="#Logarithms">&#182;</a></h3><p><strong>Definition</strong>: $\log_b a = c$ if and only if $a = b^c$. If $b = 2$, we write $\lg a$.</p>
+<p>There are a number of log identities you should be aware of:</p>
+<p>\begin{align}
+        \log_b (a \cdot c) &amp;= \log_b a + \log_b c \\
+        \log \left( \frac{a}{c} \right) &amp;= \log_b a - \log_b c \\
+        \log(a^c) &amp;= c \cdot \log_b a \\
+        b^{\log_c a} &amp;= a^{\log_c b} \\
+        \log_b a &amp;= \frac{\log_c a}{\log_c b}
+    \end{align}</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Recursive-Definitions">Recursive Definitions<a class="anchor-link" href="#Recursive-Definitions">&#182;</a></h3><h5 id="Factorial---The-factorial-of-a-number-$n$-is-represented-by-$n!$.-Informally,-$n!-=-1-\cdot-2-\cdot-3-\cdot-\ldots-\cdot-n$.-More-formally:"><strong>Factorial</strong> - The <strong>factorial</strong> of a number $n$ is represented by $n!$. Informally, $n! = 1 \cdot 2 \cdot 3 \cdot \ldots \cdot n$. More formally:<a class="anchor-link" href="#Factorial---The-factorial-of-a-number-$n$-is-represented-by-$n!$.-Informally,-$n!-=-1-\cdot-2-\cdot-3-\cdot-\ldots-\cdot-n$.-More-formally:">&#182;</a></h5>\begin{align*}
+            n! = \begin{cases}
+                1 &amp; n = 0 \\
+                n \cdot (n - 1)! &amp; n &gt; 0
+            \end{cases}
+\end{align*}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Recursive-Definitions">Recursive Definitions<a class="anchor-link" href="#Recursive-Definitions">&#182;</a></h3><h5 id="Fibonacci-numbers">Fibonacci numbers<a class="anchor-link" href="#Fibonacci-numbers">&#182;</a></h5><p>The <strong>fibonacci numbers</strong> are defined by:
+        \begin{align*}
+            F_i = \begin{cases}
+                0 &amp; i = 0 \\
+                1 &amp; i = 1 \\
+                F_{i - 2} + F_{i - 1} &amp; i &gt; 1
+            \end{cases}
+        \end{align*}</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Summations">Summations<a class="anchor-link" href="#Summations">&#182;</a></h3><p><strong>Arithmetic Series</strong>
+    \begin{align*}
+        \sum_{i = 1}^{n} i &amp;= 1+2+3+ \ldots + n = \frac{n(n+1)}{2} \\
+        \sum_{i = 1}^{n} i^2 &amp;= \frac{n(n+1)(2n+1)}{6} \\
+        \sum_{i = 1}^{n} i^k &amp;\approx \frac{n^{k + 1}}{k + 1} = \Theta(n^{k + 1})
+    \end{align*}</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Summations">Summations<a class="anchor-link" href="#Summations">&#182;</a></h3><ul>
+<li><strong>Geometric series</strong></li>
+</ul>
+\begin{align*}
+        \sum_{i = 0}^{n} a^i &amp;= 1 + a + a^2+a^3+ ... +a^n= \frac{a^{n + 1} - 1}{a - 1} \\
+        \sum_{i = 0}^{\infty} a^i &amp;= \frac{1}{1 - a} \text{ where } a &lt; 1
+    \end{align*}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Polynomials">Polynomials<a class="anchor-link" href="#Polynomials">&#182;</a></h3><p>A polynomial function has the form</p>
+\begin{align*}
+f(n) = a_0 +a_1n+a_2n^2 +a_3n^3 +···+a_dn^d 
+\end{align*}<p>where $a_0$ , $a_1$ , . . . , $a_d$ are constants, called the <strong>coefficients</strong> of the polynomial, and $a^d\neq0$.</p>
+<p>Integer $d$, which indicates the highest power in the polynomial, is called the <strong>degree</strong> of the polynomial.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Comparing-Growth-Rates">Comparing Growth Rates<a class="anchor-link" href="#Comparing-Growth-Rates">&#182;</a></h3>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># remember to evaluate this cell first!</span>
@@ -13376,7 +13487,7 @@ CPU speed); we only care about the growth of $T(n)$ as $n \rightarrow \infty$</p
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">count</span> <span class="o">=</span> <span class="mi">50</span>
@@ -13411,13 +13522,13 @@ CPU speed); we only care about the growth of $T(n)$ as $n \rightarrow \infty$</p
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[26]:</div>
+    <div class="prompt output_prompt">Out[17]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.legend.Legend at 0x12b063730&gt;</pre>
+<pre>&lt;matplotlib.legend.Legend at 0x10fe110d0&gt;</pre>
 </div>
 
 </div>
@@ -13441,18 +13552,202 @@ CPU speed); we only care about the growth of $T(n)$ as $n \rightarrow \infty$</p
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<table>
+<thead><tr>
+<th>constant</th>
+<th>logarithm</th>
+<th>linear</th>
+<th>n-log-n</th>
+<th>quadratic</th>
+<th>cubic</th>
+<th>exponential</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>$log(n)$</td>
+<td>$n$</td>
+<td>$nlogn$</td>
+<td>$n^2$</td>
+<td>$n^3$</td>
+<td>$a^n$</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="The-Ceiling-and-Floor-Functions">The Ceiling and Floor Functions<a class="anchor-link" href="#The-Ceiling-and-Floor-Functions">&#182;</a></h5><ul>
+<li>$\lceil x \rceil =$  the largest integer less than or equal to $x$.</li>
+<li>$\lfloor x \rfloor =$ the smallest integer greater than or equal to $x$.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="3.3-Asymptotic-Analysis">3.3 Asymptotic Analysis<a class="anchor-link" href="#3.3-Asymptotic-Analysis">&#182;</a></h1><ul>
+<li>In algorithm analysis, we focus on the growth rate of the running time as a function of the input size $n$, taking a “big-picture” approach.</li>
+<li>For example, it is often enough just to know that the running time of an algorithm <strong>grows proportionally</strong> to $n$.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>A function that returns the maximum value of a Python list.</strong></p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">find</span> <span class="nb">max</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="err">”””</span><span class="n">Return</span> <span class="n">the</span> <span class="n">maximum</span> <span class="n">element</span> <span class="kn">from</span> <span class="nn">a</span> <span class="n">nonempty</span> <span class="n">Python</span> <span class="nb">list</span><span class="o">.</span><span class="err">”””</span> 
+<span class="n">biggest</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>                       <span class="c1"># The initial value to beat</span>
+<span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>                        <span class="c1"># For each value:</span>
+ <span class="k">if</span> <span class="n">val</span> <span class="o">&gt;</span> <span class="n">biggest</span>                       <span class="c1"># if it is greater than the best so far,</span>
+        <span class="n">biggest</span> <span class="o">=</span> <span class="n">val</span>                  <span class="c1"># we have found a new best (so far)         </span>
+ <span class="k">return</span> <span class="n">biggest</span>                        <span class="c1"># When loop ends, biggest is the max</span>
 </pre></div>
 
-    </div>
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is a classic example of an algorithm with a running time that grows <strong>proportional to $n$</strong>, as the loop executes once for each data element, with some fixed number of primitive operations executing for each pass.</p>
 
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="3.3.1-The-&#8220;Big-Oh&#8221;-Notation">3.3.1 The &#8220;Big-Oh&#8221; Notation<a class="anchor-link" href="#3.3.1-The-&#8220;Big-Oh&#8221;-Notation">&#182;</a></h2><ul>
+<li>Let $f(n)$ and $g(n)$ be functions mapping positive integers to positive real numbers. </li>
+<li>We say that $f(n)$ is $O(g(n))$ <ul>
+<li>if there is a real constant $c &gt; 0$ and </li>
+<li>an integer constant $n_0 \ge 1$ such that 
+$$
+f(n)\le cg(n) 
+$$
+for $n\ge n_0$.</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Example-:--The-function-$8n-+-5$-is-$O(n)$.">Example :  The function $8n + 5$ is $O(n)$.<a class="anchor-link" href="#Example-:--The-function-$8n-+-5$-is-$O(n)$.">&#182;</a></h4><p><strong>Justification</strong>:</p>
+<ul>
+<li>By the big-Oh definition, we need to find a real constant $c &gt; 0$ and an integer constant $n0\ge 1$ such that $8n+5 \le cn$ for every integer $n\ge n_0$. </li>
+<li>It is easy to see that a possible choice is $c = 9$ and $n_0 = 5$. </li>
+<li>Indeed, this is one of infinitely many choices available because there is a trade-off between $c$ and $n_0$. </li>
+<li>For example, we could rely on constants $c = 13$ and $n_0 = 1$.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Proposition:-The-algorithm,-find-max,-for-computing-the-maximum-element-of-a-list-of-n-numbers,-runs-in-O(n)-time.">Proposition: The algorithm, find max, for computing the maximum element of a list of n numbers, runs in O(n) time.<a class="anchor-link" href="#Proposition:-The-algorithm,-find-max,-for-computing-the-maximum-element-of-a-list-of-n-numbers,-runs-in-O(n)-time.">&#182;</a></h5><p><strong>Justification</strong></p>
+<ul>
+<li>The initialization before the loop begins requires only a constant number of primitive operations.</li>
+<li>Each iteration of the loop also requires only a con- stant number of primitive operations. </li>
+<li>The loop executes $n$ times.</li>
+<li>The number of primitive operations being $c' + c".n$ for appropriate constants $c'$ and $c"$</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Example:-$5n^4-+3n^3-+2n^2-+4n+1$-is-$O(n4)$.">Example: $5n^4 +3n^3 +2n^2 +4n+1$ is $O(n4)$.<a class="anchor-link" href="#Example:-$5n^4-+3n^3-+2n^2-+4n+1$-is-$O(n4)$.">&#182;</a></h4><p><strong>Justification</strong>: Note that $5n^4+3n^3+2n^2+4n+1~~\le(5+3+2+4+1)n^4 =cn^4$,
+for $c=15$,when $n\ge n_0 =1$.</p>
+<p>Thus, the highest-degree term in a polynomial is the term that determines the asymptotic growth rate of that polynomial</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Example</strong>: $5n^2 +3n log n+2n+5$ is $O(n^2)$.</p>
+<p><strong>Example</strong>: $20n^3 +10nlogn+5$ is $O(n^3)$.</p>
+<p><strong>Example</strong>: $2^n+2$ is $O(2^n)$.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="3.3.2-Big-Omega-Notation">3.3.2 Big-Omega Notation<a class="anchor-link" href="#3.3.2-Big-Omega-Notation">&#182;</a></h3><ul>
+<li>Let $f(n)$ and $g(n)$ be functions mapping positive integers to positive real numbers. </li>
+<li>We say that $f(n)$ is $\Omega(g(n))$ <ul>
+<li>if there is a real constant $c &gt; 0$ and </li>
+<li>an integer constant $n_0 \ge 1$ such that 
+$$
+f(n)\ge cg(n) 
+$$
+for $n\ge n_0$.</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Example:-$3n-log-n-&#8722;-2n$-is-$\Omega(n-log-n)$.">Example: $3n log n &#8722; 2n$ is $\Omega(n log n)$.<a class="anchor-link" href="#Example:-$3n-log-n-&#8722;-2n$-is-$\Omega(n-log-n)$.">&#182;</a></h4><p><strong>Justification</strong>: $3nlogn−2n = nlogn+2n(logn−1) \ge n log n$ for $n \ge 2$; hence, we can take $c=1$ and $n_0 =2$ in this case.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="3.3.3-Big-Theta-Notation">3.3.3 Big-Theta Notation<a class="anchor-link" href="#3.3.3-Big-Theta-Notation">&#182;</a></h3><ul>
+<li>Let $f(n)$ and $g(n)$ be functions mapping positive integers to positive real numbers. </li>
+<li>We say that $f(n)$ is $\Theta(g(n))$ if $f(n)$ is $O(g(n))$ and $f(n)$ is $\Omega(g(n))$<ul>
+<li>if there is two real constant $c_1 &gt; 0$ and $c_2 &gt; 0$ and </li>
+<li>an integer constant $n_0 \ge 1$ such that 
+$$
+c_1g(n) \le f(n)\ge c_2g(n) 
+$$
+for $n\ge n_0$.</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Example:-$3nlogn+4n+5logn$-is-$\Theta(nlogn)$.">Example: $3nlogn+4n+5logn$ is $\Theta(nlogn)$.<a class="anchor-link" href="#Example:-$3nlogn+4n+5logn$-is-$\Theta(nlogn)$.">&#182;</a></h4><p><strong>Justification</strong>: $3nlogn \le 3nlogn+4n+5logn \le (3+4+5)nlogn$ for $n \ge 2$</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">

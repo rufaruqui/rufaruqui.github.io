@@ -370,9 +370,9 @@
     
 
     
-    \hypertarget{the-complexity-of-algorithims}{%
-\section{The Complexity of
-Algorithims}\label{the-complexity-of-algorithims}}
+    \hypertarget{the-analysis-of-algorithims}{%
+\section{The Analysis of
+Algorithims}\label{the-analysis-of-algorithims}}
 
 \begin{itemize}
 \tightlist
@@ -443,7 +443,7 @@ Algorithims}\label{the-complexity-of-algorithims}}
 \(S~=~1+2+3+ ...+n\)
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{5}{\boxspacing}
+\prompt{In}{incolor}{14}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{k+kn}{import} \PY{n+nn}{time}
 
@@ -466,11 +466,11 @@ Algorithims}\label{the-complexity-of-algorithims}}
 \end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-Sum is 50005000 required   0.000770 seconds
-Sum is 50005000 required   0.000787 seconds
-Sum is 50005000 required   0.000781 seconds
-Sum is 50005000 required   0.000788 seconds
-Sum is 50005000 required   0.000713 seconds
+Sum is 50005000 required   0.000841 seconds
+Sum is 50005000 required   0.001362 seconds
+Sum is 50005000 required   0.001088 seconds
+Sum is 50005000 required   0.001040 seconds
+Sum is 50005000 required   0.001048 seconds
     \end{Verbatim}
 
     \hypertarget{alternative-approach}{%
@@ -485,7 +485,7 @@ Sum is 50005000 required   0.000713 seconds
 \(S = \frac{n* (n+1)} {2}\)
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{6}{\boxspacing}
+\prompt{In}{incolor}{15}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{k}{def} \PY{n+nf}{sum\PYZus{}of\PYZus{}n\PYZus{}3}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{:}
     \PY{n}{start} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
@@ -502,8 +502,8 @@ Sum is 50005000 required   0.000713 seconds
 \end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-V2: Sum is 50005000 required   0.000002 seconds
-V2: Sum is 50005000 required   0.000000 seconds
+V2: Sum is 50005000 required   0.000001 seconds
+V2: Sum is 50005000 required   0.000001 seconds
 V2: Sum is 50005000 required   0.000000 seconds
 V2: Sum is 50005000 required   0.000001 seconds
 V2: Sum is 50005000 required   0.000001 seconds
@@ -633,7 +633,7 @@ This is called the \textbf{asymptotic behaviour}
 
     \begin{figure}
 \centering
-\includegraphics{complexity/fig3.2.png}
+\includegraphics{fig3.2.png}
 \caption{Runtime Analysis}
 \end{figure}
 
@@ -686,8 +686,110 @@ This is called the \textbf{asymptotic behaviour}
   \(f(x) = a^x, \forall a > 1\) (exponential function)
 \end{enumerate}
 
+    \hypertarget{math-review}{%
+\subsection{Math Review}\label{math-review}}
+
+    \hypertarget{exponentiation}{%
+\subsubsection{Exponentiation}\label{exponentiation}}
+
+Exponents have a number of important properties, including:
+
+\begin{align}
+        b^0 &= 1 \\
+        b^1 &= b \\
+        b^{1/2} &= b^{0.5} = \sqrt{b} \\
+        b^{-1} &= \frac{1}{b} \\
+        b^a \cdot b^c &= b^{a + c} \\
+        (b^a)^c &= b^{ac}
+    \end{align}
+
+    \hypertarget{logarithms}{%
+\subsubsection{Logarithms}\label{logarithms}}
+
+\textbf{Definition}: \(\log_b a = c\) if and only if \(a = b^c\). If
+\(b = 2\), we write \(\lg a\).
+
+There are a number of log identities you should be aware of:
+
+\begin{align}
+        \log_b (a \cdot c) &= \log_b a + \log_b c \\
+        \log \left( \frac{a}{c} \right) &= \log_b a - \log_b c \\
+        \log(a^c) &= c \cdot \log_b a \\
+        b^{\log_c a} &= a^{\log_c b} \\
+        \log_b a &= \frac{\log_c a}{\log_c b}
+    \end{align}
+
+    \hypertarget{recursive-definitions}{%
+\subsubsection{Recursive Definitions}\label{recursive-definitions}}
+
+\#\#\#\#\# \textbf{Factorial} - The \textbf{factorial} of a number \(n\)
+is represented by \(n!\). Informally,
+\(n! = 1 \cdot 2 \cdot 3 \cdot \ldots \cdot n\). More formally:
+
+\begin{align*}
+            n! = \begin{cases}
+                1 & n = 0 \\
+                n \cdot (n - 1)! & n > 0
+            \end{cases}
+\end{align*}
+
+    \hypertarget{recursive-definitions}{%
+\subsubsection{Recursive Definitions}\label{recursive-definitions}}
+
+\hypertarget{fibonacci-numbers}{%
+\subparagraph{Fibonacci numbers}\label{fibonacci-numbers}}
+
+The \textbf{fibonacci numbers} are defined by: \begin{align*}
+            F_i = \begin{cases}
+                0 & i = 0 \\
+                1 & i = 1 \\
+                F_{i - 2} + F_{i - 1} & i > 1
+            \end{cases}
+        \end{align*}
+
+    \hypertarget{summations}{%
+\subsubsection{Summations}\label{summations}}
+
+\textbf{Arithmetic Series} \begin{align*}
+        \sum_{i = 1}^{n} i &= 1+2+3+ \ldots + n = \frac{n(n+1)}{2} \\
+        \sum_{i = 1}^{n} i^2 &= \frac{n(n+1)(2n+1)}{6} \\
+        \sum_{i = 1}^{n} i^k &\approx \frac{n^{k + 1}}{k + 1} = \Theta(n^{k + 1})
+    \end{align*}
+
+    \hypertarget{summations}{%
+\subsubsection{Summations}\label{summations}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Geometric series}
+\end{itemize}
+
+\begin{align*}
+        \sum_{i = 0}^{n} a^i &= 1 + a + a^2+a^3+ ... +a^n= \frac{a^{n + 1} - 1}{a - 1} \\
+        \sum_{i = 0}^{\infty} a^i &= \frac{1}{1 - a} \text{ where } a < 1
+    \end{align*}
+
+    \hypertarget{polynomials}{%
+\subsubsection{Polynomials}\label{polynomials}}
+
+A polynomial function has the form
+
+\begin{align*}
+f(n) = a_0 +a_1n+a_2n^2 +a_3n^3 +···+a_dn^d 
+\end{align*}
+
+where \(a_0\) , \(a_1\) , . . . , \(a_d\) are constants, called the
+\textbf{coefficients} of the polynomial, and \(a^d\neq0\).
+
+Integer \(d\), which indicates the highest power in the polynomial, is
+called the \textbf{degree} of the polynomial.
+
+    \hypertarget{comparing-growth-rates}{%
+\subsubsection{Comparing Growth Rates}\label{comparing-growth-rates}}
+
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{11}{\boxspacing}
+\prompt{In}{incolor}{16}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} remember to evaluate this cell first!}
 \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pylab} \PY{k}{as} \PY{n+nn}{plt}
@@ -700,7 +802,7 @@ This is called the \textbf{asymptotic behaviour}
 \end{tcolorbox}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{26}{\boxspacing}
+\prompt{In}{incolor}{17}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{n}{count} \PY{o}{=} \PY{l+m+mi}{50}
 \PY{n}{xs} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mf}{0.1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{count}\PY{p}{)}
@@ -726,23 +828,192 @@ This is called the \textbf{asymptotic behaviour}
 \end{tcolorbox}
 
             \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
-\prompt{Out}{outcolor}{26}{\boxspacing}
+\prompt{Out}{outcolor}{17}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-<matplotlib.legend.Legend at 0x12b063730>
+<matplotlib.legend.Legend at 0x10fe110d0>
 \end{Verbatim}
 \end{tcolorbox}
         
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{complexity_analysis_files/complexity_analysis_14_1.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{complexity_analysis_files/complexity_analysis_23_1.png}
     \end{center}
     { \hspace*{\fill} \\}
     
-    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
-\begin{Verbatim}[commandchars=\\\{\}]
+    \begin{longtable}[]{@{}lllllll@{}}
+\toprule
+constant & logarithm & linear & n-log-n & quadratic & cubic &
+exponential \\
+\midrule
+\endhead
+1 & \(log(n)\) & \(n\) & \(nlogn\) & \(n^2\) & \(n^3\) & \(a^n\) \\
+\bottomrule
+\end{longtable}
 
-\end{Verbatim}
-\end{tcolorbox}
+    \hypertarget{the-ceiling-and-floor-functions}{%
+\subparagraph{The Ceiling and Floor
+Functions}\label{the-ceiling-and-floor-functions}}
+
+\begin{itemize}
+\tightlist
+\item
+  \(\lceil x \rceil =\) the largest integer less than or equal to \(x\).
+\item
+  \(\lfloor x \rfloor =\) the smallest integer greater than or equal to
+  \(x\).
+\end{itemize}
+
+    \hypertarget{asymptotic-analysis}{%
+\section{3.3 Asymptotic Analysis}\label{asymptotic-analysis}}
+
+\begin{itemize}
+\tightlist
+\item
+  In algorithm analysis, we focus on the growth rate of the running time
+  as a function of the input size \(n\), taking a ``big-picture''
+  approach.
+\item
+  For example, it is often enough just to know that the running time of
+  an algorithm \textbf{grows proportionally} to \(n\).
+\end{itemize}
+
+    \textbf{A function that returns the maximum value of a Python list.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{def}\NormalTok{ find }\BuiltInTok{max}\NormalTok{(data):}
+\NormalTok{”””Return the maximum element }\ImportTok{from}\NormalTok{ a nonempty Python }\BuiltInTok{list}\NormalTok{.””” }
+\NormalTok{biggest }\OperatorTok{=}\NormalTok{ data[}\DecValTok{0}\NormalTok{]                       }\CommentTok{\# The initial value to beat}
+\ControlFlowTok{for}\NormalTok{ val }\KeywordTok{in}\NormalTok{ data:                        }\CommentTok{\# For each value:}
+ \ControlFlowTok{if}\NormalTok{ val }\OperatorTok{\textgreater{}}\NormalTok{ biggest                       }\CommentTok{\# if it is greater than the best so far,}
+\NormalTok{        biggest }\OperatorTok{=}\NormalTok{ val                  }\CommentTok{\# we have found a new best (so far)         }
+ \ControlFlowTok{return}\NormalTok{ biggest                        }\CommentTok{\# When loop ends, biggest is the max}
+\end{Highlighting}
+\end{Shaded}
+
+    This is a classic example of an algorithm with a running time that grows
+\textbf{proportional to \(n\)}, as the loop executes once for each data
+element, with some fixed number of primitive operations executing for
+each pass.
+
+    \hypertarget{the-big-oh-notation}{%
+\subsection{3.3.1 The ``Big-Oh'' Notation}\label{the-big-oh-notation}}
+
+\begin{itemize}
+\tightlist
+\item
+  Let \(f(n)\) and \(g(n)\) be functions mapping positive integers to
+  positive real numbers.
+\item
+  We say that \(f(n)\) is \(O(g(n))\)
+\item
+  if there is a real constant \(c > 0\) and
+\item
+  an integer constant \(n_0 \ge 1\) such that \[
+  f(n)\le cg(n) 
+  \] for \(n\ge n_0\).
+\end{itemize}
+
+    \hypertarget{example-the-function-8n-5-is-on.}{%
+\paragraph{\texorpdfstring{Example : The function \(8n + 5\) is
+\(O(n)\).}{Example : The function 8n + 5 is O(n).}}\label{example-the-function-8n-5-is-on.}}
+
+\textbf{Justification}: - By the big-Oh definition, we need to find a
+real constant \(c > 0\) and an integer constant \(n0\ge 1\) such that
+\(8n+5 \le cn\) for every integer \(n\ge n_0\). - It is easy to see that
+a possible choice is \(c = 9\) and \(n_0 = 5\). - Indeed, this is one of
+infinitely many choices available because there is a trade-off between
+\(c\) and \(n_0\). - For example, we could rely on constants \(c = 13\)
+and \(n_0 = 1\).
+
+    \hypertarget{proposition-the-algorithm-find-max-for-computing-the-maximum-element-of-a-list-of-n-numbers-runs-in-on-time.}{%
+\subparagraph{Proposition: The algorithm, find max, for computing the
+maximum element of a list of n numbers, runs in O(n)
+time.}\label{proposition-the-algorithm-find-max-for-computing-the-maximum-element-of-a-list-of-n-numbers-runs-in-on-time.}}
+
+\textbf{Justification}
+
+\begin{itemize}
+\tightlist
+\item
+  The initialization before the loop begins requires only a constant
+  number of primitive operations.
+\item
+  Each iteration of the loop also requires only a con- stant number of
+  primitive operations.
+\item
+  The loop executes \(n\) times.
+\item
+  The number of primitive operations being \(c' + c".n\) for appropriate
+  constants \(c'\) and \(c"\)
+\end{itemize}
+
+    \hypertarget{example-5n4-3n3-2n2-4n1-is-on4.}{%
+\paragraph{\texorpdfstring{Example: \(5n^4 +3n^3 +2n^2 +4n+1\) is
+\(O(n4)\).}{Example: 5n\^{}4 +3n\^{}3 +2n\^{}2 +4n+1 is O(n4).}}\label{example-5n4-3n3-2n2-4n1-is-on4.}}
+
+\textbf{Justification}: Note that
+\(5n^4+3n^3+2n^2+4n+1~~\le(5+3+2+4+1)n^4 =cn^4\), for \(c=15\),when
+\(n\ge n_0 =1\).
+
+Thus, the highest-degree term in a polynomial is the term that
+determines the asymptotic growth rate of that polynomial
+
+    \textbf{Example}: \(5n^2 +3n log n+2n+5\) is \(O(n^2)\).
+
+\textbf{Example}: \(20n^3 +10nlogn+5\) is \(O(n^3)\).
+
+\textbf{Example}: \(2^n+2\) is \(O(2^n)\).
+
+    \hypertarget{big-omega-notation}{%
+\subsubsection{3.3.2 Big-Omega Notation}\label{big-omega-notation}}
+
+\begin{itemize}
+\tightlist
+\item
+  Let \(f(n)\) and \(g(n)\) be functions mapping positive integers to
+  positive real numbers.
+\item
+  We say that \(f(n)\) is \(\Omega(g(n))\)
+\item
+  if there is a real constant \(c > 0\) and
+\item
+  an integer constant \(n_0 \ge 1\) such that \[
+  f(n)\ge cg(n) 
+  \] for \(n\ge n_0\).
+\end{itemize}
+
+    \hypertarget{example-3n-log-n-2n-is-omegan-log-n.}{%
+\paragraph{\texorpdfstring{Example: \(3n log n − 2n\) is
+\(\Omega(n log n)\).}{Example: 3n log n − 2n is \textbackslash Omega(n log n).}}\label{example-3n-log-n-2n-is-omegan-log-n.}}
+
+\textbf{Justification}: \(3nlogn−2n = nlogn+2n(logn−1) \ge n log n\) for
+\(n \ge 2\); hence, we can take \(c=1\) and \(n_0 =2\) in this case.
+
+    \hypertarget{big-theta-notation}{%
+\subsubsection{3.3.3 Big-Theta Notation}\label{big-theta-notation}}
+
+\begin{itemize}
+\tightlist
+\item
+  Let \(f(n)\) and \(g(n)\) be functions mapping positive integers to
+  positive real numbers.
+\item
+  We say that \(f(n)\) is \(\Theta(g(n))\) if \(f(n)\) is \(O(g(n))\)
+  and \(f(n)\) is \(\Omega(g(n))\)
+\item
+  if there is two real constant \(c_1 > 0\) and \(c_2 > 0\) and
+\item
+  an integer constant \(n_0 \ge 1\) such that \[
+  c_1g(n) \le f(n)\ge c_2g(n) 
+  \] for \(n\ge n_0\).
+\end{itemize}
+
+    \hypertarget{example-3nlogn4n5logn-is-thetanlogn.}{%
+\paragraph{\texorpdfstring{Example: \(3nlogn+4n+5logn\) is
+\(\Theta(nlogn)\).}{Example: 3nlogn+4n+5logn is \textbackslash Theta(nlogn).}}\label{example-3nlogn4n5logn-is-thetanlogn.}}
+
+\textbf{Justification}: \(3nlogn \le 3nlogn+4n+5logn \le (3+4+5)nlogn\)
+for \(n \ge 2\)
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
