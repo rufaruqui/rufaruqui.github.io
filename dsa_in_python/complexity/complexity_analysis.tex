@@ -411,10 +411,9 @@ Algorithims}\label{the-analysis-of-algorithims}}
   We implement the algorithm in a given programming language.
 
   We count how many additions, multiplications, assignments,
-  etc.\textasciitilde are needed
+  etc.\textasciitilde are needed for an input of a given size.
 
-  for an input of a given size. Additionally, we have to count all
-  storage accesses.
+  Additionally, we have to count all storage accesses.
 
   We look up the amount of time that is needed for the different
   operations in the processor handbook.
@@ -443,7 +442,7 @@ Algorithims}\label{the-analysis-of-algorithims}}
 \(S~=~1+2+3+ ...+n\)
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{14}{\boxspacing}
+\prompt{In}{incolor}{32}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{k+kn}{import} \PY{n+nn}{time}
 
@@ -466,11 +465,11 @@ Algorithims}\label{the-analysis-of-algorithims}}
 \end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-Sum is 50005000 required   0.000841 seconds
-Sum is 50005000 required   0.001362 seconds
-Sum is 50005000 required   0.001088 seconds
-Sum is 50005000 required   0.001040 seconds
-Sum is 50005000 required   0.001048 seconds
+Sum is 50005000 required   0.000954 seconds
+Sum is 50005000 required   0.000987 seconds
+Sum is 50005000 required   0.000973 seconds
+Sum is 50005000 required   0.000983 seconds
+Sum is 50005000 required   0.001019 seconds
     \end{Verbatim}
 
     \hypertarget{alternative-approach}{%
@@ -485,7 +484,7 @@ Sum is 50005000 required   0.001048 seconds
 \(S = \frac{n* (n+1)} {2}\)
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{15}{\boxspacing}
+\prompt{In}{incolor}{33}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{k}{def} \PY{n+nf}{sum\PYZus{}of\PYZus{}n\PYZus{}3}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{:}
     \PY{n}{start} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
@@ -502,7 +501,7 @@ Sum is 50005000 required   0.001048 seconds
 \end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-V2: Sum is 50005000 required   0.000001 seconds
+V2: Sum is 50005000 required   0.000002 seconds
 V2: Sum is 50005000 required   0.000001 seconds
 V2: Sum is 50005000 required   0.000000 seconds
 V2: Sum is 50005000 required   0.000001 seconds
@@ -514,6 +513,7 @@ V2: Sum is 50005000 required   0.000001 seconds
 Analysis}\label{moving-beyond-experimental-analysis}}
 
 \begin{itemize}
+\tightlist
 \item
   Our goal is to develop an approach to analyzing the efficiency of
   algorithms that:
@@ -531,18 +531,6 @@ Analysis}\label{moving-beyond-experimental-analysis}}
   \item
     Takes into account all possible inputs.
   \end{enumerate}
-\item ~
-  \hypertarget{counting-primitive-operations}{%
-  \subsubsection{Counting Primitive
-  Operations}\label{counting-primitive-operations}}
-\item ~
-  \hypertarget{measuring-operations-as-a-function-of-input-size}{%
-  \subsubsection{Measuring Operations as a Function of Input
-  Size}\label{measuring-operations-as-a-function-of-input-size}}
-\item ~
-  \hypertarget{focusing-on-the-worst-case-input}{%
-  \subsubsection{Focusing on the Worst-Case
-  Input}\label{focusing-on-the-worst-case-input}}
 \end{itemize}
 
     \hypertarget{counting-primitive-operations}{%
@@ -789,7 +777,7 @@ called the \textbf{degree} of the polynomial.
 \subsubsection{Comparing Growth Rates}\label{comparing-growth-rates}}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{16}{\boxspacing}
+\prompt{In}{incolor}{34}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} remember to evaluate this cell first!}
 \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pylab} \PY{k}{as} \PY{n+nn}{plt}
@@ -802,7 +790,7 @@ called the \textbf{degree} of the polynomial.
 \end{tcolorbox}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{17}{\boxspacing}
+\prompt{In}{incolor}{35}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{n}{count} \PY{o}{=} \PY{l+m+mi}{50}
 \PY{n}{xs} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mf}{0.1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{count}\PY{p}{)}
@@ -828,9 +816,9 @@ called the \textbf{degree} of the polynomial.
 \end{tcolorbox}
 
             \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
-\prompt{Out}{outcolor}{17}{\boxspacing}
+\prompt{Out}{outcolor}{35}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-<matplotlib.legend.Legend at 0x10fe110d0>
+<matplotlib.legend.Legend at 0x10fe95d60>
 \end{Verbatim}
 \end{tcolorbox}
         
@@ -1015,6 +1003,111 @@ determines the asymptotic growth rate of that polynomial
 \textbf{Justification}: \(3nlogn \le 3nlogn+4n+5logn \le (3+4+5)nlogn\)
 for \(n \ge 2\)
 
+    \hypertarget{examples-of-algorithm-analysis}{%
+\subsubsection{Examples of Algorithm
+Analysis}\label{examples-of-algorithm-analysis}}
+
+\textbf{Element Uniqueness:} We are given a single sequence \(S\) with
+\(n\) elements and asked whether all elements of that collection are
+distinct from each other.
+
+    \begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{def}\NormalTok{ unique1(S):}
+  \CommentTok{"""Return True if there are no duplicate elements in sequence S."""}
+  \ControlFlowTok{for}\NormalTok{ j }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(}\BuiltInTok{len}\NormalTok{(S)):}
+    \ControlFlowTok{for}\NormalTok{ k }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(j}\OperatorTok{+}\DecValTok{1}\NormalTok{, }\BuiltInTok{len}\NormalTok{(S)):}
+      \ControlFlowTok{if}\NormalTok{ S[j] }\OperatorTok{==}\NormalTok{ S[k]:}
+        \ControlFlowTok{return} \VariableTok{False}              \CommentTok{\# found duplicate pair}
+  \ControlFlowTok{return} \VariableTok{True}                     \CommentTok{\# if we reach this, elements were unique}
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{unique1}\PY{p}{(}\PY{n}{S}\PY{p}{)}\PY{p}{:}
+  \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Return True if there are no duplicate elements in sequence S.\PYZdq{}\PYZdq{}\PYZdq{}}
+  \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{S}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{j}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{S}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+      \PY{k}{if} \PY{n}{S}\PY{p}{[}\PY{n}{j}\PY{p}{]} \PY{o}{==} \PY{n}{S}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{:}
+        \PY{k}{return} \PY{k+kc}{False}              \PY{c+c1}{\PYZsh{} found duplicate pair}
+  \PY{k}{return} \PY{k+kc}{True}                     \PY{c+c1}{\PYZsh{} if we reach this, elements were unique}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{S1}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{19}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{34}\PY{p}{]}
+\PY{n}{S2}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{18}\PY{p}{,}\PY{l+m+mi}{23}\PY{p}{,}\PY{l+m+mi}{78}\PY{p}{,}\PY{l+m+mi}{23}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{unique1}\PY{p}{(}\PY{n}{S1}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{unique1}\PY{p}{(}\PY{n}{S2}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+True
+False
+    \end{Verbatim}
+
+    \begin{Shaded}
+\begin{Highlighting}[]
+
+\KeywordTok{def}\NormalTok{ unique2(S):}
+  \CommentTok{"""Return True if there are no duplicate elements in sequence S."""}
+\NormalTok{  temp }\OperatorTok{=} \BuiltInTok{sorted}\NormalTok{(S)                }\CommentTok{\# create a sorted copy of S}
+  \ControlFlowTok{for}\NormalTok{ j }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(}\DecValTok{1}\NormalTok{, }\BuiltInTok{len}\NormalTok{(temp)):}
+    \ControlFlowTok{if}\NormalTok{ temp[j}\OperatorTok{{-}}\DecValTok{1}\NormalTok{] }\OperatorTok{==}\NormalTok{ temp[j]:}
+      \ControlFlowTok{return} \VariableTok{False}                \CommentTok{\# found duplicate pair}
+  \ControlFlowTok{return} \VariableTok{True}                     \CommentTok{\# if we reach this, elements were unique}
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{38}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{unique2}\PY{p}{(}\PY{n}{S}\PY{p}{)}\PY{p}{:}
+  \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Return True if there are no duplicate elements in sequence S.\PYZdq{}\PYZdq{}\PYZdq{}}
+  \PY{n}{temp} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{S}\PY{p}{)}                \PY{c+c1}{\PYZsh{} create a sorted copy of S}
+  \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{temp}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{k}{if} \PY{n}{temp}\PY{p}{[}\PY{n}{j}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{==} \PY{n}{temp}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{:}
+      \PY{k}{return} \PY{k+kc}{False}                \PY{c+c1}{\PYZsh{} found duplicate pair}
+  \PY{k}{return} \PY{k+kc}{True}                     \PY{c+c1}{\PYZsh{} if we reach this, elements were unique}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{S1}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{19}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{34}\PY{p}{]}
+\PY{n}{S2}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{18}\PY{p}{,}\PY{l+m+mi}{23}\PY{p}{,}\PY{l+m+mi}{78}\PY{p}{,}\PY{l+m+mi}{23}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{unique2}\PY{p}{(}\PY{n}{S1}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{unique2}\PY{p}{(}\PY{n}{S2}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+True
+False
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{40}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{sorted}\PY{p}{(}\PY{n}{S1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{40}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[2, 3, 4, 12, 19, 34]
+\end{Verbatim}
+\end{tcolorbox}
+        
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
