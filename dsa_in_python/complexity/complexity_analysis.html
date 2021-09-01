@@ -13143,7 +13143,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
@@ -13179,11 +13179,11 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Sum is 50005000 required   0.000954 seconds
-Sum is 50005000 required   0.000987 seconds
-Sum is 50005000 required   0.000973 seconds
-Sum is 50005000 required   0.000983 seconds
-Sum is 50005000 required   0.001019 seconds
+<pre>Sum is 50005000 required   0.002163 seconds
+Sum is 50005000 required   0.001309 seconds
+Sum is 50005000 required   0.001292 seconds
+Sum is 50005000 required   0.001572 seconds
+Sum is 50005000 required   0.001296 seconds
 </pre>
 </div>
 </div>
@@ -13206,20 +13206,20 @@ $$
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In&nbsp;[49]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">sum_of_n_3</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-    <span class="n">the_sum</span> <span class="o">=</span> <span class="p">((</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">n</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span>
+    <span class="n">the_sum</span> <span class="o">=</span> <span class="p">((</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">n</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
 
     <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="n">the_sum</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
 
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;V2: Sum is </span><span class="si">%d</span><span class="s2"> required </span><span class="si">%10.6f</span><span class="s2"> seconds&quot;</span> <span class="o">%</span> <span class="n">sum_of_n_3</span><span class="p">(</span><span class="mi">10000</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;V2: Sum is </span><span class="si">%10.3f</span><span class="s2"> required </span><span class="si">%10.6f</span><span class="s2"> seconds&quot;</span> <span class="o">%</span> <span class="n">sum_of_n_3</span><span class="p">(</span><span class="mi">10000</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -13236,11 +13236,16 @@ $$
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>V2: Sum is 50005000 required   0.000002 seconds
-V2: Sum is 50005000 required   0.000001 seconds
-V2: Sum is 50005000 required   0.000000 seconds
-V2: Sum is 50005000 required   0.000001 seconds
-V2: Sum is 50005000 required   0.000001 seconds
+<pre>V2: Sum is 50005000.000 required   0.000001 seconds
+V2: Sum is 50005000.000 required   0.000001 seconds
+V2: Sum is 50005000.000 required   0.000002 seconds
+V2: Sum is 50005000.000 required   0.000001 seconds
+V2: Sum is 50005000.000 required   0.000002 seconds
+V2: Sum is 50005000.000 required   0.000001 seconds
+V2: Sum is 50005000.000 required   0.000001 seconds
+V2: Sum is 50005000.000 required   0.000001 seconds
+V2: Sum is 50005000.000 required   0.000001 seconds
+V2: Sum is 50005000.000 required   0.000001 seconds
 </pre>
 </div>
 </div>
