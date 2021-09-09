@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
 
-<title>index slides</title>
+<title>Arrays-draft slides</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13207,115 +13207,292 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<center> <h1> ETE-2324: Data Structures and Algorithms</h1> </center>
+<h1>3. Arrays</h1>
 </div>
 </div>
-</div>
+</div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Course-Contents">Course Contents<a class="anchor-link" href="#Course-Contents">&#182;</a></h2><ul>
-<li><strong>Introduction to Data Structures and Algorithms</strong><ul>
-<li>Reading:<ul>
-<li><a href="https://runestone.academy/runestone/books/published/pythonds3/Introduction/toctree.html">PythonDS- Chapter 1</a></li>
-</ul>
-</li>
-<li>Notebook:<a href="https://github.com/rufaruqui/rufaruqui.github.io/blob/main/dsa_in_python/introduction/introduction.ipynb">Introduction</a></li>
-<li>Lectures: <a href="introduction/introduction.slides.html">Slides</a>,  <a href="introduction/introduction.pdf">PDF</a>,  <a href="introduction/introduction.html">HTML</a> <a href="introduction/introduction.tex">Latex</a></li>
-</ul>
-</li>
-</ul>
+<h3 id="3.1-The-Array-structure">3.1 The Array structure<a class="anchor-link" href="#3.1-The-Array-structure">&#182;</a></h3><p>A <strong>one-dimensional array</strong> is composed of multiple sequential elements stored in contiguous bytes of memory and allows for random access to the individual elements.</p>
+<p><img src="fig2.1.png" alt="A sample 1-D array consisting of 11 elements."></p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="3.1.1-Why-Study-Arrays?">3.1.1 Why Study Arrays?<a class="anchor-link" href="#3.1.1-Why-Study-Arrays?">&#182;</a></h3><p>The array structure looks very similar to Python’s list structure. That’s because the two structures are both sequences that are composed of multiple sequential elements that can be accessed by position. But there are two major differences between the array and the list.</p>
 <ul>
-<li><strong>The Analysis of Algorithms</strong><ul>
-<li>Reading: <ul>
-<li>[Goodrich- Chapter 3]</li>
-<li><a href="https://runestone.academy/runestone/books/published/pythonds3/AlgorithmAnalysis/toctree.html">PythonDS-Chapter 3</a></li>
-</ul>
-</li>
-<li>Notebook: <a href="complexity/complexity_analysis.ipnyb">Complexity Analysis</a></li>
-<li>Lectures: <a href="complexity/complexity_analysis.slides.html">Slides</a>,  <a href="complexity/complexity_analysis.pdf">PDF</a> <a href="complexity/complexity_analysis.html">HTML</a> <a href="complexity/complexity_analysis.tex">Latex</a></li>
-<li>Extra slides: <a href="complexity/cs161_stanford_analysis.pdf">CS161_at_Staford_Slides</a></li>
-</ul>
-</li>
-<li><strong>Arrays and Sequences</strong><ul>
-<li>Reading: </li>
-<li>Lectures: <a href="arrays/arrays.slides.html">Slides</a>,  <a href="arrays/arrays.pdf">PDF</a> <a href="arrays/arrays.html">HTML</a> <a href="arrays/arrays.tex">Latex</a></li>
-</ul>
-</li>
-<li><strong>Recursion</strong><ul>
-<li>Fibonacci numbers </li>
-<li>Master Theorem</li>
-</ul>
-</li>
-<li><strong>Sorting and Searching Algorithms</strong><ul>
-<li>Search: <ul>
-<li>Linear Search</li>
-<li>Binary Search</li>
-</ul>
-</li>
-<li>Sorting: <ul>
-<li>Insertion sort </li>
-<li>Bubble sort </li>
-<li>Quick sort </li>
-<li>Merge Sort</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>Stacks, Queues and related Algorithms</strong></li>
-<li><strong>Linked Lists and related Algorithms</strong></li>
-<li><strong>Trees and Tree Algorithms</strong></li>
-<li><strong>Graph and Graph Algorithms</strong></li>
+<li><strong>First</strong>, an array has a limited number of operations, which commonly include those for array creation, reading a value from a specific element, and writing a value to a specific element. The list, on the other hand, provides a large number of operations for working with the contents of the list.</li>
+<li><strong>Second</strong>, the list can grow and shrink during execution as elements are added or removed while the size of an array cannot be changed after it has been created.</li>
 </ul>
 
 </div>
 </div>
-</div>
+</div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Additional-Resources">Additional Resources<a class="anchor-link" href="#Additional-Resources">&#182;</a></h2><ul>
-<li><a href="https://www.cs.usfca.edu/~galles/visualization/Algorithms.html">Data Stuctures and Algorithms Visulization</a> -- excellent resources for understanding both structures and algorithms.</li>
+<h3 id="3.1.2-The-Array-Abstract-Data-Type">3.1.2 The Array Abstract Data Type<a class="anchor-link" href="#3.1.2-The-Array-Abstract-Data-Type">&#182;</a></h3><p>A <strong>one-dimensional</strong> array is a collection of contiguous elements in which individual elements are identified by a unique integer subscript starting with zero. Once an array is created, its size cannot be changed.</p>
+<ul>
+<li><strong>Array( size )</strong>: Creates a one-dimensional array consisting of size elements with each element initially set to None. size must be greater than zero.</li>
+<li><strong>length ()</strong>: Returns the length or number of elements in the array.</li>
+<li><strong>getitem ( index )</strong>: Returns the value stored in the array at element position index. The index argument must be within the valid range. Accessed using the subscript operator.</li>
+<li><strong>setitem ( index, value )</strong>: Modifies the contents of the array element at position index to contain value. The index must be within the valid range. Accessed using the subscript operator.</li>
+<li><strong>clearing( value )</strong>: Clears the array by setting every element to value.</li>
+<li><strong>iterator ()</strong>: Creates and returns an iterator that can be used to traverse the elements of the array.</li>
 </ul>
 
 </div>
 </div>
-</div>
+</div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Textbooks">Textbooks<a class="anchor-link" href="#Textbooks">&#182;</a></h2><ul>
-<li><strong>[PythnDS]</strong> <a href="https://runestone.academy/runestone/books/published/pythonds3/index.html">Problem Solving with Algorithms and Data Structures using Python</a></li>
-<li><strong>[Goodrich]</strong> Michael T. Goodrich, Roberto Tamassia, Michael H. Goldwasser. <strong>Data Structures and Algorithms in Python</strong> Wiley (2013)</li>
-</ul>
-<h2 id="Reference-Books">Reference Books<a class="anchor-link" href="#Reference-Books">&#182;</a></h2><ul>
-<li><strong>[Cormen]</strong> Cormen, Thomas, Charles Leiserson, Ronald Rivest, and Clifford Stein. <strong>Introduction to Algorithms</strong>. 3rd ed. MIT Press, 2009. ISBN: 9780262033848.</li>
-</ul>
+<div class="highlight"><pre><span></span><span class="c1"># Fill a 1-D array with random values, then print them, one per line. </span>
+<span class="kn">from</span> <span class="nn">array</span> <span class="kn">import</span> <span class="n">Array</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="c1"># The constructor is called to create the array.</span>
+<span class="n">valueList</span> <span class="o">=</span> <span class="n">Array</span><span class="p">(</span> <span class="mi">100</span> <span class="p">)</span>
+
+<span class="c1"># Fill the array with random floating-point values. for i in range( len( valueList ) ) :</span>
+<span class="n">valueList</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+
+<span class="c1"># Print the values, one per line.</span>
+<span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">valueList</span> <span class="p">:</span> 
+    <span class="nb">print</span><span class="p">(</span> <span class="n">value</span> <span class="p">)</span>
+</pre></div>
 
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">ctypes</span>
+
+<span class="n">ArrayType</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">py_object</span> 
+
+<span class="n">slots</span> <span class="o">=</span> <span class="n">ArrayType</span><span class="p">()</span>
+
+<span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">p</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1
+1000
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[117]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Implements the Array ADT using array capabilities of the ctypes module.</span>
+<span class="kn">import</span> <span class="nn">ctypes</span>
+
+<span class="k">class</span> <span class="nc">Array</span> <span class="p">:</span> 
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">size</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Creates an array with size elements.&#39;&#39;&#39;</span>
+        <span class="k">assert</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Array size must be &gt; 0&quot;</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="c1"># Create the array structure using the ctypes module.</span>
+        <span class="n">ArrayType</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">py_object</span> <span class="o">*</span> <span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="n">ArrayType</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">expand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Double the cpacity of the array&#39;&#39;&#39;</span>
+        <span class="n">ArrayType</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">py_object</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">newArray</span> <span class="o">=</span> <span class="n">ArrayType</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">newArray</span><span class="p">)</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="n">newArray</span><span class="p">;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="mi">2</span>
+        
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">:</span> 
+            <span class="n">other</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+            <span class="n">i</span> <span class="o">+=</span><span class="mi">1</span>
+            
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span> 
+        <span class="sd">&#39;&#39;&#39;Returns the size of the array.&#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+    
+    
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">index</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Gets the contents of the index element&#39;&#39;&#39;</span>
+        <span class="k">assert</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="s2">&quot;Array subscript out of range&quot;</span> 
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+    
+     
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Puts the value in the array element at index position&#39;&#39;&#39;</span>
+        <span class="k">assert</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="s2">&quot;Array subscript out of range&quot;</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    
+     
+    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Clears the array by setting each element to the given value&#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    
+           
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Returns the array&#39;s iterator for traversing the elements&#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">MyArrayIterator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">)</span>
+    
+<span class="k">class</span> <span class="nc">MyArrayIterator</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrayItems</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_arrayRef</span> <span class="o">=</span> <span class="n">arrayItems</span><span class="p">;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curInd</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        
+         
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+    
+    <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">curInd</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arrayRef</span><span class="p">):</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrayRef</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">curInd</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">curInd</span> <span class="o">+=</span><span class="mi">1</span>
+            <span class="k">return</span> <span class="n">item</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span> 
+            
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[123]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Array</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">p</span><span class="o">.</span><span class="n">clear</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+<span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;cat&quot;</span>
+<span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;tiger&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="n">q</span> <span class="o">=</span> <span class="n">Array</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">p</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+
+<span class="n">help</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">clear</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+
+<span class="n">p</span><span class="o">.</span><span class="n">clear</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+<span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;dog&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+
+<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">p</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>5
+cat
+tiger
+cat
+tiger
+Help on method clear in module __main__:
+
+clear(value) method of __main__.Array instance
+    Clears the array by setting each element to the given value
+
+&lt;__main__.Array object at 0x106357a00&gt;
+10
+_
+dog
+_
+_
+dog
+_
+_
+_
+_
+_
+_
+_
+_
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div><aside class="notes">
+
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Environment-Setup:">Environment Setup:<a class="anchor-link" href="#Environment-Setup:">&#182;</a></h2><ul>
-<li>Python 3 and Jupyter Installation<ul>
-<li><a href="https://wsvincent.com/install-python/">Python 3 Installation &amp; Setup Guide</a></li>
-<li><a href="https://www.datacamp.com/community/tutorials/installing-anaconda-windows">Anaconda Installation</a></li>
-<li><a href="https://www.datacamp.com/community/tutorials/installing-jupyter-notebook">Jupyter Installation Guide</a></li>
-</ul>
-</li>
-</ul>
-<h2 id="Python-Tutorials">Python Tutorials<a class="anchor-link" href="#Python-Tutorials">&#182;</a></h2><ul>
-<li>Part 1: <a href="python/python_p1.slides.html">Slides</a>, <a href="https://github.com/rufaruqui/rufaruqui.github.io/blob/main/dsa_in_python/python_p1.ipnyb">Notebook</a>,  [HTML]python/(python_p1.html)</li>
-<li>Part 2: <a href="python/python_p2.slides.html">Slides</a>,<a href="https://github.com/rufaruqui/rufaruqui.github.io/blob/main/dsa_in_python/python_p2.ipnyb">Notebook</a>,  <a href="python/python_p2.html">HTML</a></li>
-<li>Part 3: <a href="python/python_p2.slides.html">Slides</a>,<a href="https://github.com/rufaruqui/rufaruqui.github.io/blob/main/dsa_in_python/python_p3.ipnyb">Notebook</a>,  <a href="python_p3.html">HTML</a></li>
-<li>List in Python:  <a href="https://github.com/rufaruqui/rufaruqui.github.io/blob/main/dsa_in_python/python_list.ipnyb">Notebook</a>,  <a href="python/python_list.html">HTML</a></li>
-</ul>
+<h3 id="Reference:">Reference:<a class="anchor-link" href="#Reference:">&#182;</a></h3><p>[1] <strong>Chapter 2</strong>: Necaise, Rance D - Data structures and algorithms using Python-John Wiley &amp; Sons (2010_2011)</p>
 
 </div>
 </div>
 </div>
+</aside>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
