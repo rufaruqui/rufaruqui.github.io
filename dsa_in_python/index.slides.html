@@ -13237,35 +13237,19 @@ a.anchor-link {
 <li>Extra slides: <a href="complexity/cs161_stanford_analysis.pdf">CS161_at_Staford_Slides</a></li>
 </ul>
 </li>
-<li><strong>Arrays and Sequences</strong><ul>
-<li>Reading: </li>
+<li><p><strong>Arrays</strong></p>
+<ul>
+<li>Reading: [Goodrich- Chapter 5]</li>
 <li>Lectures: <a href="arrays/arrays.slides.html">Slides</a>,  <a href="arrays/arrays.pdf">PDF</a> <a href="arrays/arrays.html">HTML</a> <a href="arrays/arrays.tex">Latex</a></li>
 </ul>
 </li>
-<li><strong>Recursion</strong><ul>
-<li>Fibonacci numbers </li>
-<li>Master Theorem</li>
+<li><p><strong>Stack and Queue</strong></p>
+<ul>
+<li>Reading: <a href="https://runestone.academy/runestone/books/published/pythonds3/BasicDS/WhatisaStack.html">Stack -- PythonDS- Chapter 4</a></li>
+<li>Reading: <a href="https://runestone.academy/runestone/books/published/pythonds3/BasicDS/WhatIsaQueue.html">Queue -- PythonDS- Chapter 4</a></li>
+<li>Lectures:</li>
 </ul>
 </li>
-<li><strong>Sorting and Searching Algorithms</strong><ul>
-<li>Search: <ul>
-<li>Linear Search</li>
-<li>Binary Search</li>
-</ul>
-</li>
-<li>Sorting: <ul>
-<li>Insertion sort </li>
-<li>Bubble sort </li>
-<li>Quick sort </li>
-<li>Merge Sort</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>Stacks, Queues and related Algorithms</strong></li>
-<li><strong>Linked Lists and related Algorithms</strong></li>
-<li><strong>Trees and Tree Algorithms</strong></li>
-<li><strong>Graph and Graph Algorithms</strong></li>
 </ul>
 
 </div>
@@ -13315,6 +13299,116 @@ a.anchor-link {
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>False
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Stack</span><span class="p">:</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+        
+    <span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="n">item</span>
+    
+    <span class="k">def</span> <span class="nf">peek</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">==</span> <span class="p">[]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">exp</span> <span class="o">=</span> <span class="s2">&quot;(a+b) / (3+4)&quot;</span>
+
+<span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">exp</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>(
+a
++
+b
+)
+ 
+/
+ 
+(
+3
++
+4
+)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
