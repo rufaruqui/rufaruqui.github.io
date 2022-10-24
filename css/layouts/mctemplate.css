@@ -132,7 +132,11 @@ li.spaced {
       height: 2.0em;
   list-style-type: number;
 	font-size: 9pt;
-}
+} 
+
+td {
+  font-size: 50px
+} 
 
 bibbase_paper_title {
   font-weight: bold;
