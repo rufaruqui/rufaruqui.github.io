@@ -1,0 +1,1904 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{python\_p2}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{namespaces}{%
+\subsection{Namespaces}\label{namespaces}}
+
+\begin{itemize}
+\tightlist
+\item
+  a namespace is a mapping from names to objects
+\item
+  a namespace can be implemented in different ways
+\item
+  currently most are implemented as dictionaries
+\item
+  there is no relation between names in different namespaces
+\item
+  a.b: b is an attribute of the object a
+\item
+  attributes can be read-only or writable
+\item
+  attributes may be deleted with del statement
+\item
+  namespaces are created at different times
+\item
+  namespaces can have different lifetimes
+\item
+  built-in names are contained in a namespace created at interpreter
+  start up and never deleted
+\item
+  global namespace for a module
+\item
+  local namespace for a function is created at the function call
+\item
+  and forgotten when the function exit (i.e., return or raise an
+  exception)
+\end{itemize}
+
+\hypertarget{scopes}{%
+\subsection{Scopes}\label{scopes}}
+
+\begin{itemize}
+\tightlist
+\item
+  a scope is a textual region where an unqualified reference to a name
+  attempts to find the name in the namespace
+\item
+  scopes are determined statically but used dynamically
+\item
+  local names, non-local non-global names, global names, built-in names
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{f0}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf}{g0}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{g0 is scoped}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{return} \PY{n}{g0}\PY{p}{(}\PY{p}{)}
+
+\PY{k}{try}\PY{p}{:}
+    \PY{n}{g0}\PY{p}{(}\PY{p}{)}
+\PY{k}{except} \PY{n+ne}{NameError} \PY{k}{as} \PY{n}{err}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{err}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{f0}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{sep}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+name 'g0' is not defined
+
+g0 is scoped
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{170}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{c+c1}{\PYZsh{} scope names}
+\PY{k}{def} \PY{n+nf}{scope\PYZus{}test}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf}{do\PYZus{}local}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{n}{var} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{local}\PY{l+s+s2}{\PYZdq{}}
+
+    \PY{k}{def} \PY{n+nf}{do\PYZus{}nonlocal}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{k}{nonlocal} \PY{n}{var}
+        \PY{n}{var} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{change}\PY{l+s+s2}{\PYZdq{}}
+
+    \PY{k}{def} \PY{n+nf}{do\PYZus{}global}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{k}{global} \PY{n}{var}
+        \PY{n}{var} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{changes var value}\PY{l+s+s2}{\PYZdq{}}
+
+    \PY{n}{var} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{unchanged}\PY{l+s+s2}{\PYZdq{}}
+    \PY{n}{do\PYZus{}local}\PY{p}{(}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{local assignment leaves var}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{var}\PY{p}{)}
+    \PY{n}{do\PYZus{}nonlocal}\PY{p}{(}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{nonlocal assignment makes var}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{var}\PY{p}{)}
+    \PY{n}{do\PYZus{}global}\PY{p}{(}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{global assignment does not}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{var}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{var value in current scope}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    
+\PY{n}{scope\PYZus{}test}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{global assignment}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{var}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{in global scope}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+local assignment leaves var unchanged
+nonlocal assignment makes var change
+global assignment does not change var value in current scope
+global assignment changes var value in global scope
+    \end{Verbatim}
+
+    \hypertarget{comprehensions}{%
+\subsection{Comprehensions}\label{comprehensions}}
+
+\begin{itemize}
+\tightlist
+\item
+  python can implement expressions that allow sequences to be built from
+  other sequences
+\item
+  comprehensions consist of:
+\item
+  input sequence
+\item
+  variable representing members of the input sequence
+\item
+  optional predicate expression
+\item
+  output expression producing an output sequence
+\item
+  comprehensions can be made with:
+\item
+  list, nested list, set, dictionaries
+\item
+  generators (or generator comprehension)
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{65}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{n}{l1} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}
+\PY{n}{l2} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}
+\PY{n}{l1\PYZus{}p\PYZus{}l2} \PY{o}{=} \PY{p}{[}\PY{n}{x}\PY{o}{+}\PY{n}{y} \PY{k}{for} \PY{n}{x}\PY{p}{,}\PY{n}{y} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{l1}\PY{p}{,}\PY{n}{l2}\PY{p}{)}\PY{p}{]} \PY{c+c1}{\PYZsh{} list comprehension}
+\PY{n}{l1\PYZus{}p\PYZus{}l2\PYZus{}} \PY{o}{=} \PY{p}{[}\PY{n}{x}\PY{o}{+}\PY{n}{y} \PY{k}{for} \PY{n}{x}\PY{p}{,}\PY{n}{y} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{l1}\PY{p}{,}\PY{n}{l2}\PY{p}{)} \PY{k}{if} \PY{n}{x}\PY{o}{+}\PY{n}{y}\PY{o}{\PYZgt{}}\PY{l+m+mi}{4}\PY{p}{]} \PY{c+c1}{\PYZsh{} with predicate}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{l1\PYZus{}p\PYZus{}l2}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{l1\PYZus{}p\PYZus{}l2\PYZus{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[2, 5, 4, 7, 6, 9]
+[5, 7, 6, 9]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{48}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{n}{l1} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}
+\PY{n}{l2} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}
+\PY{c+c1}{\PYZsh{} list comprehension}
+\PY{n}{v12} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{1} \PY{k}{if} \PY{n}{i}\PY{o}{==}\PY{n}{j} \PY{k}{else} \PY{l+m+mi}{0} \PY{k}{for} \PY{n}{i}\PY{p}{,}\PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{l1}\PY{p}{,}\PY{n}{l2}\PY{p}{)}\PY{p}{]} \PY{c+c1}{\PYZsh{} i==j vector 1 or 0}
+\PY{c+c1}{\PYZsh{} list comprehension can be nested}
+\PY{n}{m12} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1} \PY{k}{if} \PY{n}{i}\PY{o}{==}\PY{n}{j} \PY{k}{else} \PY{l+m+mi}{0} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{l1}\PY{p}{]}\PYZbs{}
+                         \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n}{l2}\PY{p}{]} \PY{c+c1}{\PYZsh{} i==j matrix 1 or 0}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{v12[i]=1 if l1[i]=l2[i]}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{ \PYZhy{}\PYZgt{} }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{v12}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{m12[i][j]=1 if l1[i]=l2[j]}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{ \PYZhy{}\PYZgt{} }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{m12}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+v12[i]=1 if l1[i]=l2[i]
+ ->  [0, 1, 0]
+
+m12[i][j]=1 if l1[i]=l2[j]
+ ->  [[0, 0, 0], [0, 1, 0], [0, 0, 0]]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{51}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{n}{names} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Mickey}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Minnie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Donald}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Daisy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Goofy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pluto}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{c+c1}{\PYZsh{} set comprehension}
+\PY{n}{m\PYZus{}char\PYZus{}set} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{name} \PY{k}{for} \PY{n}{name} \PY{o+ow}{in} \PY{n}{names} \PY{k}{if} \PY{n}{name}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{M}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}} \PY{c+c1}{\PYZsh{} M* characters}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{m\PYZus{}char\PYZus{}set}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\{'Minnie', 'Mickey'\}
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{67}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{n}{names} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Mickey}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mouse}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Minnie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mouse}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PYZbs{}
+         \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Donald}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{duck}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Daisy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{duck}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PYZbs{}
+         \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Goofy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pluto}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+\PY{c+c1}{\PYZsh{} dictionary comprehension}
+\PY{n}{ducks\PYZus{}char\PYZus{}dict} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{name} \PY{k}{for} \PY{n}{name} \PY{o+ow}{in} \PY{n}{names} \PY{k}{if} \PY{n}{names}\PY{p}{[}\PY{n}{name}\PY{p}{]}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{duck}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{ducks\PYZus{}char\PYZus{}dict}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\{'Daisy', 'Donald'\}
+    \end{Verbatim}
+
+    \hypertarget{generator-comprehension}{%
+\subsection{Generator comprehension}\label{generator-comprehension}}
+
+\begin{itemize}
+\tightlist
+\item
+  generators are iterators that:
+\item
+  can be iterated only once
+\item
+  do not store values
+\item
+  generate values on the fly
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{75}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{n}{squares} \PY{o}{=} \PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{n}{x} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{squares is}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{squares}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{of type}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{type}\PY{p}{(}\PY{n}{squares}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{1st loop over squares \PYZhy{}\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{p}{[}\PY{n}{i} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{squares}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{2nd loop over squares \PYZhy{}\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{p}{[}\PY{n}{i} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{squares}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+squares is <generator object <genexpr> at 0x7f633aebe780> of type <class
+'generator'>
+1st loop over squares -> [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+2nd loop over squares -> []
+    \end{Verbatim}
+
+    \hypertarget{next-keyword}{%
+\subsection{next keyword}\label{next-keyword}}
+
+\begin{itemize}
+\tightlist
+\item
+  retrieve the next item from an iterator
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{102}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{n}{squares} \PY{o}{=} \PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{n}{x} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{next}\PY{p}{(}\PY{n}{squares}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{next}\PY{p}{(}\PY{n}{squares}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{next}\PY{p}{(}\PY{n}{squares}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{p}{[}\PY{n}{i} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{squares}\PY{p}{]}\PY{p}{)}     
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0
+1
+4
+[]
+    \end{Verbatim}
+
+    \hypertarget{yield-keyword}{%
+\subsection{yield keyword}\label{yield-keyword}}
+
+\begin{itemize}
+\tightlist
+\item
+  can be used only in the body of a function definition
+\item
+  causes the function to return a generator
+\item
+  yield vs return
+\item
+  return transfers the control of execution to the point where the
+  function was called
+\item
+  yield implies that the tranfer of control is temporary and voluntary
+\item
+  functions yield when they expects to regain control in the future
+\item
+  function with these capabilities are called generators
+\item
+  conceptually it performs the opposite operation of next():
+\item
+  next retrieves an item and removes it from the generator
+\item
+  yield accumulates an item in the generator, ready to be iterated
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{113}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{def} \PY{n+nf}{odd\PYZus{}numbers}\PY{p}{(}\PY{n}{numbers}\PY{p}{)}\PY{p}{:}
+    \PY{n}{odds} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{numbers}\PY{p}{:} 
+        \PY{k}{if} \PY{n}{x}\PY{o}{\PYZpc{}}\PY{k}{2}!=0:
+            \PY{n}{odds}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    \PY{k}{return} \PY{n}{odds} \PY{c+c1}{\PYZsh{} odds contains ALL odd numbers}
+
+\PY{n}{odds} \PY{o}{=} \PY{n}{odd\PYZus{}numbers}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}       
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{odds is}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{odds}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{of type}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{type}\PY{p}{(}\PY{n}{odds}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{1st loop over odds \PYZhy{}\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{p}{[}\PY{n}{i} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{odds}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{2nd loop over odds \PYZhy{}\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{p}{[}\PY{n}{i} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{odds}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+odds is [1, 3, 5, 7, 9] of type <class 'list'>
+1st loop over odds -> [1, 3, 5, 7, 9]
+2nd loop over odds -> [1, 3, 5, 7, 9]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{114}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{def} \PY{n+nf}{odd\PYZus{}numbers}\PY{p}{(}\PY{n}{numbers}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{numbers}\PY{p}{:}
+        \PY{k}{if} \PY{n}{x}\PY{o}{\PYZpc{}}\PY{k}{2}!=0:
+            \PY{k}{yield} \PY{n}{x} \PY{c+c1}{\PYZsh{} x is one odd number }
+            
+\PY{n}{odds} \PY{o}{=} \PY{n}{odd\PYZus{}numbers}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}  
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{odds is}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{odds}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{of type}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{type}\PY{p}{(}\PY{n}{odds}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{1st loop over odds \PYZhy{}\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{p}{[}\PY{n}{i} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{odds}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{2nd loop over odds \PYZhy{}\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{p}{[}\PY{n}{i} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{odds}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+odds is <generator object odd\_numbers at 0x7f635006a150> of type <class
+'generator'>
+1st loop over odds -> [1, 3, 5, 7, 9]
+2nd loop over odds -> []
+    \end{Verbatim}
+
+    \hypertarget{lambda-functions}{%
+\subsection{Lambda functions}\label{lambda-functions}}
+
+\begin{itemize}
+\tightlist
+\item
+  anonymous functions
+\item
+  needs definition of keys (input parameters)
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{c+c1}{\PYZsh{} ex. polynomial function}
+\PY{k}{def} \PY{n+nf}{pol}\PY{p}{(}\PY{n}{w}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return}  \PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n+nb}{sum}\PY{p}{(}\PY{p}{[}\PY{n}{\PYZus{}w}\PY{o}{*}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i}\PY{p}{,}\PY{n}{\PYZus{}w} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{w}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} a + b*x + c*x\PYZca{}2    }
+\PY{n}{p} \PY{o}{=} \PY{n}{pol}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}  \PY{c+c1}{\PYZsh{} \PYZob{}a,b,c\PYZcb{} = \PYZob{}1,2,3\PYZcb{}   }
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{p}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}       \PY{c+c1}{\PYZsh{} \PYZhy{}\PYZgt{} 1 + (2*2) + (3*(2*2)) = 17}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+17
+    \end{Verbatim}
+
+    \hypertarget{generic-arguments-functions}{%
+\subsection{Generic arguments
+functions}\label{generic-arguments-functions}}
+
+\begin{itemize}
+\tightlist
+\item
+  operator *: refers to positional arguments
+\item
+  and **: : refers to keywords arguments
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{foo}\PY{p}{(}\PY{o}{*}\PY{n}{positional}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{keywords}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Positional:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{positional}\PY{p}{,} \PY{n}{end}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Keywords:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{keywords}\PY{p}{)}
+    
+\PY{n}{foo}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1st}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2nd}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{3rd}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{foo}\PY{p}{(}\PY{n}{par1}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1st}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{par2}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2nd}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{par3}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{3rd}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{foo}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1st}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{par2}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2nd}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{par3}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{3rd}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{foo}\PY{p}{(}\PY{n}{par1}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1st\PYZus{}key}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{o}{*}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1st\PYZus{}pos}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{par2}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2nd\PYZus{}key}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{foo}\PY{p}{(}\PY{n}{par1}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1st\PYZus{}key}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{o}{*}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1st\PYZus{}pos}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{par2}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2nd\PYZus{}key}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{o}{*}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2st\PYZus{}pos}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{3rd\PYZus{}pos}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Positional: ('1st', '2nd', '3rd')       Keywords: \{\}
+Positional: ()  Keywords: \{'par1': '1st', 'par2': '2nd', 'par3': '3rd'\}
+Positional: ('1st',)    Keywords: \{'par2': '2nd', 'par3': '3rd'\}
+Positional: ('1', 's', 't', '\_', 'p', 'o', 's') Keywords: \{'par1': '1st\_key',
+'par2': '2nd\_key'\}
+Positional: ('1st\_pos', '2st\_pos', '3rd\_pos')   Keywords: \{'par1': '1st\_key',
+'par2': '2nd\_key'\}
+    \end{Verbatim}
+
+    \hypertarget{the-standard-library-batteries-included-philosophy}{%
+\subsection{The Standard Library: ``batteries included''
+philosophy}\label{the-standard-library-batteries-included-philosophy}}
+
+\begin{itemize}
+\tightlist
+\item
+  operating system interface: os, shutil
+\item
+  file wildcards: glob
+\item
+  command line arguments: sys.argv
+\item
+  error output redirection: sys.stderr
+\item
+  regular expressions: re
+\item
+  math: math, random, statistics
+\item
+  sql query language: sqlite3
+\item
+  comma separated value format: csv
+\item
+  data interchange format: json
+\item
+  internet access: urllib.request, smtplib
+\item
+  dates and times: datetime
+\item
+  data compression: zlib, gzip, bz2, lzma, zipfile and tarfile
+\item
+  profiling performance: timeit, profile, pstats
+\item
+  quality control: doctest, unittest
+\item
+  \ldots{}
+\end{itemize}
+
+    \hypertarget{import-a-module}{%
+\subsection{Import a module}\label{import-a-module}}
+
+\begin{itemize}
+\tightlist
+\item
+  import module {[}as{]} followed by a module name
+\item
+  imports the module referred as that name
+\item
+  customary but not required to place import statements at the beginning
+  of a module/script
+\item
+  from import keywords
+\item
+  pros: less typing and more control over which items can be accessed
+\item
+  cons: lose context (i.e., you call fun() instead of module.fun())
+\item
+  the namespace can be cluttered by import * (anything)
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import} \OperatorTok{\textless{}}\NormalTok{module}\OperatorTok{{-}}\NormalTok{name}\OperatorTok{\textgreater{}}\NormalTok{ [}\ImportTok{as} \OperatorTok{\textless{}}\NormalTok{alias}\OperatorTok{\textgreater{}}\NormalTok{] }
+\ImportTok{from} \OperatorTok{\textless{}}\NormalTok{module}\OperatorTok{{-}}\NormalTok{name}\OperatorTok{\textgreater{}} \ImportTok{import} \OperatorTok{\textless{}}\NormalTok{submodule}\OperatorTok{\textgreater{}}
+\ImportTok{from} \OperatorTok{\textless{}}\NormalTok{module}\OperatorTok{{-}}\NormalTok{name}\OperatorTok{\textgreater{}} \ImportTok{import} \OperatorTok{*} 
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{math}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{import math}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{} include math}\PY{l+s+s2}{\PYZdq{}}\PYZbs{}
+      \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+si}{\PYZpc{}r}\PY{l+s+s2}{eset \PYZhy{}f}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{} cleans the environment}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{print(dir())}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{} math should not be listed}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{dir}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{import math}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k+kn}{import} \PY{n+nn}{math}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{print(dir())}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{} now math is listed}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{dir}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{print(dir(math))}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{dir}\PY{p}{(}\PY{n}{math}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{math.\PYZus{}\PYZus{}name\PYZus{}\PYZus{} \PYZhy{}\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{math}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}name\PYZus{}\PYZus{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{math.sin(math.pi/2) \PYZhy{}\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{math}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{n}{math}\PY{o}{.}\PY{n}{pi}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{k+kn}{import} \PY{n+nn}{math} \PY{k}{as} \PY{n+nn}{m}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{import math as m}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{m.\PYZus{}\PYZus{}name\PYZus{}\PYZus{} \PYZhy{}\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{m}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}name\PYZus{}\PYZus{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{m.sin(m.pi/2) \PYZhy{}\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{m}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{n}{m}\PY{o}{.}\PY{n}{pi}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{k+kn}{from} \PY{n+nn}{math} \PY{k+kn}{import} \PY{n}{sin}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{from math import sin}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{sin(3.14/2) \PYZhy{}\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{sin}\PY{p}{(}\PY{l+m+mf}{3.14}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{k+kn}{from} \PY{n+nn}{math} \PY{k+kn}{import} \PY{o}{*} \PY{c+c1}{\PYZsh{} now I know pi!}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{from math import * \PYZsh{} now I know pi!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{pi is}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{pi}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{modules}{%
+\subsection{Modules}\label{modules}}
+
+\begin{itemize}
+\tightlist
+\item
+  definitions in python files might be reused (i.e., imported)
+\item
+  those files are called modules
+\item
+  every python file is potentially a module
+\item
+  every module can be run as a script
+\item
+  global variable names are global within the module
+\item
+  modules have name, i.e.~the file name without the suffix .py
+\item
+  module's name is assigned to the global variable \_\emph{name\_}
+\item
+  when a module is run as a script, \_\emph{name\_} ==
+  ``\_\emph{main\_}''
+\end{itemize}
+
+\hypertarget{packages}{%
+\subsection{Packages}\label{packages}}
+
+\begin{itemize}
+\tightlist
+\item
+  a package is a module that contains other modules: any folder
+  containing .py files can be a package
+\item
+  folders containing an \_\emph{init\_}.py file (even empty) are
+  packages for python
+\item
+  the \_\emph{init\_}.py file prevents unintentionally hiding of names
+  in the module search path
+\end{itemize}
+
+\hypertarget{subpackages-and-submodules-are-packages-and-modules-contained-by-other-packages-or-modules}{%
+\paragraph{subpackages and submodules are packages and modules contained
+by other packages or
+modules}\label{subpackages-and-submodules-are-packages-and-modules-contained-by-other-packages-or-modules}}
+
+    \hypertarget{structure-of-a-python-package}{%
+\subsection{Structure of a python
+Package}\label{structure-of-a-python-package}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{package/}
+\NormalTok{    \_\_init\_\_.py}
+\NormalTok{    module1.py}
+\NormalTok{    module2.py}
+\NormalTok{    subpackage/}
+\NormalTok{        \_\_init\_\_.py}
+\NormalTok{        submodule1.py}
+\NormalTok{        submodule2.py}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  --
+\item
+  packages are structured modules using ``dotted module names''
+\item
+  A.B: A is a package named A while B is a subpackage (or submodule)
+  named B
+\item
+  \_\emph{init\_}.py can just be an empty file or execute initialization
+  code for the package or set the \_\emph{all\_} variable
+\item
+  \_\emph{all\_} variable is a list of module names that are imported
+  when
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ package }\ImportTok{import} \OperatorTok{*} 
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{!}tree modules/myFirstPackage/
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-blue-intense}{\textbf{modules/myFirstPackage/}}
+├── biggerModule.py
+├── import\_usefulSubModule\_from\_subPackage1.py
+├── \_\_init\_\_.py
+├── myFirstModule.py
+├── \textcolor{ansi-blue-intense}{\textbf{\_\_pycache\_\_}}
+├── runModuleAsScript.py
+├── \textcolor{ansi-blue-intense}{\textbf{subPackage\_1}}
+│   ├── \_\_init\_\_.py
+│   ├── \textcolor{ansi-blue-intense}{\textbf{\_\_pycache\_\_}}
+│   └── usefulSubModule.py
+├── \textcolor{ansi-blue-intense}{\textbf{subPackage\_2}}
+│   ├── \_\_init\_\_.py
+│   ├── needs\_subPackage\_1.py
+│   └── \textcolor{ansi-blue-intense}{\textbf{\_\_pycache\_\_}}
+└── \textcolor{ansi-blue-intense}{\textbf{subPackage\_3}}
+    ├── \_\_init\_\_.py
+    ├── needs\_subPackage\_1.py
+    └── \textcolor{ansi-blue-intense}{\textbf{\_\_pycache\_\_}}
+
+7 directories, 11 files
+    \end{Verbatim}
+
+    \hypertarget{pyc-files-and-__pycache__-folder}{%
+\subsection{.pyc files and \_\_pycache\_\_
+folder}\label{pyc-files-and-__pycache__-folder}}
+
+\begin{itemize}
+\tightlist
+\item
+  what are .pyc files?
+\item
+  .pyc contain the compiled bytecode of Python source files
+\item
+  python interpreter prefers loading .pyc
+\item
+  a .pyc is created
+\item
+  only for an imported .py
+\item
+  only if its timestamp differs from .py 's
+\item
+  why .pyc?
+\item
+  the execution time would not change\ldots{}
+\item
+  but loading time is shorter for a .pyc file
+\item
+  small scripts may spend more time in loading/compiling than in
+  executing
+\item
+  \_\emph{pycache\_} was introduced in python3.2 to store the .pyc files
+\item
+  different python implementations store in there with different
+  desinences (e.g., ``cpython-35'')
+\item
+  the .pyc file in the same folder of .py is the one loaded (it is a
+  renamed copy for the proper python implementation)
+\end{itemize}
+
+    \hypertarget{modulesmyfirstpackagemyfirstmodule.py}{%
+\subsubsection{\texorpdfstring{\url{modules/myFirstPackage/myFirstModule.py}}{modules/myFirstPackage/myFirstModule.py}}\label{modulesmyfirstpackagemyfirstmodule.py}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{def}\NormalTok{ f0():}
+    \ControlFlowTok{return}\NormalTok{ f1() }\CommentTok{\# f1 is in scope}
+
+\KeywordTok{def}\NormalTok{ f1():}
+    \ControlFlowTok{return} \VariableTok{\_\_name\_\_}
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k+kn}{from} \PY{n+nn}{modules}\PY{n+nn}{.}\PY{n+nn}{myFirstPackage}\PY{n+nn}{.}\PY{n+nn}{myFirstModule} \PY{k+kn}{import} \PY{o}{*} \PY{c+c1}{\PYZsh{} this means f0 and f1}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{List imported modules:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{end}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{o}{\PYZpc{}}\PY{k}{who}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{f0}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{sep}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+List imported modules: f0        f1
+
+modules.myFirstPackage.myFirstModule
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k+kn}{import} \PY{n+nn}{modules}\PY{n+nn}{.}\PY{n+nn}{myFirstPackage}\PY{n+nn}{.}\PY{n+nn}{myFirstModule} \PY{k}{as} \PY{n+nn}{m1}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{List imported modules:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{end}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{o}{\PYZpc{}}\PY{k}{who}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{m1}\PY{o}{.}\PY{n}{f0}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{sep}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{} \PYZus{}\PYZus{}name\PYZus{}\PYZus{} != \PYZdq{}\PYZus{}\PYZus{}main\PYZus{}\PYZus{}\PYZdq{} }
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+List imported modules: m1
+
+modules.myFirstPackage.myFirstModule
+    \end{Verbatim}
+
+    \hypertarget{run-module-as-a-script}{%
+\subsection{Run module as a script}\label{run-module-as-a-script}}
+
+\begin{itemize}
+\tightlist
+\item
+  \_\emph{name\_} changes to ``\_\emph{main\_}''
+\end{itemize}
+
+\hypertarget{modulesrunmoduleasscript.py}{%
+\subsubsection{\texorpdfstring{\url{modules/runModuleAsScript.py}}{modules/runModuleAsScript.py}}\label{modulesrunmoduleasscript.py}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ myFirstModule }\ImportTok{as}\NormalTok{ m}
+
+\KeywordTok{def}\NormalTok{ f0():}
+    \ControlFlowTok{return} \VariableTok{\_\_name\_\_}
+
+\KeywordTok{def}\NormalTok{ f1():}
+    \ControlFlowTok{return}\NormalTok{ m.}\VariableTok{\_\_name\_\_}
+
+\ControlFlowTok{if} \VariableTok{\_\_name\_\_} \OperatorTok{==} \StringTok{"\_\_main\_\_"}\NormalTok{: }
+    \BuiltInTok{print}\NormalTok{(}\StringTok{"this module\textquotesingle{}s name is "}\OperatorTok{+}\NormalTok{f0())}
+    \BuiltInTok{print}\NormalTok{(}\StringTok{"sys module\textquotesingle{}s name is "}\OperatorTok{+}\NormalTok{f1())}
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{78}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{!} python modules/myFirstPackage/runModuleAsScript.py
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ -----  I am running MyFirstModule.py as a module -----
+this module's name is \_\_main\_\_
+sys module's name is myFirstModule
+    \end{Verbatim}
+
+    \hypertarget{all_-list}{%
+\subsection{\texorpdfstring{\_\emph{all\_}
+list}{\_all\_ list}}\label{all_-list}}
+
+\begin{itemize}
+\tightlist
+\item
+  \_\emph{all\_} overrides * during import
+\end{itemize}
+
+\hypertarget{modulesmyfirstpackagebiggermodule.py}{%
+\subsubsection{\texorpdfstring{\url{modules/myFirstPackage/biggerModule.py}}{modules/myFirstPackage/biggerModule.py}}\label{modulesmyfirstpackagebiggermodule.py}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{\_\_all\_\_}\OperatorTok{=}\NormalTok{[}\StringTok{\textquotesingle{}f0\textquotesingle{}}\NormalTok{] }
+
+\KeywordTok{def}\NormalTok{ f0():}
+    \ControlFlowTok{return} 
+
+\KeywordTok{def}\NormalTok{ f1():}
+    \ControlFlowTok{return} 
+
+\KeywordTok{def}\NormalTok{ f2():}
+    \ControlFlowTok{return} 
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f 
+\PY{k+kn}{from} \PY{n+nn}{modules}\PY{n+nn}{.}\PY{n+nn}{myFirstPackage}\PY{n+nn}{.}\PY{n+nn}{biggerModule} \PY{k+kn}{import} \PY{o}{*} \PY{c+c1}{\PYZsh{} \PYZus{}\PYZus{}all\PYZus{}\PYZus{} is imported}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{List imported modules:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{end}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{o}{\PYZpc{}}\PY{k}{who}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+List imported modules: f0
+    \end{Verbatim}
+
+    \hypertarget{intra-package-references}{%
+\subsection{Intra-package references}\label{intra-package-references}}
+
+\begin{itemize}
+\tightlist
+\item
+  relative imports use a module's \_\emph{name\_} to determine module's
+  position in the package hierarchy
+\end{itemize}
+
+\hypertarget{modulesmyfirstpackagesubpackage_1usefulsubmodule.py}{%
+\subsubsection{\texorpdfstring{\url{modules/myFirstPackage/subPackage_1/usefulSubModule.py}}{modules/myFirstPackage/subPackage\_1/usefulSubModule.py}}\label{modulesmyfirstpackagesubpackage_1usefulsubmodule.py}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{def}\NormalTok{ usefulFunction():}
+    \ControlFlowTok{return} \StringTok{"I can use this usefulFunction"}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{modulesmyfirstpackageimport_usefulsubmodule_from_subpackage1.py}{%
+\subsubsection{\texorpdfstring{\url{modules/myFirstPackage/import_usefulSubModule_from_subPackage1.py}}{modules/myFirstPackage/import\_usefulSubModule\_from\_subPackage1.py}}\label{modulesmyfirstpackageimport_usefulsubmodule_from_subpackage1.py}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ subPackage\_1.usefulSubModule }\ImportTok{as}\NormalTok{ sm}
+
+\ControlFlowTok{if} \VariableTok{\_\_name\_\_} \OperatorTok{==} \StringTok{"\_\_main\_\_"}\NormalTok{: }
+    \BuiltInTok{print}\NormalTok{(sm.usefulFunction())}
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{!}ls modules/myFirstPackage/
+\PY{n+nb}{print}\PY{p}{(}\PY{p}{)}
+\PY{o}{!}ls modules/myFirstPackage/subPackage\PYZus{}1/
+\PY{n+nb}{print}\PY{p}{(}\PY{p}{)}
+\PY{o}{!}python modules/myFirstPackage/import\PYZus{}usefulSubModule\PYZus{}from\PYZus{}subPackage1.py
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+biggerModule.py                             myFirstModule.py      subPackage\_1
+import\_usefulSubModule\_from\_subPackage1.py  \_\_pycache\_\_           subPackage\_2
+\_\_init\_\_.py                                 runModuleAsScript.py  subPackage\_3
+
+\_\_init\_\_.py  \_\_pycache\_\_  usefulSubModule.py
+
+I can use this usefulFunction
+    \end{Verbatim}
+
+    \hypertarget{issue-while-importing-top-packages}{%
+\subsection{Issue while importing top
+packages}\label{issue-while-importing-top-packages}}
+
+\begin{itemize}
+\tightlist
+\item
+  ValueError for relative import
+\item
+  scripts can't import relative because \_\emph{name\_} is
+  \_\emph{main\_}
+\item
+  relative import makes sense only for a package
+\item
+  place scripts that runs the module outside the package directory
+\end{itemize}
+
+\hypertarget{modulesmyfirstpackagesubpackage_2needs_subpackage_1.py}{%
+\subsubsection{\texorpdfstring{\url{modules/myFirstPackage/subPackage_2/needs_subPackage_1.py}}{modules/myFirstPackage/subPackage\_2/needs\_subPackage\_1.py}}\label{modulesmyfirstpackagesubpackage_2needs_subpackage_1.py}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ ..subPackage\_1 }\ImportTok{import}\NormalTok{ usefulSubModule }\ImportTok{as}\NormalTok{ s}
+
+\KeywordTok{def}\NormalTok{ f0():}
+    \ControlFlowTok{return}\NormalTok{ s.usefulFunction()}
+
+\ControlFlowTok{if} \VariableTok{\_\_name\_\_} \OperatorTok{==} \StringTok{"\_\_main\_\_"}\NormalTok{:}
+    \BuiltInTok{print}\NormalTok{(f0())}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{modulestest_relative_paths.py}{%
+\subsubsection{\texorpdfstring{\url{modules/test_relative_paths.py}}{modules/test\_relative\_paths.py}}\label{modulestest_relative_paths.py}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ myFirstPackage.subPackage\_2.needs\_subPackage\_1 }\ImportTok{as}\NormalTok{ s}
+
+\ControlFlowTok{if} \VariableTok{\_\_name\_\_} \OperatorTok{==} \StringTok{"\_\_main\_\_"}\NormalTok{:}
+    \BuiltInTok{print}\NormalTok{(s.f0())}
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{!}python modules/myFirstPackage/subPackage\PYZus{}2/needs\PYZus{}subPackage\PYZus{}1.py
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Traceback (most recent call last):
+  File "modules/myFirstPackage/subPackage\_2/needs\_subPackage\_1.py", line 1, in
+<module>
+    from ..subPackage\_1 import usefulSubModule as s
+ValueError: attempted relative import beyond top-level package
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{58}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{!}python modules/test\PYZus{}relative\PYZus{}paths.py
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+I can use this usefulFunction
+    \end{Verbatim}
+
+    \hypertarget{pythonpath}{%
+\subsection{PYTHONPATH}\label{pythonpath}}
+
+\begin{itemize}
+\tightlist
+\item
+  default search path for module files
+\item
+  the format is the same as the shell's PATH
+\item
+  one or more directory pathnames separated by os.pathsep
+\item
+  the search path can be manipulated from within a Python program as the
+  variable sys.path
+\item
+  using modules os and sys you can add package path into subpackages and
+  submodules
+\end{itemize}
+
+\hypertarget{modulesmyfirstpackagesubpackage_3needs_subpackage_1.py}{%
+\subsubsection{\texorpdfstring{\url{modules/myFirstPackage/subPackage_3/needs_subPackage_1.py}}{modules/myFirstPackage/subPackage\_3/needs\_subPackage\_1.py}}\label{modulesmyfirstpackagesubpackage_3needs_subpackage_1.py}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ os,sys}
+\NormalTok{file\_path }\OperatorTok{=}\NormalTok{ os.path.abspath(}\VariableTok{\_\_file\_\_}\NormalTok{)}
+\NormalTok{this\_subpackage\_path }\OperatorTok{=}\NormalTok{ os.path.split(file\_path)[}\DecValTok{0}\NormalTok{]}
+\NormalTok{this\_package\_path }\OperatorTok{=}\NormalTok{ os.path.join(this\_subpackage\_path,}\StringTok{\textquotesingle{}../..\textquotesingle{}}\NormalTok{)}
+\NormalTok{sys.path.insert(}\DecValTok{0}\NormalTok{, this\_package\_path)}
+
+\ImportTok{from}\NormalTok{ myFirstPackage.subPackage\_1 }\ImportTok{import}\NormalTok{ usefulSubModule }\ImportTok{as}\NormalTok{ s}
+
+\KeywordTok{def}\NormalTok{ f0():}
+    \ControlFlowTok{return}\NormalTok{ s.usefulFunction()}
+\ControlFlowTok{if} \VariableTok{\_\_name\_\_} \OperatorTok{==} \StringTok{"\_\_main\_\_"}\NormalTok{:}
+    \BuiltInTok{print}\NormalTok{(f0())}
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{!}python modules/myFirstPackage/subPackage\PYZus{}3/needs\PYZus{}subPackage\PYZus{}1.py
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+I can use this usefulFunction
+    \end{Verbatim}
+
+    \hypertarget{object-oriented-programming-in-python}{%
+\subsection{Object Oriented Programming in
+Python}\label{object-oriented-programming-in-python}}
+
+\begin{itemize}
+\tightlist
+\item
+  a class is a mean to bundle data and functionalities together
+\item
+  each class instance has attributes attached to it for maintaining its
+  state
+\item
+  each class instance has methodes fot modifying its states
+\item
+  creating a new class creates a new type of object
+\item
+  objects can contain arbitrary amounts and kinds of data
+\item
+  classes are created at runtime and can be modified after creation
+\end{itemize}
+
+    \hypertarget{class-definition-syntax}{%
+\subsection{Class definition syntax}\label{class-definition-syntax}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{class}\NormalTok{ ClassName(}\OperatorTok{\textless{}}\NormalTok{base\_class}\OperatorTok{\textgreater{}}\NormalTok{):}
+    \CommentTok{\textquotesingle{}\textquotesingle{}\textquotesingle{}}
+\CommentTok{    docstring (documentation)}
+\CommentTok{    \textquotesingle{}\textquotesingle{}\textquotesingle{}}
+    \OperatorTok{\textless{}}\NormalTok{statement}\OperatorTok{{-}}\DecValTok{1}\OperatorTok{\textgreater{}}
+\NormalTok{    ...}
+    \OperatorTok{\textless{}}\NormalTok{statement}\OperatorTok{{-}}\NormalTok{N}\OperatorTok{\textgreater{}}
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{class} \PY{n+nc}{square}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    get one side, compute perimeter and area}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{side} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{k}{def} \PY{n+nf}{area}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}      \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{side}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}
+    \PY{k}{def} \PY{n+nf}{perimeter}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{l+m+mi}{4}\PY{o}{*}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{side}
+    
+\PY{n}{s} \PY{o}{=} \PY{n}{square}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{s}\PY{o}{.}\PY{n}{area}\PY{p}{(}\PY{p}{)}\PY{p}{)}      \PY{c+c1}{\PYZsh{} equal to 0}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{s}\PY{o}{.}\PY{n}{perimeter}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} equal to 0}
+\PY{n}{s}\PY{o}{.}\PY{n}{side} \PY{o}{=} \PY{l+m+mi}{5}    \PY{c+c1}{\PYZsh{} \PYZlt{}\PYZhy{}\PYZhy{} setting side = 5}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{s}\PY{o}{.}\PY{n}{area}\PY{p}{(}\PY{p}{)}\PY{p}{)}      \PY{c+c1}{\PYZsh{} equal to 25}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{s}\PY{o}{.}\PY{n}{perimeter}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} equal to 20}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0
+0
+25
+20
+    \end{Verbatim}
+
+    \hypertarget{class-features}{%
+\subsection{Class features}\label{class-features}}
+
+\begin{itemize}
+\tightlist
+\item
+  when a class definition is entered a new namespace is created and used
+  as local scope
+\item
+  all assignments to local variables go into this new namespace
+\item
+  self.name refers to the name of this new namespace
+\item
+  class support two operations:
+\item
+  obj.name: attribute references (as for namespace)
+\item
+  inst = obj(): class instantiation to create a new instance of the
+  class\\
+\item
+  base\_class: the class from which ClassName inherits all references
+\item
+  object keyword: basic object in python
+\item
+  in python 2.x inheriting from object includes perks
+\item
+  in python 3.x all classes inherits from objects by default
+\item
+  for code compatibility it is suggested to explicitly inherit from
+  object
+\end{itemize}
+
+\hypertarget{special-attributes}{%
+\subsection{Special attributes}\label{special-attributes}}
+
+\begin{itemize}
+\tightlist
+\item
+  \_\emph{init\_}(self{[},\ldots{]}): automatically invoked by class
+  instantiation (i.e., the constructor)
+\item
+  \_\emph{del\_}(self): automatically invoked when the object should be
+  destroyed (i.e., the destructor)
+\item
+  \_\emph{doc\_}: docstring of the class
+\item
+  \_\emph{class\_}: reference to the type of the current instance
+\item
+  \_\emph{str\_}(self), \_\emph{repr\_}(self): called by print(obj)
+\item
+  \_\emph{bases\_}: tuple with all base classes
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{50}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{class} \PY{n+nc}{square}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    get one side, compute perimeter and area}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{side}\PY{p}{)}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{side} \PY{o}{=} \PY{n}{side}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}str\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} 
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{area=}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{area}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ perimeter=}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{perimeter}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf}{area}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}      \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{side}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}
+    \PY{k}{def} \PY{n+nf}{perimeter}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{l+m+mi}{4}\PY{o}{*}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{side}
+    
+\PY{n}{sq} \PY{o}{=} \PY{p}{[}\PY{n}{square}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{,} \PY{n}{square}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{]}
+\PY{k}{for} \PY{n}{s} \PY{o+ow}{in} \PY{n}{sq}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{s}\PY{o}{.}\PY{n}{area}\PY{p}{(}\PY{p}{)}\PY{p}{)}      \PY{c+c1}{\PYZsh{} equal to ...}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{s}\PY{o}{.}\PY{n}{perimeter}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} equal to ...}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{s}\PY{p}{)} \PY{c+c1}{\PYZsh{} calls \PYZus{}\PYZus{}str\PYZus{}\PYZus{} or \PYZus{}\PYZus{}repr\PYZus{}\PYZus{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+25
+20
+area=25 perimeter=20
+36
+24
+area=36 perimeter=24
+    \end{Verbatim}
+
+    \hypertarget{class-and-instance-variables}{%
+\subsection{Class and Instance
+variables}\label{class-and-instance-variables}}
+
+\begin{itemize}
+\tightlist
+\item
+  instance variables are for data unique to each instance
+\item
+  class variables are shared by all instances of the class
+\end{itemize}
+
+\hypertarget{method-objects}{%
+\subsection{Method objects}\label{method-objects}}
+
+\begin{itemize}
+\tightlist
+\item
+  the first argument in method definition links the object itself (i.e.,
+  the C++ this)
+\item
+  using self for this argument is just a (very common) convention
+\item
+  this argument should not be passed to method, if the method definition
+  is inside the class statement
+\item
+  a method with no arguments cannot be called by the class instances
+\item
+  can be used just by the class itself (i.e., \_\emph{class\_})
+\item
+  methods (functions in general) can be assigned to a name
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{47}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{class} \PY{n+nc}{myClass}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{create this class}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}del\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}  \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{delete this class}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf}{fun}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}      \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{call this fun}\PY{l+s+s2}{\PYZdq{}}    
+    \PY{k}{def} \PY{n+nf}{fun2}\PY{p}{(}\PY{p}{)}\PY{p}{:}         \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{call this other fun}\PY{l+s+s2}{\PYZdq{}}  
+    
+
+\PY{k}{def} \PY{n+nf}{do\PYZus{}stuff}\PY{p}{(}\PY{p}{)}\PY{p}{:}        
+    \PY{n}{o} \PY{o}{=} \PY{n}{myClass}\PY{p}{(}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{o}\PY{o}{.}\PY{n}{fun}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{o}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}class\PYZus{}\PYZus{}}\PY{o}{.}\PY{n}{fun2}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} fun2 does not have a reference to class, cannot be called by object o}
+
+\PY{n}{do\PYZus{}stuff}\PY{p}{(}\PY{p}{)}  
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+create this class
+call this fun
+call this other fun
+delete this class
+    \end{Verbatim}
+
+    \hypertarget{operators-overloading}{%
+\subsection{Operators overloading}\label{operators-overloading}}
+
+\hypertarget{math-operators}{%
+\subsubsection{Math operators}\label{math-operators}}
+
+\begin{itemize}
+\tightlist
+\item
+  \_\emph{add\_}(self, other): +
+\item
+  \_\emph{mul\_}(self, other): *
+\item
+  \_\emph{sub\_}(self, other): -
+\item
+  \_\emph{mod\_}(self, other): \%
+\item
+  \_\emph{truediv\_}(self, other): /
+\end{itemize}
+
+\hypertarget{comparison-operators}{%
+\subsubsection{Comparison operators}\label{comparison-operators}}
+
+\begin{itemize}
+\tightlist
+\item
+  \_\emph{eq\_}(self, other): ==
+\item
+  \_\emph{ne\_}(self, other): !=
+\item
+  \_\emph{lt\_}(self, other): \textless{}
+\item
+  \_\emph{le\_}(self, other): \textless=
+\item
+  \_\emph{gt\_}(self, other): \textgreater{}
+\item
+  \_\emph{ge\_}(self, other): \textgreater=
+\end{itemize}
+
+\hypertarget{others}{%
+\subsubsection{Others}\label{others}}
+
+\begin{itemize}
+\tightlist
+\item
+  \_\emph{len\_}(self): len
+\item
+  \_\emph{bool\_}(self): invoked by if statement of bool function\\
+\item
+  \_\emph{nonzero\_}(self): as \_\emph{bool\_}(self) for python2
+\item
+  \_\emph{iter\_}(self): invoked by loops
+\item
+  \_\emph{contains\_}(self, value): invoked by in
+\item
+  \_\emph{getitem\_}(self, key): invoked by reading obj{[}key{]}
+\item
+  \_\emph{setitem\_}(self, key,value): invoked by writing obj{[}key{]}
+\item
+  \_\emph{delitem\_}(self, key): invoked by deleting obj{[}key{]}
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{54}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{class} \PY{n+nc}{mynum}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{value}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value} \PY{o}{=} \PY{n}{value}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}eq\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{other}\PY{p}{)}\PY{p}{:}
+        \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value}\PY{o}{==}\PY{n}{other}\PY{o}{.}\PY{n}{value}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}add\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{other}\PY{p}{)}\PY{p}{:}
+        \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value}\PY{o}{+}\PY{n}{other}\PY{o}{.}\PY{n}{value}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}bool\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} 
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZus{}\PYZus{}bool\PYZus{}\PYZus{} (or \PYZus{}\PYZus{}nonzero\PYZus{}\PYZus{}) was invoked}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{end}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{k}{return} \PY{k+kc}{True}
+    \PY{n}{\PYZus{}\PYZus{}nonzero\PYZus{}\PYZus{}}\PY{o}{=}\PY{n+nf+fm}{\PYZus{}\PYZus{}bool\PYZus{}\PYZus{}} \PY{c+c1}{\PYZsh{} compatible with python2}
+    
+\PY{n}{a} \PY{o}{=} \PY{n}{mynum}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{b} \PY{o}{=} \PY{n}{mynum}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{o}{==}\PY{n}{b}\PY{p}{)} \PY{c+c1}{\PYZsh{}1==2: False}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{o}{+}\PY{n}{b}\PY{p}{)}  \PY{c+c1}{\PYZsh{}3   }
+\PY{k}{if} \PY{n}{a}\PY{p}{:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{by if}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+False
+3
+\_\_bool\_\_ (or \_\_nonzero\_\_) was invoked by if
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{60}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{class} \PY{n+nc}{mylist}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{l}\PY{o}{=}\PY{p}{[}\PY{p}{]}\PY{p}{)}\PY{p}{:}         \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{list}\PY{o}{=}\PY{n}{l}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}len\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}               \PY{k}{return} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{list}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}setitem\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{idx}\PY{p}{,}\PY{n}{value}\PY{p}{)}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{list}\PY{p}{[}\PY{n}{idx}\PY{p}{]}\PY{o}{=}\PY{n}{value}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}getitem\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{idx}\PY{p}{)}\PY{p}{:}       \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{list}\PY{p}{[}\PY{n}{idx}\PY{p}{]}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}delitem\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{idx}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{} bugged if idx==\PYZhy{}1: why?}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{list}\PY{o}{=}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{list}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{n}{idx}\PY{p}{]}\PY{o}{+}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{list}\PY{p}{[}\PY{n}{idx}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}iter\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}              \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{list}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}iter\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}contains\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{value}\PY{p}{)}\PY{p}{:}    \PY{k}{return} \PY{n}{value} \PY{o+ow}{in} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{list}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}str\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}               \PY{k}{return} \PY{n+nb}{str}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{list}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf}{append}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{o}{*}\PY{n}{args}\PY{p}{)}\PY{p}{:}          \PY{p}{[}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{list}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{arg}\PY{p}{)} \PY{k}{for} \PY{n}{arg} \PY{o+ow}{in} \PY{n}{args}\PY{p}{]}
+
+\PY{n}{l} \PY{o}{=} \PY{n}{mylist}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{} use \PYZus{}\PYZus{}init\PYZus{}\PYZus{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{l is}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n+nb}{type}\PY{p}{(}\PY{n}{l}\PY{p}{)}\PY{p}{)}
+\PY{n}{l}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)} \PY{c+c1}{\PYZsh{} use append}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{l}\PY{p}{)}    \PY{c+c1}{\PYZsh{} use \PYZus{}\PYZus{}str\PYZus{}\PYZus{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{l}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{} use \PYZus{}\PYZus{}getitem\PYZus{}\PYZus{} and \PYZus{}\PYZus{}str\PYZus{}\PYZus{}}
+
+\PY{n}{l}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}     \PY{c+c1}{\PYZsh{} use \PYZus{}\PYZus{}setitem\PYZus{}\PYZus{}}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{l}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)} 
+\PY{k}{del} \PY{n}{l}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}    \PY{c+c1}{\PYZsh{} use \PYZus{}\PYZus{}delitem\PYZus{}\PYZus{}}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{l}\PY{p}{:} \PY{c+c1}{\PYZsh{} use \PYZus{}\PYZus{}iter\PYZus{}\PYZus{} and \PYZus{}\PYZus{}contains\PYZus{}\PYZus{}}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{i}\PY{p}{,}\PY{n}{end}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{;}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{len(l):}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{l}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} use \PYZus{}\PYZus{}len\PYZus{}\PYZus{} and \PYZus{}\PYZus{}str\PYZus{}\PYZus{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+l is <class '\_\_main\_\_.mylist'>
+[0, 1, 2, 3, 4, 5]
+3
+-3
+0;1;2;4;5;
+len(l): 5
+    \end{Verbatim}
+
+    \hypertarget{important-remarks}{%
+\subsection{Important remarks}\label{important-remarks}}
+
+\begin{itemize}
+\tightlist
+\item
+  attributes can be defined outside of the class statement
+\item
+  users can add new attributes that were not defined by developers
+\item
+  attributes can be overriden!!
+\item
+  developers should avoid name conflicts
+\item
+  users should use data attributes with care
+\item
+  methods is an attribute: it can also be defined outside of the class
+  statement
+\item
+  methods defined inside override methods defined outside
+\item
+  last inside definitions override previous definitions
+\item
+  data attributes override method attributes
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{69}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f 
+\PY{k}{class} \PY{n+nc}{empty}\PY{p}{(}\PY{p}{)}\PY{p}{:} 
+    \PY{k}{pass} \PY{c+c1}{\PYZsh{} this class is empty}
+         \PY{c+c1}{\PYZsh{} still a user could add new attributes }
+
+\PY{n}{e} \PY{o}{=} \PY{n}{empty}\PY{p}{(}\PY{p}{)}
+\PY{n}{pre} \PY{o}{=} \PY{n+nb}{dir}\PY{p}{(}\PY{n}{e}\PY{p}{)}
+\PY{n}{e}\PY{o}{.}\PY{n}{attr1}\PY{o}{=}\PY{l+m+mi}{1}         \PY{c+c1}{\PYZsh{} user is defining a new attribute }
+\PY{n}{e}\PY{o}{.}\PY{n}{attr2}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{attr2}\PY{l+s+s1}{\PYZsq{}}   \PY{c+c1}{\PYZsh{} user is defining a new attribute}
+\PY{n}{post} \PY{o}{=} \PY{n+nb}{dir}\PY{p}{(}\PY{n}{e}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{set}\PY{p}{(}\PY{n}{post}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n+nb}{set}\PY{p}{(}\PY{n}{pre}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\{'attr1', 'attr2'\}
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{75}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f 
+\PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{outside}\PY{l+s+s2}{\PYZdq{}} 
+\PY{k}{class} \PY{n+nc}{dumb}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:}    
+    \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{inside}\PY{l+s+s2}{\PYZdq{}} \PY{c+c1}{\PYZsh{} methods defined inside override methods defined outside }
+
+\PY{n}{d} \PY{o}{=} \PY{n}{dumb}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{d}\PY{o}{.}\PY{n}{f}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} invokes the inside definition}
+\PY{n}{d}\PY{o}{.}\PY{n}{f} \PY{o}{=} \PY{n}{f}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{d}\PY{o}{.}\PY{n}{f}\PY{p}{(}\PY{n}{d}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} invokes the inside definition}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+inside
+outside
+    \end{Verbatim}
+
+    \hypertarget{exercises-to-do}{%
+\subsection{exercises to do}\label{exercises-to-do}}
+
+\begin{itemize}
+\tightlist
+\item
+  define Point(\ldots):
+\item
+  receives a list of two numeric values (i.e.: the coordinates),
+  otherwise raise err
+\item
+  method isnumeric(self,c): returns c if numeric, otherwise raise err
+\item
+  method is2D(self,coord): returns coord if Point is 2D, otherwise raise
+  err
+\item
+  define Shape(\ldots):
+\item
+  receives a list of type Point, otherwise raise err
+\item
+  method ispoint(self,p): returns p if Point, otherwise raise err
+\item
+  define any other method you may need
+\item
+  define Circle(\ldots), Segment(\ldots), Triangle(\ldots):
+\item
+  Circle.\_\emph{init\_}(self,center,radius): center is a Point (only 1
+  Point), radius is a numeric, otherwise raise err
+\item
+  Segment.\_\emph{init\_}(self,points): points is a list of 2 only
+  Points, otherwise raise err
+\item
+  Triangle.\_\emph{init\_}(self,points): points is a list of 3 only
+  Points, otherwise raise err
+\item
+  method checkNpoints(\ldots): raise err if an instance was defined with
+  the wrong number of points
+\item
+  method calc\_perimeter(self): returns the value of perimeter
+\item
+  method calc\_area(self): returns the value of the area
+\item
+  define any other method you may need
+\end{itemize}
+
+\hypertarget{follow-the-order-for-implementation-and-use-inheritance-and-super}{%
+\paragraph{follow the order for implementation (and use inheritance and
+super())}\label{follow-the-order-for-implementation-and-use-inheritance-and-super}}
+
+\hypertarget{cause-exceptions-of-type-lecture2err-when-raising-an-error}{%
+\paragraph{cause exceptions of type Lecture2Err when raising an
+error}\label{cause-exceptions-of-type-lecture2err-when-raising-an-error}}
+
+    \hypertarget{extra}{%
+\subsubsection{EXTRA}\label{extra}}
+
+    \hypertarget{functional-programming-paradigm}{%
+\subsection{Functional programming
+paradigm}\label{functional-programming-paradigm}}
+
+\begin{itemize}
+\item
+  a sequence is any iterable object
+\item
+  iterables are objects that contain an \_\emph{iter\_} or
+  \_\emph{getitem\_} method
+\item
+  you can retreive an iterable using an iterator
+\item
+  iterators are objects that define a \_\emph{next\_} method
+\item
+  a container is an iterable, hence a sequence (the reverse is not true)
+\item
+  ex: range(0,1e10) does not return a container but an iterable:
+\item
+  it does not contain 1e10 elements!
+\item
+  it generates the value one after the other
+\item
+  this paradigm is based on three built-in functions
+\item
+  filter(cond,seq): applies a condition to a sequence
+\item
+  map(fun,seq): applies a function to all elements of a sequence
+\item
+  functools.reduce(fun,seq): applies function of two arguments to the
+  items of a sequence
+\item
+  filter and map return iterables (not lists or tuples)
+\item
+  functools.reduce returns a single value
+\item
+  advantage: the order of execution is not important
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k+kn}{import} \PY{n+nn}{functools}
+\PY{n}{l}  \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}               \PY{c+c1}{\PYZsh{} 0,1,...,9}
+\PY{n}{l2} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{filter}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{o}{\PYZpc{}}\PY{k}{2},l)) \PYZsh{} 1,3,5,7,9
+\PY{n}{l3} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{filter}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{o}{\PYZlt{}}\PY{l+m+mi}{5}\PY{p}{,}\PY{n}{l}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} 1,2,3,4,5}
+\PY{n}{l4} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{map}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{o}{\PYZpc{}}\PY{k}{2},l))  \PYZsh{} 10 elements 1 or 0
+\PY{n}{l5} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{map}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{o}{\PYZlt{}}\PY{l+m+mi}{5}\PY{p}{,}\PY{n}{l}\PY{p}{)}\PY{p}{)}  \PY{c+c1}{\PYZsh{} 10 elements True or False}
+\PY{n}{lp1} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{map}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{l}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} 10 elements l+1}
+\PY{n}{l6} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{map}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{:} \PY{n}{x}\PY{o}{\PYZlt{}}\PY{n}{y}\PY{p}{,}\PY{n}{l}\PY{p}{,}\PY{n}{lp1}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} 10 elements all True}
+\PY{n}{l7} \PY{o}{=} \PY{n}{functools}\PY{o}{.}\PY{n}{reduce}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{:} \PY{n}{x}\PY{o}{+}\PY{n}{y}\PY{p}{,}\PY{n}{l}\PY{p}{)} \PY{c+c1}{\PYZsh{} y is next(x)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{l:       }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{  }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{l}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{l}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{2:     }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{  }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{l2}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{l\PYZlt{}5:     }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{  }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{l3}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{el}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{2:    }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{  }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{l4}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{el\PYZlt{}5:    }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{  }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{l5}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{el\PYZlt{}el+1: }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{  }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{l6}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sum(el): }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{  }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{l7}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+l:
+  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+l\%2:
+  [1, 3, 5, 7, 9]
+l<5:
+  [0, 1, 2, 3, 4]
+el\%2:
+  [0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
+el<5:
+  [True, True, True, True, True, False, False, False, False, False]
+el<el+1:
+  [True, True, True, True, True, True, True, True, True, True]
+sum(el):
+  45
+    \end{Verbatim}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}

@@ -1,0 +1,1849 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{python\_p3}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{naming-conventions}{%
+\subsection{Naming conventions}\label{naming-conventions}}
+
+\begin{itemize}
+\tightlist
+\item
+  \_single\_leading\_underscore: weak ``internal use'' indicator
+\item
+  e.g., from M import * does not import objects whose names start with
+  an underscore
+\item
+  single\_trailing\_underscore\_: use to avoid conflicts with keywords
+\item
+  \_\_double\_leading\_underscore: used to name a class attribute
+\item
+  invokes name mangling (inside class Class \_\_par is accessible,
+  outside it becomes \_Class\_\_par)
+\item
+  \_\emph{double\_leading\_and\_trailing\_underscore\_}: ``magic''
+  objects or attributes such as \_\emph{init\_}: should be never
+  invented by user
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{class} \PY{n+nc}{A}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:} \PY{n}{\PYZus{}\PYZus{}id} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{id of class A}\PY{l+s+s2}{\PYZdq{}} \PY{c+c1}{\PYZsh{} not part of A\PYZsq{}s API}
+\PY{k}{class} \PY{n+nc}{B}\PY{p}{(}\PY{n}{A}\PY{p}{)}\PY{p}{:}      \PY{n}{\PYZus{}\PYZus{}id} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{id of class B}\PY{l+s+s2}{\PYZdq{}} \PY{c+c1}{\PYZsh{} not part of B\PYZsq{}s API, the name is the same for coincidence}
+                                        \PY{c+c1}{\PYZsh{} thanks to name mangling, \PYZus{}\PYZus{}id is not overwritten }
+
+\PY{n}{a} \PY{o}{=} \PY{n}{A}\PY{p}{(}\PY{p}{)}
+\PY{n}{b} \PY{o}{=} \PY{n}{B}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZus{}\PYZus{}id}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n+nb}{dir}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{)}    \PY{c+c1}{\PYZsh{} False \PYZus{}\PYZus{}id is hidden}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZus{}A\PYZus{}\PYZus{}id}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n+nb}{dir}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{)}  \PY{c+c1}{\PYZsh{} True  \PYZus{}\PYZus{}id can be exposed through name mangling}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{o}{.}\PY{n}{\PYZus{}A\PYZus{}\PYZus{}id}\PY{p}{)} \PY{c+c1}{\PYZsh{} relative to A}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{o}{.}\PY{n}{\PYZus{}B\PYZus{}\PYZus{}id}\PY{p}{)} \PY{c+c1}{\PYZsh{} relative to B}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+False
+True
+id of class A
+id of class B
+    \end{Verbatim}
+
+    \hypertarget{introduction-to-decorators}{%
+\subsection{Introduction to
+decorators}\label{introduction-to-decorators}}
+
+\begin{itemize}
+\tightlist
+\item
+  functions in python (as we have seen)
+\item
+  can be assigned to names
+\item
+  can be defined inside other functions
+\item
+  can be passed as parameters to other functions
+\item
+  can return other functions
+\item
+  decorators are wrappers that modify the behavior of the code (e.g., of
+  a function)
+\item
+  i.e., decorators target an object and increase its original
+  functionality, so ``decorating'' it
+\item
+  a decorator is passed the original object being defined and returns a
+  modified object
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{def}\NormalTok{ myFun():  }
+    \CommentTok{\textquotesingle{}\textquotesingle{}\textquotesingle{}whatever behavior\textquotesingle{}\textquotesingle{}\textquotesingle{}}
+    \ControlFlowTok{pass}
+\KeywordTok{def}\NormalTok{ decoration():  }
+    \CommentTok{\textquotesingle{}\textquotesingle{}\textquotesingle{}whatever decoration\textquotesingle{}\textquotesingle{}\textquotesingle{}}
+    \ControlFlowTok{pass}
+\NormalTok{myFun }\OperatorTok{=}\NormalTok{ decoration(myFun)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{the-syntactic-sugar-to-make-decorators-cleaner-to-read-python-use-the-keyword}{%
+\paragraph{the ``syntactic sugar'' to make decorators cleaner to read,
+python use the keyword
+@}\label{the-syntactic-sugar-to-make-decorators-cleaner-to-read-python-use-the-keyword}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{def}\NormalTok{ decoration():  }
+    \CommentTok{\textquotesingle{}\textquotesingle{}\textquotesingle{}whatever decoration\textquotesingle{}\textquotesingle{}\textquotesingle{}}
+    \ControlFlowTok{pass}
+\AttributeTok{@decoration}
+\KeywordTok{def}\NormalTok{ myFun():  }
+    \CommentTok{\textquotesingle{}\textquotesingle{}\textquotesingle{}whatever behavior\textquotesingle{}\textquotesingle{}\textquotesingle{}}
+    \ControlFlowTok{pass}    
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{multiple-decorations-can-be-chained}{%
+\paragraph{multiple decorations can be
+chained}\label{multiple-decorations-can-be-chained}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{187}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{def} \PY{n+nf}{who\PYZus{}just\PYZus{}arrived}\PY{p}{(}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{jacopo}\PY{l+s+s2}{\PYZdq{}}   \PY{c+c1}{\PYZsh{} this is a function}
+\PY{k}{def} \PY{n+nf}{greet}\PY{p}{(}\PY{n}{whoever\PYZus{}I\PYZus{}want\PYZus{}to\PYZus{}greet}\PY{p}{)}\PY{p}{:}       \PY{c+c1}{\PYZsh{} functions can be passed as parameters}
+    \PY{k}{def} \PY{n+nf}{hi}\PY{p}{(}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{hi }\PY{l+s+s2}{\PYZdq{}}                \PY{c+c1}{\PYZsh{} functions can be defined inside other functions}
+    \PY{k}{return} \PY{n}{hi}\PY{p}{(}\PY{p}{)}\PY{o}{+}\PY{n}{whoever\PYZus{}I\PYZus{}want\PYZus{}to\PYZus{}greet}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{} functions can return other functions           }
+
+\PY{n}{say\PYZus{}hi\PYZus{}to\PYZus{}} \PY{o}{=} \PY{n}{greet}\PY{p}{(}\PY{n}{who\PYZus{}just\PYZus{}arrived}\PY{p}{)}      \PY{c+c1}{\PYZsh{} functions can be assigned to names}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{say\PYZus{}hi\PYZus{}to\PYZus{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+hi jacopo
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{def} \PY{n+nf}{decorate}\PY{p}{(}\PY{n}{func}\PY{p}{)}\PY{p}{:}         \PY{c+c1}{\PYZsh{} decoration inputs the function!}
+    \PY{k}{def} \PY{n+nf}{func\PYZus{}wrapper}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{} wrappers inputs the function\PYZsq{}s parameter(s)}
+        \PY{c+c1}{\PYZsh{} check http://ascii\PYZhy{}table.com/ansi\PYZhy{}escape\PYZhy{}sequences.php}
+        \PY{k}{return}   \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[1m}\PY{l+s+si}{\PYZob{}0\PYZcb{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[0m}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{func}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} equals \PYZdq{}\PYZbs{}033[1m\PYZdq{}+func(name)+\PYZdq{}\PYZbs{}033[0m\PYZdq{} }
+    \PY{k}{return} \PY{n}{func\PYZus{}wrapper}
+
+\PY{k}{def} \PY{n+nf}{greet}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{hi }\PY{l+s+si}{\PYZob{}0\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{name}\PY{p}{)}
+
+\PY{n}{my\PYZus{}greet} \PY{o}{=} \PY{n}{decorate}\PY{p}{(}\PY{n}{greet}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{greet}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{jacopo}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{my\PYZus{}greet}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{jacopo}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+hi jacopo
+\textbf{hi jacopo}
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{def} \PY{n+nf}{decorate}\PY{p}{(}\PY{n}{func}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf}{func\PYZus{}wrapper}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} check http://ascii\PYZhy{}table.com/ansi\PYZhy{}escape\PYZhy{}sequences.php}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[1m}\PY{l+s+si}{\PYZob{}0\PYZcb{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[0m}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{func}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{func\PYZus{}wrapper}
+
+\PY{n+nd}{@decorate}  
+\PY{k}{def} \PY{n+nf}{greet}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{} \PYZhy{}\PYZgt{} greet = decorate(greet)}
+    \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{hi }\PY{l+s+si}{\PYZob{}0\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{name}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{greet}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{jacopo}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textbf{hi jacopo}
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{225}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{def} \PY{n+nf}{decorate\PYZus{}red}\PY{p}{(}\PY{n}{func}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{} makes greet red}
+    \PY{k}{def} \PY{n+nf}{func\PYZus{}wrapper}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[91m}\PY{l+s+si}{\PYZob{}0\PYZcb{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[0m}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{func}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{func\PYZus{}wrapper}
+
+\PY{k}{def} \PY{n+nf}{decorate\PYZus{}bold}\PY{p}{(}\PY{n}{func}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{} makes greet bold}
+    \PY{k}{def} \PY{n+nf}{func\PYZus{}wrapper}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} check http://ascii\PYZhy{}table.com/ansi\PYZhy{}escape\PYZhy{}sequences.php}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[1m}\PY{l+s+si}{\PYZob{}0\PYZcb{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[0m}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{func}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{func\PYZus{}wrapper}
+
+\PY{n+nd}{@decorate\PYZus{}bold}
+\PY{n+nd}{@decorate\PYZus{}red}
+\PY{k}{def} \PY{n+nf}{greet}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{} \PYZhy{}\PYZgt{} greet = decorate\PYZus{}bold(decorate\PYZus{}red(greet))}
+    \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{hi }\PY{l+s+si}{\PYZob{}0\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{name}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{greet}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{jacopo}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-red-intense}{\textbf{hi jacopo}}
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{def} \PY{n+nf}{formatting}\PY{p}{(}\PY{n}{how\PYZus{}to\PYZus{}format}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf}{etiquette\PYZus{}decorator}\PY{p}{(}\PY{n}{func}\PY{p}{)}\PY{p}{:}
+        \PY{k}{def} \PY{n+nf}{func\PYZus{}wrapper}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{:} 
+            \PY{c+c1}{\PYZsh{} check http://ascii\PYZhy{}table.com/ansi\PYZhy{}escape\PYZhy{}sequences.php}
+            \PY{k}{if} \PY{n}{how\PYZus{}to\PYZus{}format}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{RED}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} 
+                \PY{k}{return}   \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[91m}\PY{l+s+si}{\PYZob{}0\PYZcb{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[0m}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{func}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{)}                
+            \PY{k}{if} \PY{n}{how\PYZus{}to\PYZus{}format}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{BOLD}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} 
+                \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[1m}\PY{l+s+si}{\PYZob{}0\PYZcb{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[0m}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{func}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{)}
+            \PY{k}{if} \PY{n}{how\PYZus{}to\PYZus{}format}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{UNDERLINE}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} 
+                \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[4m}\PY{l+s+si}{\PYZob{}0\PYZcb{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[0m}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{func}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{)}            
+        \PY{k}{return} \PY{n}{func\PYZus{}wrapper}
+    \PY{k}{return} \PY{n}{etiquette\PYZus{}decorator}
+
+\PY{n+nd}{@formatting}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RED}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}        \PY{c+c1}{\PYZsh{} you can pass arguments to decorators functions}
+\PY{n+nd}{@formatting}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{BOLD}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nd}{@formatting}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{UNDERLINE}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{def} \PY{n+nf}{greet}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{hi }\PY{l+s+si}{\PYZob{}0\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{name}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{greet}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{jacopo}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-red-intense}{\textbf{\underline{hi jacopo}}}
+    \end{Verbatim}
+
+    \hypertarget{data-encapsulation}{%
+\subsection{Data encapsulation}\label{data-encapsulation}}
+
+\begin{itemize}
+\tightlist
+\item
+  many object-oriented languages stress to have getter, setter and
+  deleter methods to access private attributes
+\item
+  this is called data encapsulation
+\item
+  it does not hide attributes (nothing in python can do that)
+\item
+  code loses readability: why should data be encapsulated?
+\item
+  to isolate code changes that depends on a specific attribute's value
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{61}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f 
+\PY{k}{class} \PY{n+nc}{Fruit}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:}  \PY{c+c1}{\PYZsh{} implementation using setter,    }
+                      \PY{c+c1}{\PYZsh{}                      getter, }
+                      \PY{c+c1}{\PYZsh{}                      deleter}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{name}\PY{p}{)}\PY{p}{:} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}set\PYZus{}name}\PY{p}{(}\PY{n}{name}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf}{\PYZus{}set\PYZus{}name}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{name}\PY{p}{)}\PY{p}{:}     \PY{c+c1}{\PYZsh{} setter}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}name} \PY{o}{=} \PY{n}{name}
+    \PY{k}{def} \PY{n+nf}{\PYZus{}get\PYZus{}name}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}          \PY{c+c1}{\PYZsh{} getter}
+        \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}name}
+    \PY{k}{def} \PY{n+nf}{\PYZus{}del\PYZus{}name}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}          \PY{c+c1}{\PYZsh{} deleter}
+        \PY{k}{del} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}colour}                        
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}str\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} 
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{this fruit is an }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}name}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{Fruit}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{apple}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+this fruit is an apple
+    \end{Verbatim}
+
+    \hypertarget{using-property-to-encapsulate-data}{%
+\subsection{Using property() to encapsulate
+data}\label{using-property-to-encapsulate-data}}
+
+\begin{itemize}
+\tightlist
+\item
+  property(getter,setter{[},deleter,docstring{]}):
+\item
+  built-in function
+\item
+  proxy any attribute access to getter, setter, deleter and docstring
+\item
+  properties can embed customized actions when they are accessed
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f 
+\PY{k}{class} \PY{n+nc}{Fruit}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:}
+    \PY{n}{\PYZus{}name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{name}\PY{p}{)}\PY{p}{:} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}set\PYZus{}name}\PY{p}{(}\PY{n}{name}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf}{\PYZus{}set\PYZus{}name}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{name}\PY{p}{)}\PY{p}{:}        
+        \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}name} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} 
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}name} \PY{o}{=} \PY{n}{name}
+        \PY{k}{else}\PY{p}{:} 
+            \PY{k}{raise} \PY{n+ne}{TypeError}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Fruit name cannot be changed once set}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf}{\PYZus{}get\PYZus{}name}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}          
+        \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}name}
+    \PY{k}{def} \PY{n+nf}{\PYZus{}del\PYZus{}name}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}          
+        \PY{k}{del} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}name}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}str\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} 
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{this fruit is an }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}name}
+        
+    \PY{c+c1}{\PYZsh{} assign properties}
+    \PY{n}{name} \PY{o}{=} \PY{n+nb}{property}\PY{p}{(}\PY{n}{\PYZus{}get\PYZus{}name}\PY{p}{,}\PYZbs{}
+                    \PY{n}{\PYZus{}set\PYZus{}name}\PY{p}{,}\PYZbs{}
+                    \PY{n}{\PYZus{}del\PYZus{}name}\PY{p}{,}\PYZbs{}
+                    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{name is property of Fruit}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    
+
+\PY{n}{f} \PY{o}{=} \PY{n}{Fruit}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{apple}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{p}{)}
+\PY{k}{try}\PY{p}{:} 
+    \PY{n}{f}\PY{o}{.}\PY{n}{name} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pear}\PY{l+s+s1}{\PYZsq{}}     
+\PY{k}{except} \PY{n+ne}{TypeError} \PY{k}{as} \PY{n}{err}\PY{p}{:} 
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ \PYZhy{}\PYZgt{} err: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{err}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{o}{.}\PY{n}{name}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+this fruit is an apple
+ -> err:  Fruit name cannot be changed once set
+apple
+    \end{Verbatim}
+
+    \hypertarget{property-decorations}{%
+\subsection{Property decorations}\label{property-decorations}}
+
+\begin{itemize}
+\tightlist
+\item
+  you can use decorators to invoke property()
+\item
+  you mark a function instead of call property() at the end of the class
+  definition
+\item
+  you can avoid underscore prefixes
+\item
+  (more readable)
+\item
+  @property decorates the getter of the attribute \$foo
+\item
+  @\$foo.setter decorates the setter
+\item
+  @\$foo.deleter decorates the deleter
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f 
+\PY{k}{class} \PY{n+nc}{Fruit}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{} re\PYZhy{}implementation using property decorators}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{name}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}name} \PY{o}{=} \PY{n}{name}
+    \PY{n+nd}{@property}    
+    \PY{k}{def} \PY{n+nf}{name}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}     
+        \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}name is property of Fruit\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}name}
+    \PY{n+nd}{@name}\PY{o}{.}\PY{n}{setter}
+    \PY{k}{def} \PY{n+nf}{name}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{name}\PY{p}{)}\PY{p}{:}
+        \PY{k}{if} \PY{o+ow}{not} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}name}\PY{p}{:} 
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}name} \PY{o}{=} \PY{n}{name}
+        \PY{k}{else}\PY{p}{:} 
+            \PY{k}{raise} \PY{n+ne}{TypeError}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Fruit name cannot be changed once set}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}        
+    \PY{n+nd}{@name}\PY{o}{.}\PY{n}{deleter}
+    \PY{k}{def} \PY{n+nf}{name}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}          
+        \PY{k}{del} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}name}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}str\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} 
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{this fruit is an }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}name}        
+
+\PY{n}{f} \PY{o}{=} \PY{n}{Fruit}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{apple}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{p}{)}
+\PY{k}{try}\PY{p}{:} 
+    \PY{n}{f}\PY{o}{.}\PY{n}{name} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pear}\PY{l+s+s1}{\PYZsq{}}
+\PY{k}{except} \PY{n+ne}{TypeError} \PY{k}{as} \PY{n}{err}\PY{p}{:} 
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ \PYZhy{}\PYZgt{} err: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{err}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{o}{.}\PY{n}{name}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+this fruit is an apple
+ -> err:  Fruit name cannot be changed once set
+apple
+    \end{Verbatim}
+
+    \hypertarget{why-properties-are-useful}{%
+\subsection{Why properties are useful}\label{why-properties-are-useful}}
+
+\begin{itemize}
+\tightlist
+\item
+  methods should implement an action
+\item
+  (commonly named with verbs)
+\item
+  data attributes do not not implement an action
+\item
+  (commonly named with a noun)
+\item
+  properties differs from data attributes because\ldots{}
+\item
+  they can embed customized actions when they are accessed
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{class} \PY{n+nc}{Values}\PY{p}{(}\PY{n+nb}{list}\PY{p}{)}\PY{p}{:}     
+    \PY{n}{\PYZus{}positive}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{data}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}data}    \PY{o}{=} \PY{n}{data}   
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{positive} \PY{o}{=} \PY{n}{data} \PY{c+c1}{\PYZsh{} calls the setter}
+    \PY{n+nd}{@property}
+    \PY{k}{def} \PY{n+nf}{positive}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} 
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{getting self.\PYZus{}positive}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}positive}
+    \PY{n+nd}{@positive}\PY{o}{.}\PY{n}{setter}
+    \PY{k}{def} \PY{n+nf}{positive}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{data}\PY{p}{)}\PY{p}{:} 
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{setting self.\PYZus{}positive}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{k}{if} \PY{o+ow}{not} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}positive}\PY{p}{:}  \PY{c+c1}{\PYZsh{} prevents the use of this setter outside of this class}
+            \PY{p}{[}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}positive}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{d}\PY{p}{)} \PY{k}{for} \PY{n}{d} \PY{o+ow}{in} \PY{n}{data} \PY{k}{if} \PY{n}{d}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0}\PY{p}{]}
+        
+\PY{n}{v} \PY{o}{=} \PY{n}{Values}\PY{p}{(}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]} \PY{p}{)}  
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{v}\PY{o}{.}\PY{n}{positive}\PY{p}{)}  \PY{c+c1}{\PYZsh{} calls the setter only the first time, then only the getter}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+setting self.\_positive
+getting self.\_positive
+[1, 2, 3]
+getting self.\_positive
+[1, 2, 3]
+getting self.\_positive
+[1, 2, 3]
+    \end{Verbatim}
+
+    \hypertarget{inheritance}{%
+\subsection{Inheritance}\label{inheritance}}
+
+\begin{itemize}
+\tightlist
+\item
+  a new class can inherit attributes from one or more ``base'' classes
+\item
+  this new class is called derived class
+\item
+  the base class must be in a scope containing the derived class
+\item
+  if a requested attribute is not found in the class, the search
+  proceeds to look in the base class\\
+\item
+  this rule is applied recursively if base classe is derived itself
+\item
+  a derived class can override methods of a base class
+\item
+  a method of a base class may end up calling a method of a derived
+  class
+\item
+  this behaviour is equivalent to C++ virtual classes
+\item
+  the overriden base class method can be invoked explicitly
+  (baseClass.methosName(self,args))
+\item
+  sometimes overriden methods have a lot in commons with the relative
+  base definition
+\item
+  super() is a built-in function that can be used to extend the base
+  class method
+\end{itemize}
+
+\hypertarget{isinstanceinstclass-true-if-inst-is-an-instance-of-of-class-or-derived}{%
+\paragraph{isinstance(inst,class): True if inst is an instance of of
+class or
+derived}\label{isinstanceinstclass-true-if-inst-is-an-instance-of-of-class-or-derived}}
+
+\hypertarget{issubclasssubclassclass-true-if-subclass-derived-from-class}{%
+\paragraph{issubclass(subClass,class): True if subClass derived from
+class}\label{issubclasssubclassclass-true-if-subclass-derived-from-class}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{class} \PY{n+nc}{A}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{f0}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{} calls A.f0()}
+    \PY{k}{def} \PY{n+nf}{f0}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{f0 is a method of class A}\PY{l+s+s2}{\PYZdq{}}
+\PY{k}{class} \PY{n+nc}{B}\PY{p}{(}\PY{n}{A}\PY{p}{)}\PY{p}{:} 
+    \PY{k}{def} \PY{n+nf}{f0}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{f0 is a method of class B}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{n}{a} \PY{o}{=} \PY{n}{A}\PY{p}{(}\PY{p}{)}    
+\PY{n}{b} \PY{o}{=} \PY{n}{B}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{o}{.}\PY{n}{f}\PY{p}{(}\PY{p}{)}\PY{p}{)} 
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{o}{.}\PY{n}{f}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} b.f()\PYZhy{}\PYZgt{}a.f()\PYZhy{}\PYZgt{}(self).f0() == b.f0()}
+             \PY{c+c1}{\PYZsh{} b inherits b from class A and calls A.f0()}
+             \PY{c+c1}{\PYZsh{} however, A.f0() was overriden by B.f0()! }
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+f0 is a method of class A
+f0 is a method of class B
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{class} \PY{n+nc}{A}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{pass}
+\PY{k}{class} \PY{n+nc}{B}\PY{p}{(}\PY{n}{A}\PY{p}{)}\PY{p}{:}       \PY{c+c1}{\PYZsh{} inherits from A}
+    \PY{k}{pass}
+\PY{k}{class} \PY{n+nc}{C}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:}  \PY{c+c1}{\PYZsh{} does not inherit from A}
+    \PY{k}{pass}
+\PY{k}{class} \PY{n+nc}{D}\PY{p}{(}\PY{n}{B}\PY{p}{)}\PY{p}{:}       \PY{c+c1}{\PYZsh{} inherits from B, which inherits from A}
+    \PY{k}{pass}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{issubclass}\PY{p}{(}\PY{n}{B}\PY{p}{,}\PY{n}{A}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} True}
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{issubclass}\PY{p}{(}\PY{n}{C}\PY{p}{,}\PY{n}{A}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} False}
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{issubclass}\PY{p}{(}\PY{n}{D}\PY{p}{,}\PY{n}{A}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} True}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+True
+False
+True
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{a} \PY{o}{=} \PY{n}{A}\PY{p}{(}\PY{p}{)}
+\PY{n}{b} \PY{o}{=} \PY{n}{B}\PY{p}{(}\PY{p}{)}   \PY{c+c1}{\PYZsh{} B inherits from A}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{b}\PY{p}{,}\PY{n}{B}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} True }
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{b}\PY{p}{,}\PY{n}{A}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} True }
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{B}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} False }
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+True
+True
+False
+    \end{Verbatim}
+
+    \hypertarget{has-a-is-a}{%
+\subsection{HAS A != IS A}\label{has-a-is-a}}
+
+\begin{itemize}
+\tightlist
+\item
+  a class HAS attributes that define a specific behavior
+\item
+  DO NOT USE INHERITANCE JUST TO REUSE IMPLEMENTATION OF A METHOD OR AN
+  ATTRIBUTE
+\item
+  conceptually Inheritance implements IS A
+\item
+  Inheritance should never be used to implement HAS A
+\item
+  the derived class IS the same kind of the base class with additional
+  features
+\end{itemize}
+
+    \hypertarget{multiple-inheritance}{%
+\subsection{Multiple inheritance}\label{multiple-inheritance}}
+
+\begin{itemize}
+\tightlist
+\item
+  a class can be derived by multiple base class
+\item
+  search for attributes is depth-first, left-to-right
+\item
+  Method Resolution Order algorithm
+\item
+  base class should be accessed only once, otherwise TypeError is raised
+\item
+  type(obj).mro(): returns the order in which the methods accessed by
+  obj are searched
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{class} \PY{n+nc}{C}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:} 
+    \PY{k}{def} \PY{n+nf}{f\PYZus{}c}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C has f\PYZus{}c}\PY{l+s+s2}{\PYZdq{}}
+\PY{k}{class} \PY{n+nc}{B}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:} 
+    \PY{k}{def} \PY{n+nf}{f\PYZus{}b}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{B has f\PYZus{}b}\PY{l+s+s2}{\PYZdq{}}
+\PY{k}{class} \PY{n+nc}{A}\PY{p}{(}\PY{n}{B}\PY{p}{,}\PY{n}{C}\PY{p}{)}\PY{p}{:} 
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}str\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{A IS both B and C}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{pass}
+
+\PY{n}{a} \PY{o}{=} \PY{n}{A}\PY{p}{(}\PY{p}{)} 
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{o}{.}\PY{n}{f\PYZus{}b}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} inherited from B}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{o}{.}\PY{n}{f\PYZus{}c}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} inherited from C}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+A IS both B and C
+B has f\_b
+C has f\_c
+    \end{Verbatim}
+
+    \hypertarget{super-and-method-resolution-order}{%
+\subsection{super() and Method Resolution
+Order}\label{super-and-method-resolution-order}}
+
+\begin{itemize}
+\tightlist
+\item
+  super() means super(NextBaseClass,self)
+\item
+  MRO rules what means ``next''
+\item
+  diamond structure: what is method order?
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{|               A.f()}
+\NormalTok{|              / \textbackslash{}}
+\NormalTok{|             /   \textbackslash{}}
+\NormalTok{|            /     \textbackslash{}}
+\NormalTok{|           B.f()   C.f()}
+\NormalTok{|            \textbackslash{}     / }
+\NormalTok{|             \textbackslash{}   /  }
+\NormalTok{|              \textbackslash{} /   }
+\NormalTok{|               D.f()}
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{64}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{class} \PY{n+nc}{D}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:} 
+    \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{D}\PY{l+s+s2}{\PYZdq{}}
+\PY{k}{class} \PY{n+nc}{C}\PY{p}{(}\PY{n}{D}\PY{p}{)}\PY{p}{:} 
+    \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C}\PY{l+s+s2}{\PYZdq{}}    
+\PY{k}{class} \PY{n+nc}{B}\PY{p}{(}\PY{n}{D}\PY{p}{)}\PY{p}{:} 
+    \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{B}\PY{l+s+s2}{\PYZdq{}}
+\PY{k}{class} \PY{n+nc}{A}\PY{p}{(}\PY{n}{B}\PY{p}{,}\PY{n}{C}\PY{p}{)}\PY{p}{:}    \PY{k}{pass}
+\PY{k}{class} \PY{n+nc}{A2}\PY{p}{(}\PY{n}{C}\PY{p}{,}\PY{n}{B}\PY{p}{)}\PY{p}{:}   \PY{k}{pass}
+
+
+\PY{n}{a} \PY{o}{=} \PY{n}{A}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{o}{.}\PY{n}{f}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} B or C?  B}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{A}\PY{o}{.}\PY{n}{mro}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{a2} \PY{o}{=} \PY{n}{A2}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{a2}\PY{o}{.}\PY{n}{f}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} B or C? C }
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{A2}\PY{o}{.}\PY{n}{mro}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+B
+[<class '\_\_main\_\_.A'>, <class '\_\_main\_\_.B'>, <class '\_\_main\_\_.C'>, <class
+'\_\_main\_\_.D'>, <class 'object'>]
+C
+[<class '\_\_main\_\_.A2'>, <class '\_\_main\_\_.C'>, <class '\_\_main\_\_.B'>, <class
+'\_\_main\_\_.D'>, <class 'object'>]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{61}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{b} \PY{o}{=} \PY{n}{B}\PY{p}{(}\PY{p}{)}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{p}{[}\PY{n}{a}\PY{p}{,}\PY{n}{a2}\PY{p}{,}\PY{n}{b}\PY{p}{]}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{super}\PY{p}{(}\PY{n}{B}\PY{p}{,}\PY{n}{i}\PY{p}{)}\PY{o}{.}\PY{n}{f}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} gets the MRO for object i, }
+                          \PY{c+c1}{\PYZsh{} call the f() for the class next to the MRO with respect to B}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+C
+D
+D
+    \end{Verbatim}
+
+    \hypertarget{polymorphism}{%
+\subsection{Polymorphism}\label{polymorphism}}
+
+\begin{itemize}
+\tightlist
+\item
+  polymorphism is the provision of a single interface to entities of
+  different types:
+\item
+  subtyping: supported with inheritance
+\item
+  parametric polymorphism: supported with generic programming (e.g.,
+  templates)\\
+\item
+  ad hoc polymorphism: supported in many languages using function
+  overloading
+\item
+  implementation aspects
+\item
+  the implementation is static if selected at compile time (e.g.~C++
+  templates, macros or function overloading)
+\item
+  the implementation is dynamic if selected at run time (e.g.~virtual
+  functions, abstract base classes)
+\end{itemize}
+
+\hypertarget{polymorphism-in-python}{%
+\subsection{Polymorphism in python}\label{polymorphism-in-python}}
+
+\begin{itemize}
+\tightlist
+\item
+  subtyping (via inheritance)
+\item
+  duck typing
+\item
+  abstract base classes (optional)
+\end{itemize}
+
+    \hypertarget{subtyping-and-duck-typing}{%
+\subsection{Subtyping and duck typing}\label{subtyping-and-duck-typing}}
+
+\begin{itemize}
+\tightlist
+\item
+  a subtype is a datatype that is related to another datatype, i.e.~the
+  supertype, i.e.~the interface
+\item
+  multiple subtype can refere to the same interface
+\item
+  polymorphic subtyping is a good reason to use inheritance
+\item
+  duck typing mimics subtyping without implementing inheritance
+\item
+  ``If it walks like a duck and it quacks like a duck, then it must be a
+  duck.''
+\end{itemize}
+
+\hypertarget{in-normal-programming-style-suitability-is-assumed-to-be-determined-by-an-objects-type-only}{%
+\paragraph{in normal programming style, suitability is assumed to be
+determined by an object's type
+only}\label{in-normal-programming-style-suitability-is-assumed-to-be-determined-by-an-objects-type-only}}
+
+\hypertarget{in-duck-typings-style-suitability-is-determined-by-the-interface-i.e.-the-presence-of-certain-methods-and-properties}{%
+\paragraph{in duck typing's style, suitability is determined by the
+interface (i.e., the presence of certain methods and
+properties)}\label{in-duck-typings-style-suitability-is-determined-by-the-interface-i.e.-the-presence-of-certain-methods-and-properties}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{class} \PY{n+nc}{Animal}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:}  \PY{c+c1}{\PYZsh{} interface class}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{pass}
+    \PY{k}{def} \PY{n+nf}{call}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{animalSound}
+\PY{k}{class} \PY{n+nc}{Tiger}\PY{p}{(}\PY{n}{Animal}\PY{p}{)}\PY{p}{:}
+    \PY{n}{animalSound}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{roarrrrs}\PY{l+s+s2}{\PYZdq{}} 
+\PY{k}{class} \PY{n+nc}{Dog}\PY{p}{(}\PY{n}{Animal}\PY{p}{)}\PY{p}{:}
+    \PY{n}{animalSound}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{whoooofs}\PY{l+s+s2}{\PYZdq{}}
+\PY{k}{class} \PY{n+nc}{Bird}\PY{p}{(}\PY{n}{Animal}\PY{p}{)}\PY{p}{:}
+    \PY{n}{animalSound}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tweets}\PY{l+s+s2}{\PYZdq{}}  
+
+\PY{k}{def} \PY{n+nf}{I\PYZus{}hear\PYZus{}}\PY{p}{(}\PY{n}{something}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{I hear... a }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+}\PYZbs{}
+          \PY{n}{something}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}class\PYZus{}\PYZus{}}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}name\PYZus{}\PYZus{}}\PY{p}{,}\PYZbs{}
+          \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{which}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{something}\PY{o}{.}\PY{n}{call}\PY{p}{(}\PY{p}{)}\PY{p}{)}     
+\PY{n}{al}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{n}{al}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{Tiger}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{al}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{Dog}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{al}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{Bird}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{this\PYZus{}animal} \PY{o+ow}{in} \PY{n}{al}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} the interface method is invoked dynamically}
+    \PY{n}{I\PYZus{}hear\PYZus{}}\PY{p}{(}\PY{n}{this\PYZus{}animal}\PY{p}{)} 
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+I hear{\ldots} a Tiger which roarrrrs
+I hear{\ldots} a Dog which whoooofs
+I hear{\ldots} a Bird which tweets
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{class} \PY{n+nc}{Animal}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:}  \PY{c+c1}{\PYZsh{} interface class}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{pass}
+    \PY{k}{def} \PY{n+nf}{call}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{animalSound}
+    
+\PY{c+c1}{\PYZsh{} duck typing example: }
+\PY{c+c1}{\PYZsh{} Duck is not subclass of Animal, but has the same interface}
+\PY{k}{class} \PY{n+nc}{Duck}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:} 
+    \PY{n}{animalSound}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{definitely quacks like a duck}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{pass}
+    \PY{k}{def} \PY{n+nf}{call}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{animalSound}    
+    
+\PY{k}{def} \PY{n+nf}{I\PYZus{}hear\PYZus{}}\PY{p}{(}\PY{n}{something}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{I hear... a }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+}\PYZbs{}
+          \PY{n}{something}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}class\PYZus{}\PYZus{}}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}name\PYZus{}\PYZus{}}\PY{p}{,}\PYZbs{}
+          \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{which}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{something}\PY{o}{.}\PY{n}{call}\PY{p}{(}\PY{p}{)}\PY{p}{)} 
+    
+\PY{n}{I\PYZus{}hear\PYZus{}}\PY{p}{(}\PY{n}{Duck}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+I hear{\ldots} a Duck which definitely quacks like a duck
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{78}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k}{class} \PY{n+nc}{multiple\PYZus{}of\PYZus{}}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:}                        \PY{c+c1}{\PYZsh{} I am duck\PYZhy{}typing the class Container }
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{number}\PY{p}{)}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{number}\PY{o}{=}\PY{n}{number}  \PY{c+c1}{\PYZsh{} constructor to indroduce an attribute number}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}contains\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{:}                      \PY{c+c1}{\PYZsh{} method that defines which number belongs to this class}
+        \PY{k}{if} \PY{n}{x}\PY{o}{\PYZlt{}}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{number}\PY{p}{:} \PY{k}{return} \PY{k+kc}{False}             \PY{c+c1}{\PYZsh{} by definition, multiple of x should not be smaller than x }
+        \PY{k}{if} \PY{n}{x}\PY{o}{\PYZpc{}}\PY{k}{self}.number==0: return True           \PYZsh{} if multiple of number, then it belongs to this class
+        \PY{k}{else}\PY{p}{:} \PY{k}{return} \PY{k+kc}{False}                         \PY{c+c1}{\PYZsh{} otherwise it does not}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}str\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} 
+        \PY{k}{return} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{is multiple of }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{number}\PY{p}{)}
+
+\PY{n}{m10} \PY{o}{=} \PY{n}{multiple\PYZus{}of\PYZus{}}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{m9} \PY{o}{=} \PY{n}{multiple\PYZus{}of\PYZus{}}\PY{p}{(}\PY{l+m+mi}{9}\PY{p}{)}
+\PY{n}{m8} \PY{o}{=} \PY{n}{multiple\PYZus{}of\PYZus{}}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{)}
+\PY{n}{m7} \PY{o}{=} \PY{n}{multiple\PYZus{}of\PYZus{}}\PY{p}{(}\PY{l+m+mi}{7}\PY{p}{)}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{31}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{p}{[}\PY{n}{m7}\PY{p}{,}\PY{n}{m8}\PY{p}{,}\PY{n}{m9}\PY{p}{,}\PY{n}{m10}\PY{p}{]}\PY{p}{:}             
+        \PY{k}{if} \PY{n}{i} \PY{o+ow}{in} \PY{n}{j}\PY{p}{:}                
+            \PY{n+nb}{print}\PY{p}{(}\PY{n}{i}\PY{p}{,}\PY{n}{j}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+7 is multiple of 7
+8 is multiple of 8
+9 is multiple of 9
+10 is multiple of 10
+14 is multiple of 7
+16 is multiple of 8
+18 is multiple of 9
+20 is multiple of 10
+21 is multiple of 7
+24 is multiple of 8
+27 is multiple of 9
+28 is multiple of 7
+30 is multiple of 10
+    \end{Verbatim}
+
+    \hypertarget{removed-abc-from-this-lecture}{%
+\subsubsection{removed abc from this
+lecture}\label{removed-abc-from-this-lecture}}
+
+\hypertarget{duck-typing-limits-and-abstract-base-classes-abcs}{%
+\subsection{Duck typing limits and abstract base classes
+(ABCs)}\label{duck-typing-limits-and-abstract-base-classes-abcs}}
+
+\begin{itemize}
+\tightlist
+\item
+  duck typing does not verify whether the class satisfies your
+  requirements or not
+\item
+  the concept of abstract classes extends duck typing
+\item
+  an abstract class defines a set of attributes that a class must
+  implement (i.e., limits the duck-type flexibility)
+\item
+  collections module contains many ABCs implementations
+\item
+  e.g., the Container class
+\item
+  to duck-type an ABC some methods must be defines: check this using
+  \_\emph{abstractmethods\_}
+\item
+  abc module provides the infrastructure to define new ABC classes
+\item
+  uses decorators
+\end{itemize}
+
+    \hypertarget{how-to-define-a-context-manager-class}{%
+\subsection{How to define a context manager
+class}\label{how-to-define-a-context-manager-class}}
+
+\begin{itemize}
+\tightlist
+\item
+  a context manager class must define two methods:
+\item
+  \_\_enter\_\_(self): enter the runtime context
+\item
+  \_\_exit\_\_(self, exc\_type, exc\_value, traceback): exit the runtime
+  context
+\item
+  useful to embed a specific protocol
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f 
+\PY{k}{class} \PY{n+nc}{myErr}\PY{p}{(}\PY{n+ne}{Exception}\PY{p}{)}\PY{p}{:} \PY{k}{pass}
+
+\PY{k}{class} \PY{n+nc}{CManager}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}enter\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZus{}\PYZus{}enter\PYZus{}\PYZus{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{k}{return} \PY{n+nb+bp}{self}    
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}exit\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n+nb}{type}\PY{p}{,} \PY{n}{value}\PY{p}{,} \PY{n}{traceback}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZus{}\PYZus{}exit\PYZus{}\PYZus{}:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n+nb}{type}\PY{p}{,} \PY{n}{value}\PY{p}{)}
+        \PY{k}{return} \PY{k+kc}{True} \PY{c+c1}{\PYZsh{} if False no exception is considered}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{} with no interrupt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{with} \PY{n}{CManager}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{c}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{doing something with }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{c}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{done something}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}    
+    
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{} with interrupt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{with} \PY{n}{CManager}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{c}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{doing something with }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{c}\PY{p}{)}
+    \PY{k}{raise} \PY{n}{myErr}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{err msg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{unreachable}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{done something}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\# with no interrupt
+\_\_enter\_\_
+doing something with  <\_\_main\_\_.CManager object at 0x7ffb0c46b470>
+\_\_exit\_\_: None None
+done something
+
+\# with interrupt
+\_\_enter\_\_
+doing something with  <\_\_main\_\_.CManager object at 0x7ffb0c46b2b0>
+\_\_exit\_\_: <class '\_\_main\_\_.myErr'> err msg
+done something
+    \end{Verbatim}
+
+    \hypertarget{contextlib-module}{%
+\subsection{contextlib module}\label{contextlib-module}}
+
+\begin{itemize}
+\tightlist
+\item
+  decorator @contextmanager: combined with yield, can be used to define
+  context manager even without defining a class
+\item
+  ContextDecorator: base class to enable a context manager to be used as
+  a decorator
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{131}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k+kn}{from} \PY{n+nn}{contextlib} \PY{k+kn}{import} \PY{n}{contextmanager}
+
+\PY{n+nd}{@contextmanager}
+\PY{k}{def} \PY{n+nf}{tag}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{:} 
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZlt{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZgt{} }\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{,}\PY{n}{end}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{yield}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ \PYZlt{}/}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{,}\PY{n}{end}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    
+\PY{k}{with} \PY{n}{tag}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{thisTag}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{:} 
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{something}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{end}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}    
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<thisTag> something </thisTag>
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k+kn}{from} \PY{n+nn}{contextlib} \PY{k+kn}{import} \PY{n}{ContextDecorator}
+\PY{k+kn}{import} \PY{n+nn}{time}
+\PY{k}{class} \PY{n+nc}{Timer}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}enter\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}\PYZus{}t1} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+        \PY{k}{return} \PY{n+nb+bp}{self}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}exit\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{o}{*}\PY{n}{exc}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}\PYZus{}t2} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+m+mi}{1000}\PY{o}{*}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}\PYZus{}t2}\PY{o}{\PYZhy{}}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}\PYZus{}t1}\PY{p}{)}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ms}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{k}{return} \PY{k+kc}{False}
+    
+\PY{k}{with} \PY{n}{Timer}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{:}         
+        \PY{k}{with} \PY{n}{Timer}\PY{p}{(}\PY{p}{)}\PY{p}{:} 
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{end}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{whole time: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0.18143653869628906 ms
+0.028133392333984375 ms
+0.3943443298339844 ms
+0.10967254638671875 ms
+0.10013580322265625 ms
+0.09894371032714844 ms
+0.10061264038085938 ms
+0.09894371032714844 ms
+0.09870529174804688 ms
+0.09918212890625 ms
+whole time:
+3.642559051513672 ms
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k+kn}{from} \PY{n+nn}{contextlib} \PY{k+kn}{import} \PY{n}{ContextDecorator}
+\PY{k+kn}{import} \PY{n+nn}{time}
+\PY{k}{class} \PY{n+nc}{Timer}\PY{p}{(}\PY{n}{ContextDecorator}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}enter\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}\PYZus{}t1} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+        \PY{k}{return} \PY{n+nb+bp}{self}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}exit\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{o}{*}\PY{n}{exc}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}\PYZus{}t2} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+m+mi}{1000}\PY{o}{*}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}\PYZus{}t2}\PY{o}{\PYZhy{}}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}\PYZus{}t1}\PY{p}{)}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ms}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{k}{return} \PY{k+kc}{False}
+\PY{n+nd}{@Timer}\PY{p}{(}\PY{p}{)}
+\PY{k}{def} \PY{n+nf}{fun}\PY{p}{(}\PY{p}{)}\PY{p}{:} 
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{end}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nd}{@Timer}\PY{p}{(}\PY{p}{)}
+\PY{k}{def} \PY{n+nf}{ten\PYZus{}times\PYZus{}fun}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{:} 
+        \PY{n}{fun}\PY{p}{(}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{whole time: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    
+\PY{n}{ten\PYZus{}times\PYZus{}fun}\PY{p}{(}\PY{p}{)}        
+    
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0.11539459228515625 ms
+0.030517578125 ms
+0.2498626708984375 ms
+0.15091896057128906 ms
+0.12159347534179688 ms
+0.12111663818359375 ms
+0.12254714965820312 ms
+0.12087821960449219 ms
+0.12087821960449219 ms
+0.12111663818359375 ms
+whole time:
+4.659891128540039 ms
+    \end{Verbatim}
+
+    \hypertarget{iterable-sequences-and-iterators}{%
+\subsection{Iterable, sequences and
+iterators}\label{iterable-sequences-and-iterators}}
+
+\begin{itemize}
+\tightlist
+\item
+  an iterable is an object with \_\_iter\_\_() method
+\item
+  \_\_iter\_\_() normally return the class itself
+\item
+  a sequence is an iterable with \_\_getitem\_\_() and \_\_len\_\_()
+  methods
+\item
+  e.g., list, str, tuple are sequences
+\item
+  an iterator is an iterable with \_\_next\_\_() method
+\item
+  \_\_next\_\_() contains the logic to obtain the next element
+\item
+  \_\_next\_\_() should raise StopIteration() when no elements are left
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f 
+\PY{k}{class} \PY{n+nc}{CapitalChars\PYZus{}Iterator}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:}     
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{string}\PY{p}{)}\PY{p}{:} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}string} \PY{o}{=} \PY{n}{string}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}index} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}next\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}index} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+        \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}index} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}string}\PY{p}{)}\PY{p}{:} 
+            \PY{k}{raise} \PY{n+ne}{StopIteration}\PY{p}{(}\PY{p}{)}
+        \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}string}\PY{p}{[}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}index}\PY{p}{]}\PY{o}{.}\PY{n}{isupper}\PY{p}{(}\PY{p}{)}\PY{p}{:}            
+            \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}index}
+        \PY{c+c1}{\PYZsh{} else returns None        }
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}iter\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}        
+        \PY{k}{return} \PY{n+nb+bp}{self}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{p}{[}\PY{n}{i} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{CapitalChars\PYZus{}Iterator}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SiSsA}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{if} \PY{n}{i} \PY{o}{!=} \PY{k+kc}{None}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[0, 2, 4]
+    \end{Verbatim}
+
+    \hypertarget{unit-testing-framework}{%
+\subsection{Unit testing framework}\label{unit-testing-framework}}
+
+Why test? * testing is a crucial aspects of software development * it
+ensures code works as the developer thinks * it ensures code still works
+after changes * in teamwork, it helps planning, understanding and
+sharing requirements
+
+\begin{itemize}
+\tightlist
+\item
+  tests should be devised before the software development
+\item
+  python has a built-in test library: unittest
+\end{itemize}
+
+Workflow
+
+\begin{itemize}
+\item
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi})}
+  \setcounter{enumi}{-1}
+  \tightlist
+  \item
+    import the module to be tested
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi})}
+  \tightlist
+  \item
+    define your class derived from unittest: the TestCase
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi})}
+  \setcounter{enumi}{1}
+  \tightlist
+  \item
+    fill it with test functions whose names start with `test\_'
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi})}
+  \setcounter{enumi}{2}
+  \tightlist
+  \item
+    run tests using unittest.main({[}argv,exit{]}): argv and SystemExit
+    in case an exception is raised
+  \end{enumerate}
+\end{itemize}
+
+    \hypertarget{testcase-methods-to-run-the-test}{%
+\subsection{TestCase methods to run the
+test}\label{testcase-methods-to-run-the-test}}
+
+\begin{itemize}
+\tightlist
+\item
+  setUpModule(), tearDownModule(): called at first and at last in
+  module, run once
+\item
+  setUpClass(), tearDownClass: called at first and at last in class, run
+  once, must be decorated @classmethod
+\item
+  setUp(), tearDown(): execute before/after any TestCase method
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k+kn}{import} \PY{n+nn}{unittest}
+
+\PY{k}{class} \PY{n+nc}{Err}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:} \PY{k}{pass}
+
+\PY{k}{def} \PY{n+nf}{setUpModule}\PY{p}{(}\PY{p}{)}\PY{p}{:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{setUpModule}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{def} \PY{n+nf}{tearDownModule}\PY{p}{(}\PY{p}{)}\PY{p}{:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tearDownModule}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{k}{class} \PY{n+nc}{Example1}\PY{p}{(}\PY{n}{unittest}\PY{o}{.}\PY{n}{TestCase}\PY{p}{)}\PY{p}{:}
+    \PY{n+nd}{@classmethod}
+    \PY{k}{def} \PY{n+nf}{setUpClass}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ setUpClass Example1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf}{setUp}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{  setUp}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf}{test1}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{   test1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}        
+    \PY{k}{def} \PY{n+nf}{test2}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} 
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{   test2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{k}{raise} \PY{n}{Err}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{error}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf}{tearDown}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{  tearDown}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nd}{@classmethod}
+    \PY{k}{def} \PY{n+nf}{tearDownClass}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ tearDownClass Example1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{k}{class} \PY{n+nc}{Example2}\PY{p}{(}\PY{n}{unittest}\PY{o}{.}\PY{n}{TestCase}\PY{p}{)}\PY{p}{:} 
+    \PY{n+nd}{@classmethod}
+    \PY{k}{def} \PY{n+nf}{setUpClass}\PY{p}{(}\PY{n+nb+bp}{cls}\PY{p}{)}\PY{p}{:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ setUpClass Example2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nd}{@classmethod}
+    \PY{k}{def} \PY{n+nf}{tearDownClass}\PY{p}{(}\PY{n+nb+bp}{cls}\PY{p}{)}\PY{p}{:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ tearDownClass Example2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf}{test3}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{   test3}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}        
+    
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{unittest}\PY{o}{.}\PY{n}{main}\PY{p}{(}\PY{n}{argv}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{first\PYZhy{}arg\PYZhy{}is\PYZhy{}ignored}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{exit}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+.E.
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+setUpModule
+ setUpClass Example1
+  setUp
+   test1
+  tearDown
+  setUp
+   test2
+  tearDown
+ tearDownClass Example1
+ setUpClass Example2
+   test3
+ tearDownClass Example2
+tearDownModule
+<unittest.main.TestProgram object at 0x7fa7580837b8>
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+======================================================================
+ERROR: test2 (\_\_main\_\_.Example1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<ipython-input-30-9b56c873b00a>", line 16, in test2
+    raise Err('error')
+TypeError: object() takes no parameters
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.004s
+
+FAILED (errors=1)
+    \end{Verbatim}
+
+    \hypertarget{testcase-assert-methods}{%
+\subsection{TestCase assert methods}\label{testcase-assert-methods}}
+
+Most common asserts * assertFalse(x{[},msg{]}), assertTrue(x{[},msg{]})
+* assertEqual(a,b{[},msg{]}),
+assertNotEqual(a,b{[},msg{]}),assertGreater(a,b{[},msg{]}),
+assertGreaterEqual(a,b{[},msg{]}),assertLess(a,b{[},msg{]}),
+assertLessEqual(a,b{[},msg{]})\\
+* assertIs(a,b{[},msg{]}), assertIsNot(a,b{[},msg{]}),
+assertIsNone(x{[},msg{]}), assertIsNotNone(x{[},msg{]}), *
+assertIn(a,b{[},msg{]}), assertNotIn(a,b{[},msg{]}) *
+assertIsInstance(a,b{[},msg{]}), assertNotIsInstance(a,b{[},msg{]})
+
+Type-specific asserts * assertMultiLineEqual(a,b{[},msg{]}),
+assertSequenceEqual(a,b{[},msg{]}), assertListEqual(a,b{[},msg{]}),
+assertTupleEqual(a,b{[},msg{]}), assertSetEqual(a,b{[},msg{]}),
+assertDictEqual(a,b{[},msg{]})
+
+It is possible to check if Exceptions, Warnings or Logs were invoked *
+assertRaises(exc, fun, *args, **kwds) * fun(*args,**kwds) raises
+exception exc * assertRaisesRegex(exc, fun, *args, **kwds) *
+fun(*args,**kwds) raises exception exc and message matches regex r *
+assertWarns(warn, fun, *args, **kwds) * fun(*args,**kwds) raises warning
+warn * assertWarnsRegex() * fun(*args,**kwds) raises warning warn and
+message matches regex r * assertLogs(logger,level) -- TODO * the with
+block logs on logger with minimum level
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{65}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f 
+\PY{k+kn}{import} \PY{n+nn}{unittest}
+
+\PY{k}{def} \PY{n+nf}{fun\PYZus{}raising\PYZus{}TypeError}\PY{p}{(}\PY{p}{)}\PY{p}{:} \PY{k}{raise} \PY{n+ne}{TypeError}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{type error}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{def} \PY{n+nf}{fun\PYZus{}raising\PYZus{}WarningMsg}\PY{p}{(}\PY{p}{)}\PY{p}{:} \PY{k}{raise} \PY{n+ne}{Warning}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{warning message}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{k}{class} \PY{n+nc}{Test}\PY{p}{(}\PY{n}{unittest}\PY{o}{.}\PY{n}{TestCase}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf}{test1}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{assertRaises}\PY{p}{(}\PY{n+ne}{TypeError}\PY{p}{,}\PY{n}{fun\PYZus{}raising\PYZus{}TypeError}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf}{test2}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{assertRaises}\PY{p}{(}\PY{n+ne}{Warning}\PY{p}{,}\PY{n}{fun\PYZus{}raising\PYZus{}WarningMsg}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf}{test3}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{} should fail}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{assertRaises}\PY{p}{(}\PY{n+ne}{TypeError}\PY{p}{,}\PY{n}{fun\PYZus{}raising\PYZus{}WarningMsg}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{unittest}\PY{o}{.}\PY{n}{main}\PY{p}{(}\PY{n}{argv}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{first\PYZhy{}arg\PYZhy{}is\PYZhy{}ignored}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{exit}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{)}                        
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+..E
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<unittest.main.TestProgram object at 0x7f796036d278>
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+======================================================================
+ERROR: test3 (\_\_main\_\_.Test)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<ipython-input-65-a467d41f55bd>", line 13, in test3
+    self.assertRaises(TypeError,fun\_raising\_WarningMsg)
+  File "/home/jaky/miniconda3/envs/py36/lib/python3.6/unittest/case.py", line
+733, in assertRaises
+    return context.handle('assertRaises', args, kwargs)
+  File "/home/jaky/miniconda3/envs/py36/lib/python3.6/unittest/case.py", line
+178, in handle
+    callable\_obj(*args, **kwargs)
+  File "<ipython-input-65-a467d41f55bd>", line 5, in fun\_raising\_WarningMsg
+    def fun\_raising\_WarningMsg(): raise Warning('warning message')
+Warning: warning message
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.015s
+
+FAILED (errors=1)
+    \end{Verbatim}
+
+    \hypertarget{skip-decorators}{%
+\subsection{Skip decorators}\label{skip-decorators}}
+
+Tests usefulness could be conditioned to conditions (e.g., platforms,
+libraries' version, \ldots) * @unittest.skip(reason): skips the test *
+@unittest.skipIf(condition, reason): skips if condition is True *
+@unittest.skipUnless(condition, reason): skips unless condition is True
+* @unittest.expectedFailure: marks (but does not count) as failure *
+exception unittest.SkipTest(reason): to skip from inside the test
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{678}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f
+\PY{k+kn}{import} \PY{n+nn}{unittest}
+
+\PY{k}{class} \PY{n+nc}{Example}\PY{p}{(}\PY{n}{unittest}\PY{o}{.}\PY{n}{TestCase}\PY{p}{)}\PY{p}{:}
+    \PY{n}{trueCondition} \PY{o}{=} \PY{k+kc}{True}
+    \PY{n}{falseCondition} \PY{o}{=} \PY{k+kc}{False}
+    \PY{n+nd}{@unittest}\PY{o}{.}\PY{n}{skipIf}\PY{p}{(}\PY{n}{trueCondition}\PY{p}{,}\PYZbs{}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{good reason to skip test1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf}{test1}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{pass}
+    \PY{n+nd}{@unittest}\PY{o}{.}\PY{n}{skipUnless}\PY{p}{(}\PY{n}{falseCondition}\PY{p}{,}\PYZbs{}
+                         \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{good reason to skip test2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf}{test2}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{pass}    
+    \PY{k}{def} \PY{n+nf}{test3}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} 
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{test3}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{k}{if} \PY{k+kc}{True}\PY{p}{:} \PY{k}{raise} \PY{n}{unittest}\PY{o}{.}\PY{n}{SkipTest}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{this makes test3 useless}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{not going to be printed}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{unittest}\PY{o}{.}\PY{n}{main}\PY{p}{(}\PY{n}{argv}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{first\PYZhy{}arg\PYZhy{}is\PYZhy{}ignored}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{exit}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+sss
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+test3
+<unittest.main.TestProgram object at 0x7f4b5ff04668>
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.002s
+
+OK (skipped=3)
+    \end{Verbatim}
+
+    \hypertarget{iterate-tests-using-subtests}{%
+\subsection{Iterate tests using
+subtests}\label{iterate-tests-using-subtests}}
+
+\begin{itemize}
+\tightlist
+\item
+  you can distinguish similar tests inside the body of the same test
+  method using subTest
+\item
+  subTest({[}msg=None,**params{]}): test can be nested as context
+  manager
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{reset} \PYZhy{}f 
+\PY{k+kn}{import} \PY{n+nn}{unittest}
+
+\PY{k}{global} \PY{n}{ListOfIntegers} 
+\PY{n}{ListOfIntegers} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{7}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{8}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{9}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PYZbs{}
+                            \PY{c+c1}{\PYZsh{} \PYZsq{}7\PYZsq{} and}
+                            \PY{c+c1}{\PYZsh{}     \PYZsq{}8\PYZsq{} and }
+                            \PY{c+c1}{\PYZsh{}         \PYZsq{}9\PYZsq{} are not integers}
+
+\PY{k}{class} \PY{n+nc}{Test}\PY{p}{(}\PY{n}{unittest}\PY{o}{.}\PY{n}{TestCase}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf}{test\PYZus{}list}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} 
+        \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{ListOfIntegers}\PY{p}{:}
+            \PY{k}{with} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{subTest}\PY{p}{(}\PY{n}{value}\PY{o}{=}\PY{n}{i}\PY{p}{)}\PY{p}{:}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{assertEqual}\PY{p}{(}\PY{n+nb}{type}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{,} \PY{n+nb}{type}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{unittest}\PY{o}{.}\PY{n}{main}\PY{p}{(}\PY{n}{argv}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{first\PYZhy{}arg\PYZhy{}is\PYZhy{}ignored}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{exit}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{)}                
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<unittest.main.TestProgram object at 0x7f99940d9128>
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+======================================================================
+FAIL: test\_list (\_\_main\_\_.Test) (value='7')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<ipython-input-6-4c54590060b2>", line 13, in test\_list
+    self.assertEqual(type(i), type(1))
+AssertionError: <class 'str'> != <class 'int'>
+
+======================================================================
+FAIL: test\_list (\_\_main\_\_.Test) (value='8')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<ipython-input-6-4c54590060b2>", line 13, in test\_list
+    self.assertEqual(type(i), type(1))
+AssertionError: <class 'str'> != <class 'int'>
+
+======================================================================
+FAIL: test\_list (\_\_main\_\_.Test) (value='9')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<ipython-input-6-4c54590060b2>", line 13, in test\_list
+    self.assertEqual(type(i), type(1))
+AssertionError: <class 'str'> != <class 'int'>
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=3)
+    \end{Verbatim}
+
+    \hypertarget{exercises}{%
+\subsection{Exercises}\label{exercises}}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
