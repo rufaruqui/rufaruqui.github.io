@@ -1,0 +1,105 @@
+\documentclass[12pt]{exam}
+\usepackage[utf8]{inputenc}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{multicol}
+
+\newcommand{\class}{CSE 817: Data Engineering}
+\newcommand{\term}{Winter 2014}
+\newcommand{\examnum}{CT 2}
+\newcommand{\examdate}{06/03/2023}
+\newcommand{\timelimit}{60 Minutes}
+
+\pagestyle{head}
+\firstpageheader{}{}{}
+\runningheader{\class}{\hspace{1cm}\examnum\ - Page \thepage\ of \numpages}{\examdate}
+\runningheadrule
+
+
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning,shapes,arrows}
+
+\usepackage{graphics,algorithmicx}
+%\input{pdfinfo.tex}
+ 
+
+
+
+\usepackage[english]{babel}
+\usepackage{pgf,pgfarrows,pgfnodes,pgfautomata,pgfheaps}
+\usepackage{amsmath,amssymb} 
+\usepackage{listings}
+%\usepackage{html,makeidx}
+\usepackage{hyperref}
+
+% Define block styles
+\tikzstyle{decision} = [diamond, draw, fill=blue!20, text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!20,  text width=5em, text badly centered, rounded corners, minimum height=2em]
+\tikzstyle{block1} = [rectangle, draw, fill=blue!20, text badly centered, rounded corners,]
+
+
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [ellipse,fill=red!20, node distance=2cm, text width=5em, text badly centered, minimum height=2em]
+\tikzstyle{info} = [ellipse, node distance=4cm, text width=5em, text badly centered, minimum height=2em]
+\tikzstyle{prg} = [ ellipse, node distance=4cm, minimum height=2em]
+\tikzstyle{prg2} = [ ellipse, node distance=2cm, minimum height=2em]
+\tikzstyle{prg3} = [ ellipse, node distance=2cm,text width=5em, text badly centered,  minimum height=2em]
+\tikzstyle{elp} = [draw,ellipse, node distance=2cm, minimum height=2em]
+
+
+ 
+
+\usepackage{color}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+ 
+
+
+\begin{document}
+
+\noindent
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{8pt}} l}
+\textbf{\class} & \textbf{Name:} & \makebox[2in]{\hrulefill}\\
+%\textbf{\term} &&\\
+& & \\
+\textbf{\examnum}  \textbf{Date}: \textbf{\examdate} &  \textbf{ID:} & \makebox[2in]{\hrulefill}\\
+%\textbf{\examdate} &&\\
+%\textbf{Time Limit: \timelimit} & Teaching Assistant & \makebox[2in]{\hrulefill}
+\end{tabular*}\\
+
+%\rule[2ex]{\textwidth}{2pt}
+
+This exam contains \numpages\ pages and \numquestions\ questions.  Total of points is \numpoints.
+
+% Rest of introduction. Rest of introduction. Rest of introduction. Rest of introduction. Rest of introduction. Rest of introduction. Rest of introduction. Rest of introduction. 
+
+
+% \begin{center}
+% Grade Table (for teacher use only)\\
+% \addpoints
+% \gradetable[v][questions]
+% \end{center}
+
+\noindent
+\rule[2ex]{\textwidth}{2pt}
+
+ 
+\begin{questions}
+		\addpoints
+ \question[5] Define \textbf{crosstab} and \textbf{roll-up }operatiosn in OLAP and how can they be used to analyze data across different dimensions?	\fillwithdottedlines{28em} 	 
+ 
+\question[5]    Using the given Sales schema, cross tabulate the total sales amount by Product Category and Region. Use standard SQL for cross tabulation.
+\textit{Sales(SaleID, SaleDate, ProductID, ProductCategory, RegionID, SalesAmount)}	\fillwithdottedlines{12em} 	  
+	\addpoints
+ 
+ 
+ 	\question [5]  What are the key considerations for designing a scalable and efficient data lake architecture to support big data processing and analytics?  Introduce in one or two lines the different components of a typical data lake architecture.	\fillwithdottedlines{35em} 	  
+ 	\question[5]   Explain an use case of date lakes.	\fillwithdottedlines{13em} 	
+ 	
+\end{questions}
+
+\end{document}

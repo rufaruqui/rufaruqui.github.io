@@ -1,0 +1,126 @@
+\documentclass[12pt]{exam}
+\usepackage[utf8]{inputenc}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{multicol}
+
+\newcommand{\class}{CSE 817: Data Engineering}
+\newcommand{\term}{Winter 2014}
+\newcommand{\examnum}{CT 1}
+\newcommand{\examdate}{22/02/2023}
+\newcommand{\timelimit}{60 Minutes}
+
+\pagestyle{head}
+\firstpageheader{}{}{}
+\runningheader{\class}{\hspace{1cm}\examnum\ - Page \thepage\ of \numpages}{\examdate}
+\runningheadrule
+
+
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning,shapes,arrows}
+
+\usepackage{graphics,algorithmicx}
+%\input{pdfinfo.tex}
+ 
+
+
+
+\usepackage[english]{babel}
+\usepackage{pgf,pgfarrows,pgfnodes,pgfautomata,pgfheaps}
+\usepackage{amsmath,amssymb} 
+\usepackage{listings}
+%\usepackage{html,makeidx}
+\usepackage{hyperref}
+
+% Define block styles
+\tikzstyle{decision} = [diamond, draw, fill=blue!20, text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!20,  text width=5em, text badly centered, rounded corners, minimum height=2em]
+\tikzstyle{block1} = [rectangle, draw, fill=blue!20, text badly centered, rounded corners,]
+
+
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [ellipse,fill=red!20, node distance=2cm, text width=5em, text badly centered, minimum height=2em]
+\tikzstyle{info} = [ellipse, node distance=4cm, text width=5em, text badly centered, minimum height=2em]
+\tikzstyle{prg} = [ ellipse, node distance=4cm, minimum height=2em]
+\tikzstyle{prg2} = [ ellipse, node distance=2cm, minimum height=2em]
+\tikzstyle{prg3} = [ ellipse, node distance=2cm,text width=5em, text badly centered,  minimum height=2em]
+\tikzstyle{elp} = [draw,ellipse, node distance=2cm, minimum height=2em]
+
+
+ 
+
+\usepackage{color}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+ 
+
+
+\begin{document}
+
+\noindent
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{8pt}} l}
+\textbf{\class} & \textbf{Name:} & \makebox[2in]{\hrulefill}\\
+%\textbf{\term} &&\\
+& & \\
+\textbf{\examnum}  \textbf{Date}: \textbf{\examdate} &  \textbf{ID:} & \makebox[2in]{\hrulefill}\\
+%\textbf{\examdate} &&\\
+%\textbf{Time Limit: \timelimit} & Teaching Assistant & \makebox[2in]{\hrulefill}
+\end{tabular*}\\
+
+%\rule[2ex]{\textwidth}{2pt}
+
+This exam contains \numpages\ pages and \numquestions\ questions.  Total of points is \numpoints.
+
+% Rest of introduction. Rest of introduction. Rest of introduction. Rest of introduction. Rest of introduction. Rest of introduction. Rest of introduction. Rest of introduction. 
+
+
+% \begin{center}
+% Grade Table (for teacher use only)\\
+% \addpoints
+% \gradetable[v][questions]
+% \end{center}
+
+\noindent
+\rule[2ex]{\textwidth}{2pt}
+
+ 
+\begin{questions}
+		\addpoints
+ \question[5] Specify key three metrics that distinguish Big Data from the traditional relational database.	\fillwithdottedlines{23em} 	 
+ 
+\question[5]    \textit{“Apache Spark performs transformations on RDDs in a lazy manner.”} -- explain how it performs lazy evaluations.  	\fillwithdottedlines{18em} 	  
+	\addpoints
+ 
+ \question  We want to computes the number of occurrences of each word in a file. Write two different solutions to compute word frequencies.
+ \begin{parts}
+ 	\part [5] Pseudocod using the \textbf{MapReduce} framework. Include both \textbf{Map} and \textbf{Reduce} functions.	\fillwithdottedlines{24em} 	  
+ 	\part[5]  Java program using Apache Spark. Write only the core component of the main program starting from the following program.
+ 	
+ 	\lstset{language=Java} 
+ 	\begin{lstlisting}
+SparkSession spark = 
+     SparkSession.builder().appName("WordCount").getOrCreate();
+----------------------------------------------------------------
+----------------------------------------------------------------
+----------------------------------------------------------------
+----------------------------------------------------------------
+----------------------------------------------------------------
+----------------------------------------------------------------
+----------------------------------------------------------------
+----------------------------------------------------------------
+----------------------------------------------------------------
+----------------------------------------------------------------
+----------------------------------------------------------------
+----------------------------------------------------------------
+----------------------------------------------------------------
+----------------------------------------------------------------
+spark.stop();
+ 	\end{lstlisting} 
+ \end{parts}
+\end{questions}
+
+\end{document}

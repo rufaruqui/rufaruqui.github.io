@@ -1,0 +1,3 @@
+\beamer@sectionintoc {1}{Data Lake}{3}{0}{1}
+\beamer@sectionintoc {2}{Use cases of data lakes}{12}{0}{2}
+\beamer@sectionintoc {3}{DL Architecture}{17}{0}{3}

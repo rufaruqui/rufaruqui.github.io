@@ -1,0 +1,562 @@
+% This syllabus template was created by:
+% Brian R. Hall
+% Associate Professor, Champlain College
+% www.brianrhall.net
+
+% Document settings
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[pdftex]{graphicx}
+\usepackage{multirow}
+\usepackage{setspace}
+\pagestyle{plain}
+\setlength\parindent{0pt}
+
+\begin{document}
+	
+%	\par{\centering
+%		{\sffamily\huge Curriculum {Vit\ae} for Adjunct Faculty Positions at Chittagong Independent University
+%		}\\
+	% Course information
+	\begin{table}
+		\centering
+	\begin{tabular}{ c }
+		 \includegraphics[height=1in,width=1in]{cu.png} \\
+	   \sffamily   \textbf{University of Chittagong }  \\
+	  \sffamily \textit{ Department  of Computer  Science \& Engineering} \\
+	\end{tabular}
+\end{table}
+	\vspace{10mm}
+	
+	% Professor information
+	\textbf {Course Code:} CSE 817\\\\
+	\textbf {Course Title:}  Data Engineering \\\\
+	\textbf {Credits Hour:} 3 \\\\
+	
+		\begin{table}[h!t]
+		\centering
+	\begin{tabular}{|l|}
+		\hline
+	\begin{tabular}{ l c } 
+	& \textbf{Instructor}	 \\
+	& \large \textit{Rokan Uddin Faruqui }\\
+		& \large Associate Professor \\
+		& Dept. of Computer Science and Engineering \\
+		&  University of Chittagong, Chittagong \\
+		& \large Email: rokan@cu.ac.bd \\ 
+	\end{tabular}  
+\\ \hline
+\end{tabular}
+\end{table}
+	\vspace{5mm} 
+	%\end{center}
+
+
+	% Course details
+	%	\textbf {Course Objective:}  This course covers the issues that arise in the design and construction of compilers for programming languages.  The course emphasizes techniques that have direct application to the construction of compilers. \\
+	%\textbf {\large \\ Course Description:} \textit{Basic Issues}- Compiler structure, front end, back end.
+	%\textit{Lexical Analysis} - Tokens, patterns, and lexemes, input buffering, transition diagrams, lexical-analyzer generator- \emph{Flex}. 
+%\textit{	Syntax Analysis } - Elimination of left recursion, left factoring, FIRST and FOLLOW, LL(1) grammars, non-recursive predictive parsing,  Bottom-up parsing, LR parsers, parser generators - \emph{Bison}. 
+%	\textit{Syntax-Directed Translation } - Syntax directed definitions, inherited and synthesized attributes, dependency graphs, syntax-directed translation schemes. 
+%\textit{	Semantic Analysis } - Type expressions, type equivalence, type-checking. 
+%\textit{	Run-Time Environments} - Storage organization, static versus dynamic storage allocation, activation trees, activation records. 
+%\textit{	Intermediate Code Generation} - Directed acyclic graphs for expressions, three-address code, quadruples, triples, static single-assignment form, code generation. 
+%\textit{	Code Optimization} - Basic blocks and flow graphs, next-use information, optimization of basic blocks.
+	\\
+	%\textbf {Prerequisite(s):} None.
+	
+	%\textbf {Note(s):} A minimum grade of C is required in this course to progress to COURSE. 
+	
+
+	
+%	\textbf {\large Marks Distribution:} \\
+%	\hspace*{40mm}
+%	\begin{tabular}{ l l }
+%%		Class Test & 20\% \\ 
+%		Midterm Exam  & 30\% \\
+%		Final Exam  & 40\%
+%	\end{tabular} \\\\ 	
+	% I recommend using \newpage here if necessary
+
+	\textbf {\large Textbook:} 
+\begin{itemize}
+	\item Silberschatz, A., Korth, H. F.,, Sudarshan, S. (2010). \textit{Database System Concepts}. $7^{th}$ edition, New York: McGraw-Hill.
+	\item  Han, J., Kamber, M.\& Pei, J. (2012). \textit{Data Mining Concepts and Techniques}, $3^{rd}$ edition, Morgan Kaufmann Publishers
+	\item Kevin P. Murphy. (2012). Machine Learning: A Probabilistic Perspective. The MIT Press.
+	
+	\item  Andreas K. (2019). The Data Engineering Cookbook.
+	
+	 Available at 
+	\href{Cook Book}{https://www.darwinpricing.com/training/Data\_Engineering\_Cookbook.pdf}
+\end{itemize}  
+
+	\newpage
+	
+	% Course Outline
+	\textbf {\large Course Outline}:
+	
+	%The weekly coverage might change as it depends on the progress of the class.  However, you must keep up with the reading assignments.
+	
+	\begin{table}[h!]
+		\normalsize % The size of the table text can be changed depending on content. Remove if desired.
+		\begin{tabular}{ | c | c | l |}
+			\hline
+			\textbf{Lectures} & \textbf{Content} & \textbf{Readings} \\
+			\hline
+			
+			%Lecture 1
+			Lecture 1 & \begin{minipage}{.45\textwidth}
+				\begin{itemize} \itemsep-0.4em
+					\vspace{1mm}
+					\item Course Overview
+					\item The Structure of a Compiler
+					\vspace{1mm}
+				\end{itemize}
+			\end{minipage} 
+			& \begin{minipage}{.4\textwidth}
+				\begin{itemize} \itemsep-0.4em
+					\vspace{1mm}
+					\item  Ch 1
+					\vspace{1mm}
+				\end{itemize}
+			\end{minipage}\\ \hline
+			
+			%Lecture 2
+			Lecture 2 & \begin{minipage}{.45\textwidth}
+				\begin{itemize} \itemsep-0.4em
+					\vspace{1mm}
+					\item Specification of Tokens
+					\vspace{1mm}
+				\end{itemize}
+			\end{minipage} 
+			& \begin{minipage}{.4\textwidth}
+				\begin{itemize} \itemsep-0.4em
+					\vspace{1mm}
+					\item  Ch 3.3
+					\vspace{1mm}
+				\end{itemize}
+			\end{minipage}\\ \hline
+			
+			
+			%Lecture 3
+			Lecture 3 & \begin{minipage}{.45\textwidth}
+				\begin{itemize} \itemsep-0.4em
+					\vspace{1mm}
+					\item Recognition of Tokens
+					\vspace{1mm}
+				\end{itemize}
+			\end{minipage} 
+			& \begin{minipage}{.4\textwidth}
+				\begin{itemize} \itemsep-0.4em
+					\vspace{1mm}
+					\item  Ch 3.4
+					\vspace{1mm}
+				\end{itemize}
+			\end{minipage}\\ \hline
+			
+			
+			%Lecture 4
+			Lecture 4 & \begin{minipage}{.45\textwidth}
+				\begin{itemize} \itemsep-0.4em
+					\vspace{1mm}
+					\item Finite Automata 
+					\vspace{1mm}
+				\end{itemize}
+			\end{minipage} 
+			& \begin{minipage}{.4\textwidth}
+				\begin{itemize} \itemsep-0.4em
+					\vspace{1mm}
+					\item  Ch 3.6 - 3.7
+					\vspace{1mm}
+				\end{itemize}
+			\end{minipage}\\ \hline
+			
+			%Lecture 4
+			Lecture 5 & \begin{minipage}{.45\textwidth}
+				\begin{itemize} \itemsep-0.4em
+					\vspace{1mm}
+					\item  Regular Expressions to Automata
+					\vspace{1mm}
+				\end{itemize}
+			\end{minipage} 
+			& \begin{minipage}{.4\textwidth}
+				\begin{itemize} \itemsep-0.4em
+					\vspace{1mm}
+					\item  Ch 3.7
+					\vspace{1mm}
+				\end{itemize}
+			\end{minipage}\\ \hline
+			
+		%Lecture 6
+	Lecture 6 & \begin{minipage}{.45\textwidth}
+		\begin{itemize} \itemsep-0.4em
+			\vspace{1mm}
+			\item  Context-Free Grammars
+			\vspace{1mm}
+		\end{itemize}
+	\end{minipage} 
+	& \begin{minipage}{.4\textwidth}
+		\begin{itemize} \itemsep-0.4em
+			\vspace{1mm}
+			\item  Ch 4.1-4.2
+			\vspace{1mm}
+		\end{itemize}
+	\end{minipage}\\ \hline
+
+
+	%Lecture 4
+Lecture 7 & \begin{minipage}{.45\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item  Recursive-Descent Parsers
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage} 
+& \begin{minipage}{.4\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item  Ch 4.4.1
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage}\\ \hline
+
+
+	%Lecture 4
+Lecture 8 & \begin{minipage}{.45\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item  Left Recursions
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage} 
+& \begin{minipage}{.4\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item    Ch 4.3.1-4
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage}\\ \hline
+
+
+	%Lecture 4
+Lecture 9 & \begin{minipage}{.45\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item  The FIRST Function
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage} 
+& \begin{minipage}{.4\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item    Ch 4.4.2
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage}\\ \hline
+
+
+	%Lecture 4
+Lecture 10 & \begin{minipage}{.45\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item  The Follow Function
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage} 
+& \begin{minipage}{.4\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item   Ch 4.4.2
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage}\\ \hline
+
+
+	%Lecture 4
+Lecture 11 & \begin{minipage}{.45\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item  Predictive Parsing
+		\begin{itemize}
+			\item LL(1) Grammar
+		\end{itemize}
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage} 
+& \begin{minipage}{.4\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item   Ch 4.4.3
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage}\\ \hline
+	%Lecture 4
+
+
+Lecture 12 & \begin{minipage}{.45\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item  Bottom-up Parsing
+		\begin{itemize}
+			\item Reductions
+			\item Handle Pruning
+		\end{itemize}
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage} 
+& \begin{minipage}{.4\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item   Ch 4.5.1 - 2
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage}\\ \hline
+%Lecture 4
+
+Lecture 13 & \begin{minipage}{.45\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item  Bottom-up Parsing
+		\begin{itemize}
+			\item Shift-reduce Parsing
+			\item Conflicts in SR Parsing
+			\item LR parsers
+		\end{itemize}
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage} 
+& \begin{minipage}{.4\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item   Ch 4.5.3-4, 4.6.1
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage}\\ \hline\hline
+Lecture 14 & \multicolumn{2}{c|}{\textbf{Review} } \\\hline\hline
+	
+Lecture 15 & \begin{minipage}{.45\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item  \textbf{Flex} -- Scanner Generator
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage} 
+& \begin{minipage}{.4\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item  Ch 3.8
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage}\\ \hline	
+
+
+	%Lecture 4
+Lecture 16 & \begin{minipage}{.45\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item  \textbf{Bison} -- Parser Generator
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage} 
+& \begin{minipage}{.4\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item  Ch 4.9
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage}\\ \hline	
+
+
+	%Lecture 4
+Lecture 17 & \begin{minipage}{.45\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item  Abstract Syntax Trees
+		\begin{itemize} 
+		\item  Synthetic  Attributes 
+		\item  Inherited Attributes  
+	\end{itemize}
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage} 
+& \begin{minipage}{.4\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item   Ch 5.1 - 5.2
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage}\\ \hline	
+
+
+Lecture 18 & \begin{minipage}{.45\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item Semantic Analysis
+		\begin{itemize} 
+			\item  Type Expressions
+			\item  Type Equivalence
+		\end{itemize}
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage} 
+& \begin{minipage}{.4\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item   Ch 5.1 - 5.2
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage}\\ \hline	
+\end{tabular}
+\end{table}
+\begin{table}[h!]
+\normalsize % The size of the table text can be changed depending on content. Remove if desired.
+\begin{tabular}{ | c | c | l |}
+\hline
+\textbf{Lectures} & \textbf{Content} & \textbf{Readings} \\
+\hline
+Lecture 19 & \begin{minipage}{.45\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item Semantic Analysis
+		\begin{itemize} 
+			\item  Type Checking
+		\end{itemize}
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage} 
+& \begin{minipage}{.4\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item   Ch 5.3, 6.5
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage}\\ \hline	
+
+Lecture 20 & \begin{minipage}{.45\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item Runtime Environments
+		\begin{itemize} 
+			\item Storage organization
+			\item Static vs. Dynamic storage allocation
+		\end{itemize}
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage} 
+& \begin{minipage}{.4\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item   Ch 7.1 - 7.2
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage}\\ \hline	
+
+
+Lecture 21 & \begin{minipage}{.45\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item Runtime Environments
+		\begin{itemize} 
+			\item Activation trees
+			\item Activation records. 
+		\end{itemize}
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage} 
+& \begin{minipage}{.4\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item   Ch 7.3
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage}\\ \hline	
+
+Lecture 22 & \begin{minipage}{.45\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item Intermediate Code Generation
+		\begin{itemize} 
+			\item  DAG
+			\item Three-address code
+			\item Triples
+			\item Qudruples
+			\item SSA
+		\end{itemize}
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage} 
+& \begin{minipage}{.4\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item   Ch 6.1 - 6.3
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage}\\ \hline	 
+
+	Lecture 23 & \begin{minipage}{.45\textwidth}
+		\begin{itemize} \itemsep-0.4em
+			\vspace{1mm}
+			\item Intermediate Code Generation
+			\begin{itemize} 
+				\item Expressions
+				\item Branching Statements
+				\item Loops
+			\end{itemize}
+			\vspace{1mm}
+		\end{itemize}
+	\end{minipage} 
+	& \begin{minipage}{.4\textwidth}
+		\begin{itemize} \itemsep-0.4em
+			\vspace{1mm}
+			\item   Ch 6.4, 6.6
+			\vspace{1mm}
+		\end{itemize}
+	\end{minipage}\\ \hline	
+
+Lecture 24 & \begin{minipage}{.45\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item Code Generations
+		\begin{itemize} 
+			\item Basic Blocks
+			\item Flow graphs
+		\end{itemize}
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage} 
+& \begin{minipage}{.4\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item   Ch 8.1 - 8.2
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage}\\ \hline	
+
+Lecture 25 & \begin{minipage}{.45\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item Code Generation
+		\begin{itemize} 
+			\item Optimization of Basic Blocks 
+		\end{itemize}
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage} 
+& \begin{minipage}{.4\textwidth}
+	\begin{itemize} \itemsep-0.4em
+		\vspace{1mm}
+		\item   Ch 8.3-8.4
+		\vspace{1mm}
+	\end{itemize}
+\end{minipage}\\ \hline 	\hline
+ \multicolumn{3}{|c|}{\textbf{Final Exam} } \\\hline\hline
+\end{tabular} 
+	\end{table}
+	
+\end{document}
+
+
+Abstract Syntax Trees
+Synthetic and Inherited Attributes 5.1 5.2
+Building the Abstract Syntax Trees 5.3
+

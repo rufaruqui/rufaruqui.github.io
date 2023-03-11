@@ -1,0 +1,3 @@
+SQL Sliding Syntax
+Ch 13.6 File Formats
+Presentation on Data Engineering on various companies
