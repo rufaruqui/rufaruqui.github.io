@@ -1,6 +1,6 @@
-import { ElementRef, NgZone, OnDestroy, Renderer2 } from "@angular/core";
-import * as i0 from "@angular/core";
-import * as i1 from "@angular/common";
+import { ElementRef, NgZone, OnDestroy, Renderer2 } from '@angular/core';
+import * as i0 from '@angular/core';
+import * as i1 from '@angular/common';
 export declare class StyleClass implements OnDestroy {
   el: ElementRef;
   renderer: Renderer2;
@@ -38,19 +38,19 @@ export declare class StyleClass implements OnDestroy {
   static ɵfac: i0.ɵɵFactoryDeclaration<StyleClass, never>;
   static ɵdir: i0.ɵɵDirectiveDeclaration<
     StyleClass,
-    "[pStyleClass]",
+    '[pStyleClass]',
     never,
     {
-      selector: "pStyleClass";
-      enterClass: "enterClass";
-      enterActiveClass: "enterActiveClass";
-      enterToClass: "enterToClass";
-      leaveClass: "leaveClass";
-      leaveActiveClass: "leaveActiveClass";
-      leaveToClass: "leaveToClass";
-      hideOnOutsideClick: "hideOnOutsideClick";
-      toggleClass: "toggleClass";
-      hideOnEscape: "hideOnEscape";
+      selector: 'pStyleClass';
+      enterClass: 'enterClass';
+      enterActiveClass: 'enterActiveClass';
+      enterToClass: 'enterToClass';
+      leaveClass: 'leaveClass';
+      leaveActiveClass: 'leaveActiveClass';
+      leaveToClass: 'leaveToClass';
+      hideOnOutsideClick: 'hideOnOutsideClick';
+      toggleClass: 'toggleClass';
+      hideOnEscape: 'hideOnEscape';
     },
     {},
     never,
