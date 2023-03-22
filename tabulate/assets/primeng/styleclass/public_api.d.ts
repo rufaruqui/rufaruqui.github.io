@@ -1,1 +1,1 @@
-export * from './styleclass';
+export * from "./styleclass";
