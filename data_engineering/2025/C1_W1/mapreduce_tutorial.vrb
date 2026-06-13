@@ -1,0 +1,63 @@
+\frametitle{Execution Overview}
+\begin{center}
+\begin{tikzpicture}[
+    node distance=0.8cm,
+    box/.style={rectangle, draw, minimum width=1.2cm, minimum height=0.6cm, font=\tiny},
+    process/.style={ellipse, draw, minimum width=1cm, minimum height=0.6cm, font=\tiny},
+    arrow/.style={->, >=stealth}
+]
+
+% User program and master
+\node[process, fill=googleblue!20] (user) {User Program};
+\node[process, fill=googlered!20, below=1.5cm of user] (master) {Master};
+
+% Workers
+\node[process, fill=googleyellow!20, below left=1.5cm and 2cm of master] (worker1) {worker};
+\node[process, fill=googleyellow!20, below=2.5cm of master] (worker2) {worker};
+\node[process, fill=googleyellow!20, below right=1.5cm and 2cm of master] (worker3) {worker};
+\node[process, fill=googlegreen!20, right=3cm of worker2] (worker4) {worker};
+\node[process, fill=googlegreen!20, above=0.8cm of worker4] (worker5) {worker};
+
+% Input splits
+\node[box, fill=gray!20, left=1.5cm of worker1] (split0) {split 0};
+\node[box, fill=gray!20, below=0.2cm of split0] (split1) {split 1};
+\node[box, fill=gray!20, below=0.2cm of split1] (split2) {split 2};
+\node[box, fill=gray!20, below=0.2cm of split2] (split3) {split 3};
+\node[box, fill=gray!20, below=0.2cm of split3] (split4) {split 4};
+
+% Intermediate files
+\node[box, fill=orange!20, right=0.5cm of worker1, yshift=-0.5cm] (int1) {};
+\node[box, fill=orange!20, right=0.5cm of worker2, yshift=-0.5cm] (int2) {};
+\node[box, fill=orange!20, right=0.5cm of worker3, yshift=-0.5cm] (int3) {};
+
+% Output files
+\node[box, fill=googleblue!30, right=1.5cm of worker4] (out0) {output file 0};
+\node[box, fill=googleblue!30, right=1.5cm of worker5] (out1) {output file 1};
+
+% Labels
+\node[above=0.1cm of split0, font=\tiny] {Input files};
+\node[above right=0.1cm and -0.5cm of int2, font=\tiny] {Intermediate};
+\node[above=0.1cm of out1, font=\tiny] {Output};
+
+% Arrows with labels
+\draw[arrow, dashed] (user) -- node[left, font=\tiny] {(1) fork} (master);
+\draw[arrow, dashed] (user) -- (worker1);
+\draw[arrow, dashed] (user) -- (worker3);
+
+\draw[arrow] (master) -- node[above, font=\tiny] {(2) assign} (worker1);
+\draw[arrow] (master) -- node[right, font=\tiny] {(2) assign} (worker4);
+
+\draw[arrow] (split2) -- node[above, font=\tiny] {(3) read} (worker2);
+
+\draw[arrow] (worker2) -- node[above, font=\tiny] {(4) local write} (int2);
+
+\draw[arrow] (int2) -- node[above, font=\tiny] {(5) remote read} (worker4);
+
+\draw[arrow] (worker4) -- node[above, font=\tiny] {(6) write} (out0);
+
+% Phase labels
+\node[below=2cm of split2, font=\tiny\bfseries, text=googleblue] {Map phase};
+\node[below=2cm of worker4, font=\tiny\bfseries, text=googlegreen] {Reduce phase};
+
+\end{tikzpicture}
+\end{center}

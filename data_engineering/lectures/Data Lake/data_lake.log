@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.6.15)  31 JAN 2023 09:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.6.15)  15 APR 2026 09:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1534,7 +1534,7 @@ Package pdftex.def Info: cu.png  used on input line 314.
  [17
 
 ]
-<archi.png, id=536, 783.92876pt x 379.4175pt>
+<archi.png, id=537, 783.92876pt x 379.4175pt>
 File: archi.png Graphic file (type png)
 <use archi.png>
 Package pdftex.def Info: archi.png  used on input line 317.
@@ -1575,10 +1575,10 @@ Package rerunfilecheck Info: File `data_lake.out' has not changed.
 (rerunfilecheck)             Checksum: A9690D879B31554442E0235368AD1662;382.
  ) 
 Here is how much of TeX's memory you used:
- 30055 strings out of 478994
- 606158 string characters out of 5858184
- 918335 words of memory out of 5000000
- 46795 multiletter control sequences out of 15000+600000
+ 30057 strings out of 478994
+ 606174 string characters out of 5858184
+ 918318 words of memory out of 5000000
+ 46797 multiletter control sequences out of 15000+600000
  408719 words of font info for 44 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  131i,15n,132p,774b,645s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1591,7 +1591,7 @@ usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></us
 r/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/l
 ocal/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/lo
 cal/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb>
-Output written on data_lake.pdf (19 pages, 565290 bytes).
+Output written on data_lake.pdf (19 pages, 565065 bytes).
 PDF statistics:
  635 PDF objects out of 1000 (max. 8388607)
  575 compressed objects within 6 object streams

@@ -1,0 +1,11 @@
+
+CS50's Computer Science for Lawyers ==> https://cs50.harvard.edu/law/2019/notes/8/
+
+CS50's  Web Programming with Python and JS ==> https://cs50.harvard.edu/web/2020/notes/4/
+
+CS50's Introduction to AI with  Python => https://cs50.harvard.edu/ai/2020/notes/4/
+
+CS50's Understanding Technology => http://cs50.harvard.edu/technology/2017/notes/1
+
+
+CS50's Introduction to Computer Science ==> https://cs50.harvard.edu/x/2023/notes/0/

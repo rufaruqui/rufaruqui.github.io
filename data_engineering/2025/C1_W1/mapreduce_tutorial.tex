@@ -1,0 +1,1325 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{hyperref}
+
+\usetikzlibrary{shapes,arrows,positioning,fit,backgrounds}
+
+% Theme settings
+% \usetheme{Madrid}
+% \usecolortheme{default}
+% \setbeamertemplate{navigation symbols}{}
+% \setbeamertemplate{footline}[frame number]
+ %% Beamer Layout %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ %\useoutertheme[subsection=false,shadow]{miniframes}
+ %\useinnertheme{default}
+ % \usecolortheme{seahorse}
+ \usepackage{beamerthemesplit} 
+ \setbeamercolor{math text}{fg=blue!80!black}
+ \setbeamercolor{normal text}{fg=blue!80!blue}
+ \usetheme{AnnArbor}
+ %\useinnertheme[subsection=false,shadow]{rounded}
+ %\useoutertheme{infolines}
+ \usecolortheme{seahorse}
+ \usefonttheme{serif,professionalfonts}
+ %\usefonttheme{platino}
+
+ 
+ \setbeamercolor{header}{fg=white,bg=DeepSkyBlue4}
+ \setbeamercolor{frametitle}{bg=white,fg=DeepSkyBlue4}%, fontface=bf}
+ \setbeamercolor*{section}{fg=white,bg=DeepSkyBlue4}%, fontface=bf}
+ \setbeamercolor{title}{fg=white,bg=DeepSkyBlue4}
+ \setbeamercolor{item}{fg=DeepSkyBlue4}
+ \setbeamercolor*{lower separation line head}{bg=DeepSkyBlue4} 
+ \setbeamercolor*{normal text}{fg=black,bg=white} 
+ \setbeamercolor*{alerted text}{fg=red} 
+ \setbeamercolor*{example text}{fg=black} 
+ \setbeamercolor*{structure}{fg=black} 
+ \setbeamercolor*{math text}{fg=blue!80!black}
+ \setbeamercolor*{palette tertiary}{fg=black,bg=black!10} 
+ \setbeamercolor*{palette quaternary}{fg=black,bg=black!10} 
+
+% Color definitions
+\definecolor{googleblue}{RGB}{66,133,244}
+\definecolor{googlered}{RGB}{219,68,55}
+\definecolor{googleyellow}{RGB}{244,160,0}
+\definecolor{googlegreen}{RGB}{15,157,88}
+\definecolor{codebg}{RGB}{245,245,245}
+
+\setbeamercolor{structure}{fg=googleblue}
+\setbeamercolor{title}{fg=googleblue}
+\setbeamercolor{frametitle}{fg=googleblue}
+
+% Code listing settings
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    backgroundcolor=\color{codebg},
+    frame=single,
+    breaklines=true,
+    columns=flexible,
+    keywordstyle=\color{googleblue}\bfseries,
+    commentstyle=\color{googlegreen}\itshape,
+    stringstyle=\color{googlered},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    showstringspaces=false,
+}
+
+% Title page
+\title[MapReduce Tutorial]{MapReduce: Simplified Data Processing \\ on Large Clusters}
+\subtitle{A Tutorial Based on Google's Seminal Paper}
+\author{Jeffrey Dean and Sanjay Ghemawat}
+\institute{Google, Inc. \\ \vspace{0.3cm} \textit{Presented at OSDI 2004}}
+\date{}
+
+\begin{document}
+
+% ============================================
+% TITLE SLIDE
+% ============================================
+\begin{frame}
+\maketitle
+\begin{center}
+    \vspace{-0.5cm}
+    \includegraphics[width=0.15\textwidth]{example-image} % Replace with Google logo if available
+    \vspace{0.3cm}
+
+    \footnotesize
+    Tutorial based on the paper: \\
+    \textit{"MapReduce: Simplified Data Processing on Large Clusters"} \\
+    OSDI 2004
+\end{center}
+\end{frame}
+
+% ============================================
+% TABLE OF CONTENTS
+% ============================================
+\begin{frame}{Outline}
+\tableofcontents
+\end{frame}
+
+% ============================================
+% SECTION 1: INTRODUCTION
+% ============================================
+\section{Introduction and Motivation}
+
+\begin{frame}{The Problem at Google (circa 2004)}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Challenges:}
+\begin{itemize}
+    \item Processing \alert{terabytes} of data
+    \item Hundreds of special-purpose computations
+    \item Examples:
+    \begin{itemize}
+        \item Crawled documents
+        \item Web request logs
+        \item Inverted indices
+        \item Graph structures
+        \item Page summaries
+    \end{itemize}
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{Issues:}
+\begin{itemize}
+    \item Input data is \alert{huge}
+    \item Must distribute across \alert{hundreds/thousands} of machines
+    \item Complex code for:
+    \begin{itemize}
+        \item Parallelization
+        \item Data distribution
+        \item Fault tolerance
+        \item Load balancing
+    \end{itemize}
+\end{itemize}
+\end{columns}
+
+\vspace{0.5cm}
+\begin{alertblock}{Core Problem}
+Simple computations obscured by large amounts of complex code dealing with distribution and fault tolerance
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{The MapReduce Solution}
+\begin{block}{Key Insight}
+Most computations involve:
+\begin{enumerate}
+    \item Applying a \textbf{map} operation to each logical record
+    \item Applying a \textbf{reduce} operation to all values sharing the same key
+\end{enumerate}
+\end{block}
+
+\vspace{0.3cm}
+
+\textbf{Inspiration:} Map and reduce primitives from functional programming (Lisp, etc.)
+
+\vspace{0.3cm}
+
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{What MapReduce Provides:}
+\begin{itemize}
+    \item Simple programming interface
+    \item Automatic parallelization
+    \item Fault tolerance via re-execution
+    \item Load balancing
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{Benefits:}
+\begin{itemize}
+    \item Hides messy details
+    \item Programmers focus on logic
+    \item No distributed systems expertise needed
+    \item Scales to thousands of machines
+\end{itemize}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Major Contributions}
+\begin{enumerate}
+    \item \textbf{Simple and Powerful Interface}
+    \begin{itemize}
+        \item Enables automatic parallelization and distribution
+        \item Easy to express large-scale computations
+    \end{itemize}
+
+    \vspace{0.3cm}
+
+    \item \textbf{High-Performance Implementation}
+    \begin{itemize}
+        \item Achieves high performance on large clusters of commodity PCs
+        \item Processes many terabytes on thousands of machines
+    \end{itemize}
+
+    \vspace{0.3cm}
+
+    \item \textbf{Proven at Scale}
+    \begin{itemize}
+        \item Hundreds of MapReduce programs implemented at Google
+        \item Thousands of jobs executed daily on Google's clusters
+    \end{itemize}
+\end{enumerate}
+\end{frame}
+
+% ============================================
+% SECTION 2: PROGRAMMING MODEL
+% ============================================
+\section{Programming Model}
+
+\begin{frame}{MapReduce Programming Model}
+\begin{block}{Core Concept}
+Computation takes a set of \textbf{input} key/value pairs and produces a set of \textbf{output} key/value pairs
+\end{block}
+
+\vspace{0.3cm}
+
+\textbf{User specifies two functions:}
+
+\begin{enumerate}
+    \item \textbf{Map Function}
+    \begin{itemize}
+        \item Takes an input pair
+        \item Produces a set of \textit{intermediate} key/value pairs
+        \item Library groups all intermediate values by the same intermediate key
+    \end{itemize}
+
+    \vspace{0.2cm}
+
+    \item \textbf{Reduce Function}
+    \begin{itemize}
+        \item Accepts an intermediate key and a set of values for that key
+        \item Merges values to form a possibly smaller set
+        \item Typically produces zero or one output value per invocation
+    \end{itemize}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Type Signatures}
+\begin{block}{Conceptual Types}
+Even though implementations may use strings, conceptually:
+
+\vspace{0.3cm}
+
+\centering
+\begin{tabular}{ll}
+\textbf{Map:} & $(k_1, v_1) \rightarrow \text{list}(k_2, v_2)$ \\[0.3cm]
+\textbf{Reduce:} & $(k_2, \text{list}(v_2)) \rightarrow \text{list}(v_2)$ \\
+\end{tabular}
+\end{block}
+
+\vspace{0.5cm}
+
+\textbf{Important Notes:}
+\begin{itemize}
+    \item Input keys/values ($k_1, v_1$) are from a \alert{different domain} than output keys/values
+    \item Intermediate keys/values ($k_2, v_2$) are from the \alert{same domain} as output keys/values
+    \item Values supplied to Reduce via an \textbf{iterator} (handles large lists)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Classic Example: Word Count}
+\textbf{Problem:} Count occurrences of each word in a large collection of documents
+
+\vspace{0.3cm}
+
+\begin{lstlisting}[language=Python, caption=Map Function]
+map(String key, String value):
+    // key: document name
+    // value: document contents
+    for each word w in value:
+        EmitIntermediate(w, "1");
+\end{lstlisting}
+
+\vspace{0.2cm}
+
+\begin{lstlisting}[language=Python, caption=Reduce Function]
+reduce(String key, Iterator values):
+    // key: a word
+    // values: a list of counts
+    int result = 0;
+    for each v in values:
+        result += ParseInt(v);
+    Emit(AsString(result));
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Word Count: Execution Flow}
+\begin{center}
+\begin{tikzpicture}[
+    node distance=1.5cm,
+    box/.style={rectangle, draw, minimum width=2cm, minimum height=0.8cm, align=center},
+    arrow/.style={->, >=stealth, thick}
+]
+
+% Input
+\node[box, fill=googleblue!20] (input) {Input Documents};
+
+% Map phase
+\node[box, fill=googleyellow!20, below of=input] (map1) {Map 1};
+\node[box, fill=googleyellow!20, right=0.5cm of map1] (map2) {Map 2};
+\node[box, fill=googleyellow!20, right=0.5cm of map2] (map3) {Map 3};
+
+% Intermediate
+\node[box, fill=googlegreen!20, below of=map2] (shuffle) {Shuffle \& Sort \\ by Key};
+
+% Reduce phase
+\node[box, fill=googlered!20, below of=shuffle, xshift=-1.5cm] (reduce1) {Reduce 1};
+\node[box, fill=googlered!20, below of=shuffle, xshift=1.5cm] (reduce2) {Reduce 2};
+
+% Output
+\node[box, fill=googleblue!20, below of=shuffle, yshift=-2cm] (output) {Output Files};
+
+% Arrows
+\draw[arrow] (input) -- (map1);
+\draw[arrow] (input) -- (map2);
+\draw[arrow] (input) -- (map3);
+
+\draw[arrow] (map1) -- (shuffle);
+\draw[arrow] (map2) -- (shuffle);
+\draw[arrow] (map3) -- (shuffle);
+
+\draw[arrow] (shuffle) -- (reduce1);
+\draw[arrow] (shuffle) -- (reduce2);
+
+\draw[arrow] (reduce1) -- (output);
+\draw[arrow] (reduce2) -- (output);
+
+% Annotations
+\node[right=0.2cm of map3, text width=2.5cm, font=\tiny] {Emit: (word, "1") for each word};
+\node[right=0.2cm of reduce2, text width=2.5cm, font=\tiny] {Emit: (word, count)};
+
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}{More Examples}
+\begin{block}{Distributed Grep}
+\textbf{Map:} Emit line if it matches pattern \\
+\textbf{Reduce:} Identity function (copies data to output)
+\end{block}
+
+\begin{block}{Count of URL Access Frequency}
+\textbf{Map:} Process web logs, output $\langle\text{URL}, 1\rangle$ \\
+\textbf{Reduce:} Add all values for same URL, emit $\langle\text{URL}, \text{total count}\rangle$
+\end{block}
+
+\begin{block}{Reverse Web-Link Graph}
+\textbf{Map:} For each link to target in page source, output $\langle\text{target}, \text{source}\rangle$ \\
+\textbf{Reduce:} Concatenate all sources, emit $\langle\text{target}, \text{list(source)}\rangle$
+\end{block}
+
+\begin{block}{Inverted Index}
+\textbf{Map:} Parse document, emit $\langle\text{word}, \text{document ID}\rangle$ \\
+\textbf{Reduce:} Sort document IDs, emit $\langle\text{word}, \text{list(document ID)}\rangle$
+\end{block}
+\end{frame}
+
+% ============================================
+% SECTION 3: IMPLEMENTATION
+% ============================================
+\section{Implementation}
+
+\begin{frame}{Google's Computing Environment}
+\textbf{Target Platform:} Large clusters of commodity PCs connected by switched Ethernet
+
+\vspace{0.3cm}
+
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Hardware Specs:}
+\begin{itemize}
+    \item Dual-processor x86 (2GHz Xeon)
+    \item HyperThreading enabled
+    \item 2-4 GB memory per machine
+    \item Two 160GB IDE disks
+    \item Gigabit Ethernet
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{Environment:}
+\begin{itemize}
+    \item Hundreds/thousands of machines
+    \item Two-level tree-switched network
+    \item 100-200 Gbps aggregate bandwidth
+    \item Machine failures are \alert{common}
+    \item Distributed file system (GFS)
+    \item Job scheduling system
+\end{itemize}
+\end{columns}
+
+\vspace{0.5cm}
+
+\begin{alertblock}{Key Insight}
+Network bandwidth is a \textbf{scarce resource} $\rightarrow$ Optimize for locality!
+\end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]{Execution Overview}
+\begin{center}
+\begin{tikzpicture}[
+    node distance=0.8cm,
+    box/.style={rectangle, draw, minimum width=1.2cm, minimum height=0.6cm, font=\tiny},
+    process/.style={ellipse, draw, minimum width=1cm, minimum height=0.6cm, font=\tiny},
+    arrow/.style={->, >=stealth}
+]
+
+% User program and master
+\node[process, fill=googleblue!20] (user) {User Program};
+\node[process, fill=googlered!20, below=1.5cm of user] (master) {Master};
+
+% Workers
+\node[process, fill=googleyellow!20, below left=1.5cm and 2cm of master] (worker1) {worker};
+\node[process, fill=googleyellow!20, below=2.5cm of master] (worker2) {worker};
+\node[process, fill=googleyellow!20, below right=1.5cm and 2cm of master] (worker3) {worker};
+\node[process, fill=googlegreen!20, right=3cm of worker2] (worker4) {worker};
+\node[process, fill=googlegreen!20, above=0.8cm of worker4] (worker5) {worker};
+
+% Input splits
+\node[box, fill=gray!20, left=1.5cm of worker1] (split0) {split 0};
+\node[box, fill=gray!20, below=0.2cm of split0] (split1) {split 1};
+\node[box, fill=gray!20, below=0.2cm of split1] (split2) {split 2};
+\node[box, fill=gray!20, below=0.2cm of split2] (split3) {split 3};
+\node[box, fill=gray!20, below=0.2cm of split3] (split4) {split 4};
+
+% Intermediate files
+\node[box, fill=orange!20, right=0.5cm of worker1, yshift=-0.5cm] (int1) {};
+\node[box, fill=orange!20, right=0.5cm of worker2, yshift=-0.5cm] (int2) {};
+\node[box, fill=orange!20, right=0.5cm of worker3, yshift=-0.5cm] (int3) {};
+
+% Output files
+\node[box, fill=googleblue!30, right=1.5cm of worker4] (out0) {output file 0};
+\node[box, fill=googleblue!30, right=1.5cm of worker5] (out1) {output file 1};
+
+% Labels
+\node[above=0.1cm of split0, font=\tiny] {Input files};
+\node[above right=0.1cm and -0.5cm of int2, font=\tiny] {Intermediate};
+\node[above=0.1cm of out1, font=\tiny] {Output};
+
+% Arrows with labels
+\draw[arrow, dashed] (user) -- node[left, font=\tiny] {(1) fork} (master);
+\draw[arrow, dashed] (user) -- (worker1);
+\draw[arrow, dashed] (user) -- (worker3);
+
+\draw[arrow] (master) -- node[above, font=\tiny] {(2) assign} (worker1);
+\draw[arrow] (master) -- node[right, font=\tiny] {(2) assign} (worker4);
+
+\draw[arrow] (split2) -- node[above, font=\tiny] {(3) read} (worker2);
+
+\draw[arrow] (worker2) -- node[above, font=\tiny] {(4) local write} (int2);
+
+\draw[arrow] (int2) -- node[above, font=\tiny] {(5) remote read} (worker4);
+
+\draw[arrow] (worker4) -- node[above, font=\tiny] {(6) write} (out0);
+
+% Phase labels
+\node[below=2cm of split2, font=\tiny\bfseries, text=googleblue] {Map phase};
+\node[below=2cm of worker4, font=\tiny\bfseries, text=googlegreen] {Reduce phase};
+
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}{Execution Steps (1/2)}
+\textbf{Step 1: Split Input}
+\begin{itemize}
+    \item MapReduce library splits input files into $M$ pieces (typically 16-64 MB)
+    \item Starts up many copies of the program on cluster machines
+\end{itemize}
+
+\vspace{0.2cm}
+
+\textbf{Step 2: Master Assignment}
+\begin{itemize}
+    \item One copy is special: the \alert{master}
+    \item Rest are workers assigned work by the master
+    \item Master assigns $M$ map tasks and $R$ reduce tasks to idle workers
+\end{itemize}
+
+\vspace{0.2cm}
+
+\textbf{Step 3: Map Task Execution}
+\begin{itemize}
+    \item Worker reads contents of corresponding input split
+    \item Parses key/value pairs from input data
+    \item Passes each pair to user-defined Map function
+    \item Intermediate key/value pairs buffered in memory
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Execution Steps (2/2)}
+\textbf{Step 4: Write Intermediate Data}
+\begin{itemize}
+    \item Buffered pairs periodically written to local disk
+    \item Partitioned into $R$ regions by partitioning function
+    \item Locations passed back to master
+\end{itemize}
+
+\vspace{0.2cm}
+
+\textbf{Step 5: Reduce Reads Intermediate Data}
+\begin{itemize}
+    \item Master notifies reduce worker about locations
+    \item Reduce worker uses RPC to read buffered data from map workers' local disks
+    \item Sorts intermediate data by key (groups occurrences of same key)
+    \item External sort used if data too large for memory
+\end{itemize}
+
+\vspace{0.2cm}
+
+\textbf{Steps 6-7: Reduce and Complete}
+\begin{itemize}
+    \item Reduce worker iterates over sorted data
+    \item For each unique key, passes key and values to Reduce function
+    \item Output appended to final output file for this reduce partition
+    \item When all tasks complete, master wakes up user program
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Master Data Structures}
+\textbf{State Tracking:}
+\begin{itemize}
+    \item For each map and reduce task:
+    \begin{itemize}
+        \item State: \textit{idle}, \textit{in-progress}, or \textit{completed}
+        \item Identity of worker machine (for non-idle tasks)
+    \end{itemize}
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Location Propagation:}
+\begin{itemize}
+    \item Master is conduit for intermediate file regions
+    \item For each completed map task, stores:
+    \begin{itemize}
+        \item Locations of $R$ intermediate file regions
+        \item Sizes of intermediate file regions
+    \end{itemize}
+    \item Information pushed incrementally to workers with in-progress reduce tasks
+\end{itemize}
+
+\vspace{0.3cm}
+
+\begin{alertblock}{Memory Overhead}
+$O(M + R)$ scheduling decisions and $O(M \times R)$ state in memory \\
+(Constant factors are small: $\approx$ 1 byte per map/reduce task pair)
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Fault Tolerance: Worker Failure}
+\textbf{Detection:}
+\begin{itemize}
+    \item Master pings workers periodically
+    \item No response in certain time $\rightarrow$ worker marked as failed
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Recovery:}
+\begin{itemize}
+    \item Completed map tasks reset to \textit{idle} state
+    \item Map/reduce tasks in progress reset to \textit{idle}
+    \item Eligible for rescheduling on other workers
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Why re-execute completed map tasks?}
+\begin{itemize}
+    \item Output stored on local disk of failed machine $\rightarrow$ \alert{inaccessible}
+    \item Completed reduce tasks don't need re-execution
+    \item Their output stored in global file system
+\end{itemize}
+
+\vspace{0.3cm}
+
+\begin{exampleblock}{Resilience Example}
+Network maintenance caused 80 machines to become unreachable. \\
+MapReduce simply re-executed work and continued to completion!
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Fault Tolerance: Master Failure \& Semantics}
+\textbf{Master Failure:}
+\begin{itemize}
+    \item Master writes periodic checkpoints
+    \item New copy can be started from last checkpoint
+    \item Current implementation: abort if master fails (clients can retry)
+    \item Single master makes failure unlikely
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Semantics in Presence of Failures:}
+
+\begin{block}{Deterministic Functions}
+When map and reduce operators are \textbf{deterministic}:
+\begin{itemize}
+    \item Distributed implementation produces same output as non-faulting sequential execution
+    \item Relies on atomic commits of map and reduce task outputs
+\end{itemize}
+\end{block}
+
+\begin{block}{Non-Deterministic Functions}
+Weaker but reasonable semantics:
+\begin{itemize}
+    \item Output equivalent to some sequential execution
+    \item Different reduce tasks may see outputs from different executions of same map task
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Locality Optimization}
+\begin{block}{Key Observation}
+Network bandwidth is a \alert{relatively scarce resource}
+\end{block}
+
+\vspace{0.3cm}
+
+\textbf{Strategy:}
+\begin{itemize}
+    \item Input data stored on local disks via GFS (Google File System)
+    \item GFS divides files into 64 MB blocks
+    \item Stores 3 copies of each block on different machines
+    \item Master takes location information into account
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Scheduling Policy:}
+\begin{enumerate}
+    \item \textbf{Best:} Schedule map task on machine containing replica of input data
+    \item \textbf{Next best:} Schedule near a replica (e.g., same network switch)
+\end{enumerate}
+
+\vspace{0.3cm}
+
+\begin{exampleblock}{Result}
+When running large MapReduce operations on significant fraction of workers: \\
+\textbf{Most input data read locally} $\rightarrow$ consumes \textbf{no network bandwidth}
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Task Granularity}
+\textbf{Subdividing:}
+\begin{itemize}
+    \item Map phase: $M$ pieces
+    \item Reduce phase: $R$ pieces
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Ideally:} $M$ and $R$ should be much larger than number of worker machines
+
+\vspace{0.3cm}
+
+\textbf{Benefits:}
+\begin{itemize}
+    \item Improves dynamic load balancing
+    \item Speeds up recovery when worker fails
+    \item Completed tasks spread across all other workers
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Practical Bounds:}
+\begin{itemize}
+    \item Master makes $O(M + R)$ scheduling decisions
+    \item Keeps $O(M \times R)$ state in memory
+\end{itemize}
+
+\vspace{0.3cm}
+
+\begin{exampleblock}{Typical Configuration at Google}
+$M = 200,000$, $R = 5,000$ using 2,000 worker machines \\
+Each task: 16-64 MB of input data
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Backup Tasks: Fighting Stragglers}
+\begin{block}{Problem: Stragglers}
+A machine taking unusually long time to complete one of last few tasks
+\end{block}
+
+\vspace{0.3cm}
+
+\textbf{Causes of Stragglers:}
+\begin{itemize}
+    \item Bad disk (30 MB/s $\rightarrow$ 1 MB/s due to correctable errors)
+    \item Cluster scheduler scheduled other tasks (competition for resources)
+    \item Bug in machine initialization (e.g., processor caches disabled)
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Solution: Backup Tasks}
+\begin{itemize}
+    \item When MapReduce operation close to completion
+    \item Master schedules \textbf{backup executions} of remaining in-progress tasks
+    \item Task marked complete when \alert{either} primary \alert{or} backup completes
+    \item Tuned to increase resources by only a few percent
+\end{itemize}
+
+\vspace{0.3cm}
+
+\begin{alertblock}{Impact}
+Sort program: \textbf{44\% longer} to complete when backup tasks disabled!
+\end{alertblock}
+\end{frame}
+
+% ============================================
+% SECTION 4: REFINEMENTS
+% ============================================
+\section{Refinements}
+
+\begin{frame}{Refinement 1: Partitioning Function}
+\textbf{Default:} Hash-based partitioning
+\begin{itemize}
+    \item \texttt{hash(key) mod R}
+    \item Results in fairly well-balanced partitions
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Custom Partitioning:}
+\begin{itemize}
+    \item Sometimes useful to partition by other functions
+    \item \textbf{Example:} Output keys are URLs
+    \item Want all URLs from same host in same output file
+    \item Solution: \texttt{hash(Hostname(urlkey)) mod R}
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Benefits:}
+\begin{itemize}
+    \item Better data organization
+    \item Enables efficient downstream processing
+    \item Supports application-specific requirements
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Refinement 2: Ordering Guarantees}
+\begin{block}{Guarantee}
+Within a given partition, intermediate key/value pairs processed in \textbf{increasing key order}
+\end{block}
+
+\vspace{0.3cm}
+
+\textbf{Benefits:}
+\begin{itemize}
+    \item Easy to generate sorted output file per partition
+    \item Useful when output format needs efficient random access by key
+    \item Convenient for users who want sorted data
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Use Cases:}
+\begin{itemize}
+    \item Building searchable indices
+    \item Database-like access patterns
+    \item Sorted data analysis
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Refinement 3: Combiner Function}
+\begin{block}{Problem}
+Significant repetition in intermediate keys produced by map tasks \\
+\textbf{Example:} Word counting - many $\langle$the, 1$\rangle$ records
+\end{block}
+
+\vspace{0.3cm}
+
+\textbf{Solution: Combiner Function}
+\begin{itemize}
+    \item Partial merging of data \alert{before} sending over network
+    \item Executed on each machine performing map task
+    \item Typically same code as reduce function
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Differences from Reduce:}
+\begin{itemize}
+    \item \textbf{Reduce:} Output written to final output file
+    \item \textbf{Combiner:} Output written to intermediate file sent to reduce task
+\end{itemize}
+
+\vspace{0.3cm}
+
+\begin{exampleblock}{Impact}
+Partial combining \textbf{significantly speeds up} certain classes of MapReduce operations
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Other Refinements}
+\begin{block}{4. Input and Output Types}
+\begin{itemize}
+    \item Support for reading data in several formats (text, binary, database, etc.)
+    \item Users can add custom input/output types via reader interface
+\end{itemize}
+\end{block}
+
+\begin{block}{5. Skipping Bad Records}
+\begin{itemize}
+    \item Detect records causing deterministic crashes
+    \item Skip these records to make forward progress
+    \item Useful when bugs in third-party libraries can't be fixed
+\end{itemize}
+\end{block}
+
+\begin{block}{6. Local Execution}
+\begin{itemize}
+    \item Alternative implementation for debugging
+    \item Executes all work sequentially on local machine
+    \item Facilitates debugging, profiling, small-scale testing
+\end{itemize}
+\end{block}
+
+\begin{block}{7. Status Information \& Counters}
+\begin{itemize}
+    \item HTTP server exports status pages (progress, failed workers, etc.)
+    \item Counter facility for tracking events (words processed, documents indexed, etc.)
+\end{itemize}
+\end{block}
+\end{frame}
+
+% ============================================
+% SECTION 5: PERFORMANCE
+% ============================================
+\section{Performance}
+
+\begin{frame}{Cluster Configuration}
+\textbf{Test Environment:}
+\begin{itemize}
+    \item Approximately 1800 machines
+    \item Dual-processor 2GHz Intel Xeon with HyperThreading
+    \item 4GB memory per machine
+    \item Two 160GB IDE disks per machine
+    \item Gigabit Ethernet
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Network:}
+\begin{itemize}
+    \item Two-level tree-shaped switched network
+    \item $\approx$ 100-200 Gbps aggregate bandwidth at root
+    \item Round-trip time between any pair: $<$ 1 millisecond
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Conditions:}
+\begin{itemize}
+    \item Weekend afternoon execution
+    \item CPUs, disks, network mostly idle
+    \item 1-1.5GB reserved for other tasks
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Benchmark 1: Grep}
+\textbf{Task:} Scan through $10^{10}$ 100-byte records, search for rare three-character pattern
+
+\vspace{0.2cm}
+
+\textbf{Configuration:}
+\begin{itemize}
+    \item Input: 1 TB, split into $\approx$ 64MB pieces ($M = 15,000$)
+    \item Output: One file ($R = 1$)
+    \item Pattern occurs in 92,337 records
+\end{itemize}
+
+\vspace{0.2cm}
+
+\textbf{Results:}
+\begin{itemize}
+    \item Peak input rate: \textbf{30+ GB/s} (1764 workers)
+    \item Computation time: \textbf{150 seconds} (including $\approx$ 60s startup overhead)
+    \item Startup overhead due to:
+    \begin{itemize}
+        \item Program propagation to all workers
+        \item GFS interactions to open 1000 input files
+        \item Locality optimization information gathering
+    \end{itemize}
+\end{itemize}
+
+\vspace{0.2cm}
+
+\begin{alertblock}{Key Insight}
+Input rate gradually increases as more workers assigned, peaks, then drops as tasks complete
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Benchmark 2: Sort (1/2)}
+\textbf{Task:} Sort $10^{10}$ 100-byte records ($\approx$ 1 TB of data)
+
+\vspace{0.2cm}
+
+\textbf{Configuration:}
+\begin{itemize}
+    \item Modeled after TeraSort benchmark
+    \item Input split into 64MB pieces ($M = 15,000$)
+    \item Output: 4000 files ($R = 4,000$)
+    \item Output: 2 TB (2-way replicated GFS files)
+\end{itemize}
+
+\vspace{0.2cm}
+
+\textbf{Implementation:}
+\begin{itemize}
+    \item Map: Extract 10-byte sorting key, emit $\langle$key, line$\rangle$
+    \item Reduce: Identity function (passes pairs unchanged)
+    \item Less than 50 lines of user code!
+\end{itemize}
+
+\vspace{0.2cm}
+
+\textbf{Partitioning:}
+\begin{itemize}
+    \item Built-in knowledge of key distribution
+    \item General sorting: pre-pass to sample keys and compute split-points
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Benchmark 2: Sort (2/2)}
+\textbf{Normal Execution Results:}
+\begin{itemize}
+    \item \textbf{Total time:} 891 seconds
+    \item Input rate peaks: $\approx$ 13 GB/s
+    \item Shuffle starts as first map completes
+    \item Shuffling done: $\approx$ 600 seconds
+    \item Write rate: 2-4 GB/s
+    \item All writes finish: $\approx$ 850 seconds
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Observations:}
+\begin{itemize}
+    \item Input rate $>$ shuffle rate $>$ output rate
+    \item Locality optimization: most data read locally
+    \item Shuffle rate $>$ output rate: 2 replicas written
+    \item Comparable to TeraSort benchmark best result (1057 seconds)
+\end{itemize}
+
+\vspace{0.3cm}
+
+\begin{block}{Impact of Backup Tasks}
+Without backup tasks: \textbf{1283 seconds} (+44\%) \\
+Stragglers significantly impact completion time!
+\end{block}
+\end{frame}
+
+\begin{frame}{Performance: Machine Failures}
+\textbf{Test:} Intentionally killed 200 out of 1746 workers during sort
+
+\vspace{0.3cm}
+
+\textbf{What Happened:}
+\begin{itemize}
+    \item Underlying cluster scheduler immediately restarted processes
+    \item Deaths show up as negative input rate
+    \item Previously completed map work disappeared
+    \item Re-execution happened relatively quickly
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Results:}
+\begin{itemize}
+    \item Total time: \textbf{933 seconds}
+    \item Increase: Only \textbf{5\%} over normal execution (891s)
+\end{itemize}
+
+\vspace{0.5cm}
+
+\begin{exampleblock}{Conclusion}
+MapReduce is highly resilient to machine failures! \\
+System gracefully handles worker deaths without significant performance degradation.
+\end{exampleblock}
+\end{frame}
+
+% ============================================
+% SECTION 6: EXPERIENCE
+% ============================================
+\section{Experience at Google}
+
+\begin{frame}{MapReduce at Google}
+\textbf{Timeline:}
+\begin{itemize}
+    \item First version: February 2003
+    \item Significant enhancements: August 2003
+    \item Locality optimization, dynamic load balancing, etc.
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Growth:}
+\begin{itemize}
+    \item 0 instances in early 2003
+    \item Almost 900 separate instances by September 2004
+    \item Used across wide range of domains
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Applications:}
+\begin{multicols}{2}
+\begin{itemize}
+    \item Large-scale machine learning
+    \item Clustering problems (Google News, Froogle)
+    \item Popular query reports (Google Zeitgeist)
+    \item Property extraction from web pages
+    \item Large-scale graph computations
+    \item Localized search data extraction
+\end{itemize}
+\end{multicols}
+\end{frame}
+
+\begin{frame}{Usage Statistics (August 2004)}
+\begin{table}
+\centering
+\small
+\begin{tabular}{lr}
+\toprule
+\textbf{Metric} & \textbf{Value} \\
+\midrule
+Number of jobs & 29,423 \\
+Average job completion time & 634 secs \\
+Machine days used & 79,186 days \\
+Input data read & 3,288 TB \\
+Intermediate data produced & 758 TB \\
+Output data written & 193 TB \\
+Average worker machines per job & 157 \\
+Average worker deaths per job & 1.2 \\
+Average map tasks per job & 3,351 \\
+Average reduce tasks per job & 55 \\
+Unique map implementations & 395 \\
+Unique reduce implementations & 269 \\
+Unique map/reduce combinations & 426 \\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{frame}
+
+\begin{frame}{Large-Scale Indexing}
+\textbf{Most Significant Use:} Complete rewrite of production indexing system
+
+\vspace{0.3cm}
+
+\textbf{Input:} 20+ TB of crawled documents stored in GFS
+
+\vspace{0.3cm}
+
+\textbf{Process:} Sequence of 5-10 MapReduce operations
+
+\vspace{0.3cm}
+
+\textbf{Benefits of Using MapReduce:}
+
+\begin{enumerate}
+    \item \textbf{Simpler Code}
+    \begin{itemize}
+        \item One phase: 3800 lines C++ $\rightarrow$ 700 lines with MapReduce
+        \item Fault tolerance, distribution, parallelization hidden in library
+    \end{itemize}
+
+    \item \textbf{Better Performance}
+    \begin{itemize}
+        \item Can keep conceptually unrelated computations separate
+        \item No need to mix together to avoid extra data passes
+    \end{itemize}
+
+    \item \textbf{Easier to Operate}
+    \begin{itemize}
+        \item Machine failures, slow machines, networking issues handled automatically
+        \item Easy to improve performance: just add more machines!
+    \end{itemize}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Why MapReduce is Successful}
+\begin{enumerate}
+    \item \textbf{Easy to Use}
+    \begin{itemize}
+        \item No parallel/distributed systems experience needed
+        \item Hides complexity of parallelization, fault-tolerance, locality, load balancing
+        \item Simple program can run on 1000 machines in half an hour
+    \end{itemize}
+
+    \vspace{0.2cm}
+
+    \item \textbf{Widely Applicable}
+    \begin{itemize}
+        \item Large variety of problems expressible as MapReduce
+        \item Used for web search, sorting, data mining, machine learning, and more
+    \end{itemize}
+
+    \vspace{0.2cm}
+
+    \item \textbf{Scalable Implementation}
+    \begin{itemize}
+        \item Scales to thousands of machines
+        \item Efficient use of machine resources
+        \item Suitable for Google's large computational problems
+    \end{itemize}
+\end{enumerate}
+
+\vspace{0.3cm}
+
+\begin{alertblock}{Development Impact}
+Greatly speeds up development and prototyping cycle \\
+Allows programmers to exploit large amounts of resources easily
+\end{alertblock}
+\end{frame}
+
+% ============================================
+% SECTION 7: KEY LEARNINGS
+% ============================================
+\section{Key Learnings and Conclusions}
+
+\begin{frame}{Key Lessons Learned}
+\begin{enumerate}
+    \item \textbf{Restricting the Programming Model}
+    \begin{itemize}
+        \item Makes it easy to parallelize and distribute computations
+        \item Enables fault-tolerance through re-execution
+        \item Simplicity is powerful!
+    \end{itemize}
+
+    \vspace{0.3cm}
+
+    \item \textbf{Network Bandwidth is Scarce}
+    \begin{itemize}
+        \item Many optimizations target reducing network usage
+        \item Locality optimization: read from local disks
+        \item Single copy of intermediate data to local disk saves bandwidth
+    \end{itemize}
+
+    \vspace{0.3cm}
+
+    \item \textbf{Redundant Execution is Valuable}
+    \begin{itemize}
+        \item Reduces impact of slow machines (stragglers)
+        \item Handles machine failures gracefully
+        \item Handles data loss effectively
+    \end{itemize}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Impact and Legacy}
+\begin{block}{Historical Impact}
+This paper (OSDI 2004) became one of the most influential papers in distributed systems and big data processing
+\end{block}
+
+\vspace{0.3cm}
+
+\textbf{Inspired Numerous Systems:}
+\begin{itemize}
+    \item \textbf{Apache Hadoop} (2006) - Open-source MapReduce implementation
+    \item \textbf{Apache Spark} - Next-generation data processing
+    \item \textbf{Apache Flink, Apache Beam} - Stream processing frameworks
+    \item Countless other distributed data processing systems
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Paradigm Shift:}
+\begin{itemize}
+    \item Democratized large-scale data processing
+    \item Made distributed computing accessible to non-experts
+    \item Enabled the "Big Data" revolution
+    \item Foundation for modern data engineering practices
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Summary}
+\begin{block}{MapReduce in a Nutshell}
+A programming model and implementation for processing large datasets on clusters of commodity machines
+\end{block}
+
+\vspace{0.3cm}
+
+\textbf{Key Characteristics:}
+\begin{itemize}
+    \item Simple programming interface (Map and Reduce functions)
+    \item Automatic parallelization and distribution
+    \item Fault tolerance via re-execution
+    \item Locality optimization for performance
+    \item Scalable to thousands of machines
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Why It Matters:}
+\begin{itemize}
+    \item Hides complexity of distributed systems
+    \item Allows programmers to focus on logic, not infrastructure
+    \item Proven at massive scale at Google
+    \item Influenced entire generation of big data systems
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Questions to Consider}
+\begin{enumerate}
+    \item What types of problems are \textit{not} well-suited for MapReduce?
+
+    \vspace{0.3cm}
+
+    \item How does MapReduce compare to modern frameworks like Apache Spark?
+
+    \vspace{0.3cm}
+
+    \item What are the trade-offs between simplicity and flexibility in the MapReduce model?
+
+    \vspace{0.3cm}
+
+    \item How would you extend MapReduce to support iterative algorithms?
+
+    \vspace{0.3cm}
+
+    \item What role does MapReduce play in today's data processing landscape?
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[standout]
+\Huge Thank You!
+
+\vspace{1cm}
+
+\normalsize
+Questions?
+
+\vspace{1cm}
+
+\footnotesize
+Paper: Dean, Jeffrey, and Sanjay Ghemawat. \\
+"MapReduce: Simplified data processing on large clusters." \\
+\textit{OSDI 2004}
+\end{frame}
+
+\appendix
+
+\begin{frame}[fragile]{Appendix: Word Count Full Implementation}
+\begin{lstlisting}[language=C++, basicstyle=\ttfamily\tiny]
+#include "mapreduce/mapreduce.h"
+
+// User's map function
+class WordCounter : public Mapper {
+  public:
+    virtual void Map(const MapInput& input) {
+      const string& text = input.value();
+      const int n = text.size();
+      for (int i = 0; i < n; ) {
+        while ((i < n) && isspace(text[i])) i++;
+        int start = i;
+        while ((i < n) && !isspace(text[i])) i++;
+        if (start < i)
+          Emit(text.substr(start,i-start),"1");
+      }
+    }
+};
+REGISTER_MAPPER(WordCounter);
+
+// User's reduce function
+class Adder : public Reducer {
+  virtual void Reduce(ReduceInput* input) {
+    int64 value = 0;
+    while (!input->done()) {
+      value += StringToInt(input->value());
+      input->NextValue();
+    }
+    Emit(IntToString(value));
+  }
+};
+REGISTER_REDUCER(Adder);
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Appendix: Related Work}
+\textbf{Parallel Programming Models:}
+\begin{itemize}
+    \item Bulk Synchronous Programming (BSP)
+    \item MPI primitives
+    \item Parallel prefix computations
+\end{itemize}
+
+\vspace{0.2cm}
+
+\textbf{Distributed Systems:}
+\begin{itemize}
+    \item Active Disks - computation near storage
+    \item Charlotte System - eager scheduling
+    \item Condor - cluster management
+\end{itemize}
+
+\vspace{0.2cm}
+
+\textbf{Sorting and Data Processing:}
+\begin{itemize}
+    \item NOW-Sort - distributed sorting
+    \item River - distributed queues
+    \item BAD-FS - wide-area network execution
+\end{itemize}
+
+\vspace{0.2cm}
+
+\textbf{MapReduce Differences:}
+\begin{itemize}
+    \item Simpler programming model
+    \item Automatic fault tolerance at scale
+    \item Focus on commodity hardware
+    \item Proven at production scale
+\end{itemize}
+\end{frame}
+
+\end{document}

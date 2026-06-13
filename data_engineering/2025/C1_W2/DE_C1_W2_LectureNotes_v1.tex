@@ -1,0 +1,461 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+
+\geometry{a4paper, margin=1in}
+
+\title{The Data Engineering Lifecycle In Depth \\ \large{Lecture Notes for a 4-Hour Session - Course 1, Week 2}}
+\author{Based on materials by DeepLearning.AI and the textbook "Fundamentals of Data Engineering" by Joe Reis \& Matt Housley}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+% --- SESSION 1: THE DATA ENGINEERING LIFECYCLE IN DEPTH (Approx. 50 mins) ---
+
+\section{Part 1: The Data Engineering Lifecycle In Depth}
+
+\subsection{Week 2 Overview}
+This week dives deep into the data engineering lifecycle and undercurrents introduced in Week 1. The lifecycle begins with data generation from source systems, then moves through ingestion, transformation, storage, and serving of data for multiple use cases like analytics and machine learning. In simpler terms: get raw data from somewhere, turn it into something useful, and then make it available for downstream use cases.
+
+The second lesson covers the undercurrents of the data engineering lifecycle: security, data management, DataOps, data architecture, orchestration, and software engineering. While the focus remains on building a high-level mental framework, the week concludes with how this framework comes together in practice on the AWS Cloud, including a hands-on end-to-end cloud data pipeline.
+
+\subsection{Data Generation in Source Systems}
+The first stage of the data engineering lifecycle is the generation of data in source systems. As a data engineer, you consume data from various sources but typically do not own or control them. These systems are created and maintained by other teams---software engineers from other internal departments, external vendors, or third-party platforms. Understanding how these systems work is essential because the data pipelines you build rely on the data generated from these sources.
+
+\subsubsection{Common Source System Types}
+\begin{description}
+    \item[Databases] The most common source systems. These could be \textbf{relational databases}, represented as tables of related data, or other types of \textbf{NoSQL systems}, including key-value databases, document stores, and more. These databases might be part of the back end of a web or mobile application.
+
+    \item[Files] Data in the form of text files, audio files (e.g., MP3s), video, or other file types. While individual files might not seem like a ``source system,'' data engineers frequently need to download or be given access to files as part of their work.
+
+    \item[APIs] An \textbf{Application Programming Interface} allows you to issue a web request for data and receive it back in a certain format, such as XML or JSON.
+
+    \item[Data Sharing Platforms] Organizations may set up platforms to share data internally or with third parties.
+
+    \item[IoT Devices] An increasingly common source system. A \textbf{swarm of IoT devices} may stream data in real time (e.g., GPS trackers for delivery updates). This streaming data is typically sent to a database, and the source system owner might make it accessible via an API or data sharing platform.
+\end{description}
+
+\subsubsection{The Unpredictability of Source Systems}
+In a perfect world, source systems would deliver data in a consistent and timely manner. In reality, source systems are unpredictable: they go down, schemas change without notice, or the data itself changes while the schema stays the same. As a data engineer, you will be more successful if you work directly with source system owners to understand:
+\begin{itemize}
+    \item How their systems work and how they generate data
+    \item How that data may be subject to change over time
+    \item How those changes will impact the downstream systems you build
+\end{itemize}
+Developing good working relationships with the stakeholders of source systems is an underrated yet crucial part of successful data engineering.
+
+\subsection{Ingestion}
+Data ingestion means moving raw data from source systems into your data pipeline for further processing. Source systems and data ingestion represent the biggest bottlenecks of the data engineering lifecycle. One of the critical decisions when designing data ingestion processes is \textbf{how frequently} you need to ingest the data.
+
+\subsubsection{Batch vs.\ Streaming Ingestion}
+You can think of data being produced as a continuous series of events---clicks on a website, sensor measurements, or something else. In a sense, nearly all data is streamed at its source.
+
+\begin{description}
+    \item[Batch Ingestion] A convenient way to process the stream of events in large chunks, either on a predetermined time interval or as data reaches a preset size threshold. For example, you could handle an entire day's worth of data in one single batch. Batch processing has long been the default way to ingest data and remains a practical and popular approach, particularly for analytics and machine learning use cases.
+
+    \item[Streaming Ingestion] Ingesting and providing data to downstream systems in a continuous, near real-time fashion---possibly less than one second after production. This requires specific tools such as an \textbf{event streaming platform} or a \textbf{message queue} to continuously ingest streams of events.
+\end{description}
+
+Before committing to streaming ingestion, ask yourself:
+\begin{itemize}
+    \item What actions can you take on real-time data that would be an improvement over batch data?
+    \item Would streaming ingestion cost more than batch in terms of time, money, maintenance, and potential downtime?
+    \item How will choosing stream ingestion over batch (or vice versa) influence the rest of your data pipeline?
+\end{itemize}
+Adopt streaming only after identifying a business use case that justifies the trade-offs. Streaming ingestion generally coexists with batch processing; rarely do data engineers build a purely streaming pipeline with no batch components. Instead, you choose where the boundaries between batch and streaming will occur.
+
+\subsubsection{Other Ingestion Considerations}
+\begin{description}
+    \item[Change Data Capture (CDC)] A technique to trigger certain ingestion processes based on data changes in the source system, rather than ingesting on a fixed schedule.
+    \item[Push vs.\ Pull] Whether a source system \textbf{pushes} data to you or you actively \textbf{pull} it from the source.
+\end{description}
+
+\subsection{Storage}
+In your work as a data engineer, the function, performance, and limitations of the systems you build will have a lot to do with the storage solutions you choose. Storage is not a single step but a continuous process; data is stored after ingestion, between transformations, and before being served.
+
+\subsubsection{The Raw Ingredients of Storage}
+\begin{description}
+    \item[Magnetic Disk] Still forms the backbone of modern storage systems, primarily because of low cost. At current pricing, disk storage is about 2--3 times cheaper than solid-state storage.
+
+    \item[Solid-State Drives (SSDs)] Flash memory offering faster read/write speeds than magnetic disks, commonly found in laptops and smartphones.
+
+    \item[RAM (Memory)] Offers much faster read and write speeds than SSDs or disks, making it a critical component of many architectures. However, RAM storage could be 30--50 times more expensive than solid-state storage and is \textbf{volatile}---if the system loses power, memory is typically lost instantly.
+
+    \item[Other Raw Ingredients] In modern cloud architectures, networking, CPU, serialization, compression, and caching are all critical components for storing data in distributed systems across multiple clusters and data centers.
+\end{description}
+
+\subsubsection{The Storage Hierarchy}
+If you think about storage as a hierarchy, it can be arranged in three tiers:
+\begin{enumerate}
+    \item \textbf{Raw Ingredients:} The physical components (disk, RAM, SSD) and non-physical components (networking, serialization, compression, caching).
+    \item \textbf{Storage Systems:} Built from raw ingredients. These include database management systems, object storage platforms (e.g., Amazon S3), Apache Iceberg, Hudi, cache and memory-based storage systems, and streaming storage.
+    \item \textbf{Storage Abstractions:} Combinations of storage systems that allow you to achieve high-level data storage needs without worrying about low-level details. Examples include the \textbf{data warehouse}, the \textbf{data lake}, and the more recent \textbf{data lakehouse}.
+\end{enumerate}
+As a data engineer, you may spend much of your time operating at or near the top of this hierarchy. However, you will be most effective if you take the time to understand the inner workings, capabilities, and limitations of your entire storage solution right down to the raw ingredients. Many practicing data engineers do not deeply understand their storage systems, which leads to unfortunate consequences in performance and cost.
+
+\newpage
+% --- SESSION 2: QUERIES, TRANSFORMATION, AND SERVING (Approx. 50 mins) ---
+
+\section{Part 2: Queries, Transformation, and Serving}
+
+\subsection{Queries, Modeling, and Transformation}
+The transformation stage is where you, as a data engineer, start to add value. Ingesting and storing raw data from source systems does not directly add value for downstream stakeholders---transformation is the ``turn it into something useful'' stage. In reality, this stage is made up of three parts: \textbf{queries}, \textbf{modeling}, and \textbf{transformation}.
+
+\subsubsection{Queries}
+When you query data, you issue a request to read records from a database or other storage system. While there are many query languages, these courses focus on \textbf{Structured Query Language (SQL)}, which remains a popular and universal query language. A query may involve cleaning, joining, and aggregating data across many datasets, as well as filtering with SQL expressions.
+
+There is more than one way to write a query, and \textbf{poorly written queries} can have negative consequences:
+\begin{itemize}
+    \item Impacting the performance of a source database
+    \item Causing a \textbf{row explosion}, where a join between tables produces many more records than anticipated, potentially overwhelming storage infrastructure
+    \item Causing downstream delays in reporting or analytics
+\end{itemize}
+Most data engineers can read and write SQL but are unfamiliar with how queries work under the hood, which can have unforeseen consequences in the architectures they build.
+
+\subsubsection{Data Modeling}
+A \textbf{data model} represents the way data relates to the real world. Data modeling involves deliberately choosing a coherent structure for your data and is a crucial step in making data useful for the business.
+
+\begin{description}
+    \item[Normalization] Data from upstream relational source databases is often \textbf{normalized}---stored in separate tables (e.g., product information, order details, customer information) with complex relationships between them.
+
+    \item[Denormalization] To serve an analyst's needs, you might need to \textbf{denormalize} the data, modeling it in a way that allows quick and efficient querying for reports.
+\end{description}
+
+A good data model reflects your organization's processes, definitions, workflows, and logic. Success with data modeling requires working with stakeholders to understand their terminology (e.g., what ``customer'' means to different departments) and business goals.
+
+\subsubsection{Transformation}
+Data must be manipulated, enhanced, and saved for downstream use. Transformation occurs multiple times throughout the data engineering lifecycle:
+\begin{enumerate}
+    \item \textbf{At the source:} A timestamp may be added to a record while it is still on a source system.
+    \item \textbf{In-flight during ingestion:} Transformations applied while data is being ingested.
+    \item \textbf{Immediately after ingestion:} Basic transformations to map data to correct types and put records into standardized formats.
+    \item \textbf{Within a streaming pipeline:} Enriching a record with additional fields and calculations before it is sent to a data warehouse.
+    \item \textbf{Further downstream:} Schema transformation, denormalization, large-scale aggregation for reporting, or featurization for machine learning model training.
+\end{enumerate}
+
+\subsection{Serving Data}
+Serving is the final stage of the data engineering lifecycle. It is about more than just making data available---it is when stakeholders extract business value from data. Data has value when it is used for practical end use cases.
+
+\subsubsection{Analytics}
+Analytics is the process of identifying key insights and patterns within data. As a data engineer, you are almost guaranteed to serve data that powers one or more of the three most common forms of analytics:
+
+\begin{description}
+    \item[Business Intelligence (BI)] Analysts explore historical and current business data to discover insights. Data is presented in the form of reports or dashboards that help users make strategic and actionable decisions. For example, sales and marketing teams use BI reports to spot patterns, monitor campaign engagement, regional sales, and customer experience metrics.
+
+    \item[Operational Analytics] Monitoring real-time data for immediate action. For example, an e-commerce platform team might monitor a dashboard with real-time performance metrics for their website, needing to know immediately if the website goes down so they can triage the situation. The data engineer's role is to ingest, transform, and serve event data from application logs to populate such dashboards.
+
+    \item[Embedded Analytics] External or customer-facing analytics---a newer trend. Examples include banking dashboards showing spending trends across categories, or smart thermostat mobile applications showing current and historical temperature data. As a data engineer, your job is serving real-time and historical data for use in user-facing applications.
+\end{description}
+
+\subsubsection{Machine Learning}
+With the rise of machine learning, your role as a data engineer will likely involve serving data for ML use cases. This can involve additional complexities:
+\begin{itemize}
+    \item Serving \textbf{feature stores} of data that facilitate model training
+    \item Serving data for \textbf{real-time inference}
+    \item Supporting \textbf{metadata and cataloging systems} that track data history and lineage
+\end{itemize}
+
+\subsubsection{Reverse ETL}
+With reverse ETL, you take transformed data, analytics, and perhaps ML model output and \textbf{feed it back into source systems}. For example:
+\begin{enumerate}
+    \item Ingest data from a CRM system (names, contact info, form data, client information).
+    \item Transform the data and store it in a data warehouse.
+    \item Analysts retrieve the data to train a \textbf{lead scoring model} that identifies the most promising clients.
+    \item The model results are returned to the data warehouse and pushed back into the CRM as an enhancement of the client data already stored there.
+\end{enumerate}
+The name ``reverse ETL'' is not so much a description of what is happening as it is a label for a lack of a better name. This practice is increasingly common and likely to be part of your role as a data engineer.
+
+\newpage
+% --- SESSION 3: THE UNDERCURRENTS OF DATA ENGINEERING (Approx. 50 mins) ---
+
+\section{Part 3: The Undercurrents of Data Engineering}
+
+\subsection{Introduction to the Undercurrents}
+As the field of data engineering matures, the continued abstraction and simplification of tools has expanded the scope of the role beyond just tools and technologies. Modern data engineering incorporates traditional enterprise practices such as data management and cost optimization, as well as newer practices like DataOps. The \textbf{undercurrents} are a set of practices that apply across the entire lifecycle:
+\begin{itemize}
+    \item Security
+    \item Data Management
+    \item DataOps
+    \item Data Architecture
+    \item Orchestration
+    \item Software Engineering
+\end{itemize}
+
+\subsection{Security}
+As a data engineer, you are entrusted with sensitive data---personal and private information of clients or proprietary business information. Security is about bringing together the right set of principles, protocols, and cultural practices to ensure security in the systems you build.
+
+\subsubsection{The Principle of Least Privilege}
+When managing a data pipeline and serving data to end users, you give access to data and system resources to other users or applications. The \textbf{Principle of Least Privilege} states:
+\begin{quote}
+    Give users or applications access to only the essential data and resources they need to do their jobs, and only for the duration that is required.
+\end{quote}
+This principle applies not only to others in your organization but also to yourself: do not operate from the root shell when it is not necessary, and do not use administrator or super-user permissions unless absolutely essential.
+
+\subsubsection{Data Sensitivity}
+Beyond access control, think about data sensitivity. The best way to protect sensitive data is \textbf{not to ingest it} into your system in the first place. If you do not have a clear purpose for ingesting and storing sensitive data, simply do not do it, and you will have entirely removed the risk of accidentally leaking that data.
+
+\subsubsection{Cloud Security Considerations}
+In today's cloud-centric world, security requires understanding:
+\begin{itemize}
+    \item Identity and Access Management (IAM) roles and policies
+    \item Encryption methods
+    \item Networking protocols and configurations
+\end{itemize}
+
+\subsubsection{Security as a Culture}
+Security is not just about principles and protocols---it is also about people. Adopt a \textbf{defensive mindset}: be cautious when asked for credentials or sensitive data, imagine potential attack and leak scenarios, and design your data pipelines with them in mind. Many of the biggest security breaches have been caused by individuals ignoring basic precautions (sharing passwords insecurely, falling victim to phishing attacks, or accidentally leaving an S3 bucket or database exposed to the public Internet). Adhering to the \textit{letter} of security without a culture and spirit of security is what the textbook calls \textbf{security theater}. True security emerges from a culture where every team member recognizes their role in protecting data.
+
+\subsection{Data Management}
+Data can be an incredibly valuable business asset, but only when it is managed properly. The \textbf{Data Management Association International (DAMA)} provides the \textbf{Data Management Body of Knowledge (DMBOK)}, a comprehensive reference for data management practices.
+
+\subsubsection{DMBOK Definition}
+The DMBOK defines data management as:
+\begin{quote}
+    The development, execution, and supervision of plans, programs, and practices that deliver, control, protect, and enhance the value of data and information assets throughout their lifecycles.
+\end{quote}
+
+\subsubsection{Data Knowledge Areas}
+The DMBOK breaks down data management into 11 knowledge areas, including:
+\begin{itemize}
+    \item Data Governance
+    \item Data Modeling
+    \item Data Integration and Interoperability
+    \item Metadata Management
+    \item Data Security
+\end{itemize}
+Data governance touches all other areas of data management, and many knowledge areas interact with each other through data governance practices.
+
+\subsubsection{Data Governance and Data Quality}
+\textbf{Data governance} is a data management function to ensure the quality, integrity, security, and usability of data collected by an organization. A key concern within governance is \textbf{data quality}:
+\begin{itemize}
+    \item \textbf{High-quality data} is accurate, complete, discoverable, and available in a timely manner. It represents exactly what stakeholders expect in terms of well-defined schema and data definitions.
+    \item \textbf{Low-quality data} might be inaccurate, incomplete, or otherwise unusable. It can cause stakeholders to waste time, make poor decisions, or lose trust in the data team entirely.
+\end{itemize}
+
+\subsection{Data Architecture}
+Data architecture is a roadmap or blueprint for your data systems. In our book \textit{Fundamentals of Data Engineering}, data architecture is defined as:
+\begin{quote}
+    The design of systems to support the evolving data needs of an enterprise, achieved by flexible and reversible decisions reached through a careful evaluation of trade-offs.
+\end{quote}
+
+Key aspects of this definition:
+\begin{itemize}
+    \item A good design supports the data needs of \textbf{today and tomorrow}---architecture is an ongoing effort.
+    \item Good design is achieved through \textbf{flexible and reversible decisions}, making it easier to evolve the architecture as needs change.
+    \item All decisions involve a careful \textbf{evaluation of trade-offs} in performance, cost, scalability, and other parameters.
+\end{itemize}
+Cloud computing makes flexible and reversible decisions far easier than the on-premises era, where millions of dollars in server hardware could lock you into a system for years.
+
+\subsubsection{Principles of Good Data Architecture}
+\begin{enumerate}
+    \item \textbf{Choose common components wisely.} Common components are used by multiple teams across the organization. A good choice provides the right features for individual projects while facilitating collaboration.
+    \item \textbf{Plan for failure.} Design not only for when everything works as expected, but also for when things break.
+    \item \textbf{Architect for scalability.} Scalable systems scale up to meet demand and scale down to minimize costs when demand recedes.
+    \item \textbf{Architecture is leadership.} Thinking like an architect helps you lead and mentor other team members as your skills develop.
+    \item \textbf{Always be architecting.} Architecture design is not a one-time effort---constantly evaluate your systems against the evolving needs of your organization.
+    \item \textbf{Build loosely coupled systems.} A loosely coupled system is built from individual components that can be easily swapped out without re-architecting the whole system.
+    \item \textbf{Make reversible decisions.} Choosing easily interchangeable components means you can reverse prior decisions and swap out components as needs evolve.
+    \item \textbf{Prioritize security.} Security principles like Least Privilege and Zero Trust are central to your role.
+    \item \textbf{Embrace FinOps.} FinOps brings together business priorities of finance and DataOps. On the cloud, most data systems are pay-as-you-go and readily scalable; embracing FinOps lets you design systems optimized for both cost and potential revenue generation.
+\end{enumerate}
+
+\subsection{DataOps}
+Around 2007, \textbf{DevOps} emerged in software development to break silos between development teams (who write and test code) and deployment teams (who deploy and maintain code). DevOps borrows from lean and agile methodologies to accomplish removal of bottlenecks, reduction of waste, quick identification of problems, and rapid iteration. \textbf{DataOps} applies these same principles to data products.
+
+\subsubsection{Cultural Practices}
+DataOps is first and foremost a set of cultural habits and practices, borrowed from agile methodology:
+\begin{itemize}
+    \item Prioritizing communication and collaboration with business stakeholders
+    \item Continuously learning from successes and failures
+    \item Taking an approach of rapid iteration toward improvements
+\end{itemize}
+
+\subsubsection{Three Technical Pillars of DataOps}
+\begin{description}
+    \item[Automation] One of the DevOps practices that accelerated the software build lifecycle is \textbf{Continuous Integration and Continuous Delivery (CI/CD)}. DataOps employs a similar automation framework: in addition to managing changes in code, configuration, and environment, DataOps focuses on change management for data processing pipelines and the data itself.
+
+    The progression of automation in a data pipeline typically follows three stages:
+    \begin{enumerate}
+        \item \textbf{Manual execution:} Manually triggering each step---useful for prototyping but prone to errors and inefficient in the long run.
+        \item \textbf{Pure scheduling:} Setting each task to start at a particular time of day. This can fail when ingestion tasks take longer than expected or when upstream tasks fail silently.
+        \item \textbf{Orchestration:} Using frameworks like Apache Airflow to check dependencies between tasks, automatically start subsequent tasks once previous ones complete, and notify you of errors.
+    \end{enumerate}
+
+    \item[Observability and Monitoring] Any data pipeline is bound to fail eventually. As Werner Vogels, CTO of Amazon Web Services, says: ``Everything fails all the time.'' Without close observation and monitoring, you may only discover failures when downstream stakeholders find problems in their reports or dashboards. Bad data can linger in reports for months or even years due to undiscovered failures.
+
+    \item[Incident Response] Using observability and monitoring capabilities to rapidly identify root causes of an incident and resolve it as quickly and reliably as possible. Incident response involves not just technology and tools but also \textbf{open and blameless communication} and coordination among team members.
+\end{description}
+
+\subsection{Orchestration}
+Like an orchestra conductor coordinating instruments and voices, a data engineer coordinates and manages the tasks in data pipelines. Orchestration is both a central component of DataOps and a separate undercurrent spanning the entire lifecycle.
+
+\subsubsection{From Manual Execution to Orchestration}
+\begin{description}
+    \item[Manual Execution] Manually triggering each step. Useful for prototyping but not sustainable for production data processing.
+    \item[Pure Scheduling] Tasks run automatically at particular times or frequencies. Problems arise when scheduled tasks fail or take longer than expected, causing incomplete or stale data to propagate through the pipeline.
+    \item[Orchestration Frameworks] Open-source frameworks like \textbf{Apache Airflow}, \textbf{Dagster}, \textbf{Prefect}, and \textbf{Mage} allow you to automate data pipelines with complex dependencies and monitoring capabilities. Features include:
+    \begin{itemize}
+        \item Dependency-based task triggering (verify previous tasks completed before starting the next)
+        \item Event-driven triggers (e.g., start ingestion when new data is available)
+        \item Monitoring and alerting (notify when tasks fail or exceed time limits)
+    \end{itemize}
+\end{description}
+
+\subsubsection{Directed Acyclic Graphs (DAGs)}
+Many orchestration frameworks require you to set up your data pipeline as a \textbf{Directed Acyclic Graph (DAG)}:
+\begin{itemize}
+    \item \textbf{Directed:} The flow of data goes only in one direction.
+    \item \textbf{Acyclic:} There are no loops---data does not flow back to a previous step.
+    \item \textbf{Graph:} Composed of nodes (tasks) and edges (data flow between tasks).
+\end{itemize}
+You can think of a DAG as a flow chart for how data moves through your pipelines. Within your orchestration framework, you specify criteria and dependencies for how each task should be triggered and what monitoring and alerts to set up.
+
+\subsection{Software Engineering}
+As a data engineer, you need to know how to read and write code---not just hacking together code that works right now, but writing \textbf{production-grade code} that is clean, readable, testable, and deployable.
+
+\subsubsection{The Evolution of Coding in Data Engineering}
+In the not-too-distant past, there was no official ``data engineering'' profession---just software engineers who occasionally dealt with data. As businesses recognized the value of data, the data-oriented component of software engineering became more intensive and eventually emerged as its own field. Today, existing services and applications allow data engineers to write much less code than their predecessors. However, the code you do write must be of top quality.
+
+\subsubsection{Where You Will Write Code}
+\begin{itemize}
+    \item \textbf{Core data processing code} at all stages of the lifecycle (ingestion, transformation, serving), using frameworks and languages such as SQL, Spark, or Kafka.
+    \item \textbf{Programming languages:} Python, Java/Scala (JVM languages), Bash for command-line operations, and potentially Rust or Go.
+    \item \textbf{Open-source framework development:} Adopting and extending open-source frameworks for specific use cases, contributing back via pull requests.
+    \item \textbf{Infrastructure as Code (IaC)} and \textbf{Pipeline as Code} solutions.
+    \item \textbf{General-purpose problem solving} at all stages of the lifecycle.
+\end{itemize}
+Building strong foundational software engineering skills ensures you can move between languages and frameworks with minimal difficulty. Making friends with software engineers in your organization and learning from them how to write great code is well worth your time.
+
+\newpage
+% --- SESSION 4: THE DATA ENGINEERING LIFECYCLE ON AWS (Approx. 50 mins) ---
+
+\section{Part 4: The Data Engineering Lifecycle on AWS}
+
+\subsection{Lesson Introduction}
+Now that you are familiar with the data engineering lifecycle and undercurrents, it is time to see how these concepts translate to tools and technologies on the AWS cloud. While other cloud providers exist (Microsoft Azure, Google Cloud Platform), all the concepts from this course are relevant regardless of platform---only some tooling and implementation details differ. AWS is currently a leading cloud provider, and the course partners with them for hands-on labs.
+
+\subsection{The Lifecycle Stages on AWS}
+
+\subsubsection{Source Systems}
+\begin{description}
+    \item[Amazon RDS] Relational Database Service provisions database instances with the relational database engine of your choice (e.g., MySQL, PostgreSQL). RDS simplifies operational overhead for provisioning, hosting, patching, and upgrading.
+
+    \item[Amazon DynamoDB] A serverless NoSQL database option. Tables are virtually unlimited in size. DynamoDB has a flexible schema and is suited for applications requiring low-latency access to large volumes of data (gaming, IoT, mobile apps, real-time analytics).
+
+    \item[Amazon Kinesis Data Streams] For streaming sources, enables real-time streaming of user activities (e.g., from a sales platform).
+
+    \item[Amazon SQS] Simple Queue Service for handling messages in your data pipelines.
+
+    \item[Amazon MSK] Managed Streaming for Apache Kafka, making it easier to run Kafka workloads on AWS with managed underlying infrastructure.
+\end{description}
+
+\subsubsection{Ingestion}
+\begin{description}
+    \item[AWS DMS] Database Migration Service migrates and replicates data from a source to a target in an automated way, useful when ingesting from databases.
+
+    \item[AWS Glue ETL] Offers features that support data integration processes. Used in most lab exercises for ingestion.
+
+    \item[Amazon Kinesis Data Streams \& Amazon Data Firehose] For ingesting data from streaming sources.
+\end{description}
+
+\subsubsection{Storage}
+\begin{description}
+    \item[Amazon Redshift] A traditional cloud data warehouse option for structured analytical data.
+
+    \item[Amazon S3] Simple Storage Service for object storage, serving as the backbone of a data lake.
+
+    \item[Lakehouse Architecture] Combining services (e.g., Redshift and S3) for seamless access to both structured data in a data warehouse and unstructured data in an object storage data lake.
+\end{description}
+
+\subsubsection{Transformation}
+\begin{description}
+    \item[AWS Glue] Primary transformation service used in the courses.
+    \item[Apache Spark] Can be used in combination with Glue or as an alternative.
+    \item[dbt (data build tool)] Another transformation tool that can be used in combination with Glue or as an alternative, depending on needs.
+\end{description}
+
+\subsubsection{Serving}
+\begin{description}
+    \item[Analytics Use Case]
+    \begin{itemize}
+        \item \textbf{Amazon Athena} or \textbf{Redshift} for querying structured and unstructured data
+        \item \textbf{Jupyter Notebooks} for dashboards and analysis
+        \item \textbf{Amazon QuickSight} for managed dashboards
+        \item \textbf{Apache Superset} and \textbf{Metabase} as open-source dashboard options
+    \end{itemize}
+
+    \item[AI/Machine Learning Use Case]
+    \begin{itemize}
+        \item Serving batch data for model training
+        \item Vector database options for product recommenders and use with large language models
+    \end{itemize}
+\end{description}
+
+\subsection{The Undercurrents on AWS}
+
+\subsubsection{Security}
+\begin{description}
+    \item[Shared Responsibility Model] AWS is responsible for security of the data centers and services they provide. You are responsible for the security of the systems you build with those resources (e.g., setting correct access permissions on S3 buckets).
+
+    \item[IAM (Identity and Access Management)] Set up roles and permissions to control access to AWS resources. \textbf{IAM roles} give users or applications access to temporary credentials that automatically rotate and provide appropriate AWS API permissions.
+
+    \item[Network Security] Services and features like \textbf{Amazon VPC} (Virtual Private Cloud) and \textbf{security groups} (instance-level firewalls) are key aspects of implementing secure data pipelines.
+\end{description}
+
+\subsubsection{Data Management}
+\begin{description}
+    \item[AWS Glue Crawlers \& Glue Data Catalog] Discover, create, and manage metadata for data stored in Amazon S3 or other storage and database systems.
+
+    \item[AWS Lake Formation] Helps centrally manage and scale fine-grained data access permissions, related to both data management and security (data privacy and discovery).
+\end{description}
+
+\subsubsection{DataOps}
+\begin{description}
+    \item[Amazon CloudWatch] Collects metrics and provides monitoring features for cloud resources, applications, and even on-premises resources.
+
+    \item[Amazon CloudWatch Logs] Stores and analyzes operational logs.
+
+    \item[Amazon SNS] Simple Notification Service provides a means of setting up notifications (between applications or via text/email) triggered by events within your system.
+
+    \item[Open-Source Options] Tools like Monte Carlo or BigEye for observability.
+\end{description}
+
+\subsubsection{Orchestration}
+\begin{description}
+    \item[Apache Airflow] The industry-standard orchestration tool. Can be implemented as open source or used as a managed version from AWS (Amazon MWAA---Managed Workflows for Apache Airflow).
+
+    \item[Newer Alternatives] Dagster, Prefect, and Mage aim to solve some issues that Airflow is not designed for.
+\end{description}
+
+\subsubsection{Data Architecture}
+\begin{description}
+    \item[AWS Well-Architected Framework] A set of principles and practices developed by AWS to help build systems with an eye towards operational efficiency, security, scalability, and sustainability.
+\end{description}
+
+\subsubsection{Software Engineering}
+\begin{description}
+    \item[Amazon CodeDeploy] Automates code deployment.
+    \item[CI/CD Tools] Various options for continuous integration and delivery.
+    \item[Git and GitHub] For version control throughout the data engineering workflow.
+\end{description}
+
+\section{Week 2 Summary}
+This week provided a deep dive into every stage of the data engineering lifecycle and each of the six undercurrents. The key takeaways are:
+\begin{enumerate}
+    \item \textbf{Understand your source systems:} Work directly with source system owners and build good relationships to anticipate changes and avoid pipeline failures.
+    \item \textbf{Choose ingestion patterns wisely:} Adopt streaming ingestion only when a clear business use case justifies the trade-offs over batch processing.
+    \item \textbf{Be storage savvy:} Understand the full storage hierarchy---from raw ingredients to storage abstractions---to optimize for performance and cost.
+    \item \textbf{Add value through transformation:} Queries, modeling, and transformation are where raw data becomes useful for analytics, ML, and reverse ETL.
+    \item \textbf{Embrace the undercurrents:} Security, data management, DataOps, architecture, orchestration, and software engineering are cross-cutting concerns that determine the quality and reliability of everything you build.
+    \item \textbf{Map concepts to tools:} Understanding how lifecycle stages and undercurrents map to specific AWS services bridges the gap between theory and practice.
+\end{enumerate}
+
+\end{document}

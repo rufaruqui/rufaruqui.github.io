@@ -1,3 +1,6 @@
 SQL Sliding Syntax
 Ch 13.6 File Formats
 Presentation on Data Engineering on various companies
+
+
+https://www.slideshare.net/slideshow/bridging-the-gap-between-data-science-engineer-building-highperformance-teams/57526374

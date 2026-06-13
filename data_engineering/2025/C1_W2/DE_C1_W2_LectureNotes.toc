@@ -1,0 +1,63 @@
+\contentsline {section}{\numberline {1}Part 1: The Data Engineering Lifecycle In Depth}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Week 2 Overview}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Data Generation in Source Systems}{3}{subsection.1.2}%
+\contentsline {subsubsection}{\numberline {1.2.1}Common Source System Types}{3}{subsubsection.1.2.1}%
+\contentsline {subsubsection}{\numberline {1.2.2}The Unpredictability of Source Systems}{4}{subsubsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.3}Ingestion}{4}{subsection.1.3}%
+\contentsline {subsubsection}{\numberline {1.3.1}Batch vs.\ Streaming Ingestion}{4}{subsubsection.1.3.1}%
+\contentsline {paragraph}{The Coexistence of Batch and Streaming.}{5}{section*.2}%
+\contentsline {subsubsection}{\numberline {1.3.2}Other Ingestion Considerations}{5}{subsubsection.1.3.2}%
+\contentsline {subsection}{\numberline {1.4}Storage}{5}{subsection.1.4}%
+\contentsline {subsubsection}{\numberline {1.4.1}The Raw Ingredients of Storage}{5}{subsubsection.1.4.1}%
+\contentsline {subsubsection}{\numberline {1.4.2}The Storage Hierarchy}{6}{subsubsection.1.4.2}%
+\contentsline {paragraph}{A Cautionary Tale.}{6}{section*.3}%
+\contentsline {section}{\numberline {2}Part 2: Queries, Transformation, and Serving}{7}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Queries, Modeling, and Transformation}{7}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}Queries}{7}{subsubsection.2.1.1}%
+\contentsline {subsubsection}{\numberline {2.1.2}Data Modeling}{7}{subsubsection.2.1.2}%
+\contentsline {subsubsection}{\numberline {2.1.3}Transformation}{8}{subsubsection.2.1.3}%
+\contentsline {subsection}{\numberline {2.2}Serving Data}{8}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}Analytics}{8}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}Machine Learning}{9}{subsubsection.2.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.3}Reverse ETL}{9}{subsubsection.2.2.3}%
+\contentsline {section}{\numberline {3}Part 3: The Undercurrents of Data Engineering}{11}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Introduction to the Undercurrents}{11}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Security}{11}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}The Principle of Least Privilege}{11}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Data Sensitivity and Minimization}{11}{subsubsection.3.2.2}%
+\contentsline {subsubsection}{\numberline {3.2.3}Cloud Security Considerations}{12}{subsubsection.3.2.3}%
+\contentsline {subsubsection}{\numberline {3.2.4}Security as a Culture}{12}{subsubsection.3.2.4}%
+\contentsline {subsection}{\numberline {3.3}Data Management}{12}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}DMBOK Definition and Scope}{12}{subsubsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.2}The 11 Data Knowledge Areas}{13}{subsubsection.3.3.2}%
+\contentsline {subsubsection}{\numberline {3.3.3}Data Governance}{13}{subsubsection.3.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.4}Data Quality}{13}{subsubsection.3.3.4}%
+\contentsline {subsection}{\numberline {3.4}Data Architecture}{13}{subsection.3.4}%
+\contentsline {subsubsection}{\numberline {3.4.1}Definition}{14}{subsubsection.3.4.1}%
+\contentsline {paragraph}{The Cloud Advantage.}{14}{section*.4}%
+\contentsline {subsubsection}{\numberline {3.4.2}Principles of Good Data Architecture}{14}{subsubsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.5}DataOps}{15}{subsection.3.5}%
+\contentsline {subsubsection}{\numberline {3.5.1}Cultural Practices}{15}{subsubsection.3.5.1}%
+\contentsline {subsubsection}{\numberline {3.5.2}Three Technical Pillars of DataOps}{15}{subsubsection.3.5.2}%
+\contentsline {subsection}{\numberline {3.6}Orchestration}{16}{subsection.3.6}%
+\contentsline {subsubsection}{\numberline {3.6.1}From Manual Execution to Orchestration}{17}{subsubsection.3.6.1}%
+\contentsline {subsubsection}{\numberline {3.6.2}Directed Acyclic Graphs (DAGs)}{17}{subsubsection.3.6.2}%
+\contentsline {subsection}{\numberline {3.7}Software Engineering}{18}{subsection.3.7}%
+\contentsline {subsubsection}{\numberline {3.7.1}The Evolution of Coding in Data Engineering}{18}{subsubsection.3.7.1}%
+\contentsline {subsubsection}{\numberline {3.7.2}Where You Will Write Code}{18}{subsubsection.3.7.2}%
+\contentsline {section}{\numberline {4}Part 4: The Data Engineering Lifecycle on AWS}{19}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Lesson Introduction}{19}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}The Lifecycle Stages on AWS}{19}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}Source Systems}{19}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}Ingestion}{19}{subsubsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.3}Storage}{20}{subsubsection.4.2.3}%
+\contentsline {subsubsection}{\numberline {4.2.4}Transformation}{20}{subsubsection.4.2.4}%
+\contentsline {subsubsection}{\numberline {4.2.5}Serving}{20}{subsubsection.4.2.5}%
+\contentsline {subsection}{\numberline {4.3}The Undercurrents on AWS}{20}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {4.3.1}Security}{20}{subsubsection.4.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.2}Data Management}{21}{subsubsection.4.3.2}%
+\contentsline {subsubsection}{\numberline {4.3.3}DataOps}{21}{subsubsection.4.3.3}%
+\contentsline {subsubsection}{\numberline {4.3.4}Orchestration}{21}{subsubsection.4.3.4}%
+\contentsline {subsubsection}{\numberline {4.3.5}Data Architecture}{22}{subsubsection.4.3.5}%
+\contentsline {subsubsection}{\numberline {4.3.6}Software Engineering}{22}{subsubsection.4.3.6}%
+\contentsline {section}{\numberline {5}Week 2 Summary}{23}{section.5}%

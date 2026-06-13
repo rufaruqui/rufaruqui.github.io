@@ -1,0 +1,26 @@
+\contentsline {section}{\numberline {1}Foundations: Probabilistic Reasoning in Classification}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}The Classification Problem}{3}{subsection.1.1}%
+\contentsline {section}{\numberline {2}Bayesian Classifiers}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Bayes' Theorem — A Refresher}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Bayesian Classifier: Full Joint Distribution}{4}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}Quadratic Discriminant Analysis (QDA)}{4}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}Linear Discriminant Analysis (LDA)}{4}{subsubsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.3}Worked Example — Medical Diagnosis}{4}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Na\"{i}ve Bayesian Classifiers}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}The Curse of Dimensionality — Motivation}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Parameter Estimation}{6}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Worked Example — Spam E-mail Classification}{6}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Variants of Na\"{i}ve Bayes}{7}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Strengths and Weaknesses}{7}{subsection.3.5}%
+\contentsline {section}{\numberline {4}Support Vector Machines (SVM)}{7}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Intuition: Finding the Best Separator}{7}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}The Hard-Margin SVM (Linearly Separable Case)}{8}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Soft-Margin SVM (Non-Separable Case)}{8}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}The Dual Problem and Support Vectors}{9}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}The Kernel Trick — Non-linear SVMs}{9}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}Worked Example — SVM by Hand (2D)}{10}{subsection.4.6}%
+\contentsline {subsection}{\numberline {4.7}Multi-Class SVM}{10}{subsection.4.7}%
+\contentsline {section}{\numberline {5}Comparison \& Practical Guide}{11}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Decision Flowchart: Which Method to Choose?}{12}{subsection.5.1}%
+\contentsline {section}{\numberline {6}Comprehensive Worked Example — All Three Methods}{13}{section.6}%
+\contentsline {section}{\numberline {7}Summary}{14}{section.7}%

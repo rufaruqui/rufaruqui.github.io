@@ -1,0 +1,130 @@
+\documentclass[12pt,addpoints]{exam}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in,top=0.6in,bottom=0.6in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\setlength{\parskip}{2pt}
+
+\newcommand{\class}{CSE 817: Data Engineering}
+\newcommand{\examnum}{CT 1}
+\newcommand{\examdate}{\today}
+
+
+\pointpoints{mark}{marks}
+\pagestyle{head}
+\firstpageheader{}{}{}
+\runningheader{\class}{\examnum\ - Page \thepage\ of \numpages}{\examdate}
+\runningheadrule
+
+% tighten exam question spacing
+\setlength{\answerskip}{2pt}
+\setlength{\answerlinelength}{0.9\linewidth}
+
+\begin{document}
+
+\noindent
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
+\textbf{\class} & \textbf{Name:} & \makebox[2in]{\hrulefill}\\
+\textbf{\examnum} \quad \textbf{Date:} \examdate & \textbf{ID:} & \makebox[2in]{\hrulefill}\\
+\end{tabular*}
+
+\noindent\rule[1.5ex]{\textwidth}{1.5pt}
+\noindent\small This exam has \numpages\ page(s), \numquestions\ questions, and \numpoints\ total marks. Answer all questions.
+%\rule[1ex]{\textwidth}{0.8pt}
+
+%% ---- Part 1 ---------------------------------------------------------------
+\noindent\textbf{Part 1: Fill in the Blanks} \hfill \textit{[2.5 marks --- \half mark each]}
+
+\vspace{2pt}
+\begin{questions}
+
+%\question[1] Data engineering is the intersection of Security, Data Management, DataOps, Data Architecture, \underline{\hspace{2.8cm}}, and Software Engineering.
+
+%\question[1] The lifecycle stage responsible for getting data from source systems is called \underline{\hspace{2.8cm}}.
+
+\question[\half] \underline{\hspace{2.8cm}} is unique because it spans across \emph{all} other stages of the data engineering lifecycle.
+
+\question[\half] Unlike lifecycle stages, \underline{\hspace{2.8cm}} are critical ideas relevant to every stage of the lifecycle.
+
+%\question[1] \underline{\hspace{2.8cm}} requirements describe the ``how'' of a system (performance, security, reliability).
+
+\question[\half] Under the Shared Responsibility Model, AWS is responsible for security \underline{\hspace{1.2cm}} the cloud; the customer is responsible for security \underline{\hspace{1.2cm}} the cloud.
+
+\question[\half] In early software engineering, data was often treated as a \underline{\hspace{2.8cm}} rather than a primary asset.
+
+%\question[1] A \underline{\hspace{2cm}} data engineer prefers off-the-shelf managed services to avoid ``undifferentiated heavy lifting''.
+
+%\question[1] A data engineer acts as a \underline{\hspace{2.8cm}} between data producers and data consumers.
+
+\question[\half] The modern era of data engineering was triggered by Google's publications on the \underline{\hspace{3.5cm}} and MapReduce.
+
+\end{questions}
+
+\rule[1ex]{\textwidth}{0.8pt}
+
+%% ---- Part 2 ---------------------------------------------------------------
+\noindent\textbf{Part 2: Short Answer} \hfill \textit{[2.5 marks ]}
+
+\vspace{2pt}
+\begin{questions}
+\setcounter{question}{0}
+
+%\question[2] What are the five stages of the data engineering lifecycle?
+%\fillwithdottedlines{5em}
+
+\question[1\half] What is the difference between a \textbf{functional} and a \textbf{non-functional} requirement? Give one example of each.
+\fillwithdottedlines{7em}
+
+%\question[2] Name \textbf{three} undercurrents that span the data engineering lifecycle.
+%\fillwithdottedlines{4em}
+
+%\question[2] How does a \textbf{Type B} data engineer differ from a \textbf{Type A} data engineer?
+%\fillwithdottedlines{5em}
+
+\question[1] What does it mean for a data engineer to ``stand on the shoulders of giants''?
+\fillwithdottedlines{5em}
+
+\end{questions}
+
+\rule[1ex]{\textwidth}{0.8pt}
+
+%% ---- Part 3 ---------------------------------------------------------------
+\noindent\textbf{Part 3: Analytical Questions} \hfill \textit{[4 marks --- 2 marks each]}
+
+\vspace{2pt}
+\begin{questions}
+\setcounter{question}{0}
+
+\question[2] Analyze how the shift from \textbf{on-premises} systems to the \textbf{cloud} has changed the relationship between data architecture and data engineering.
+\fillwithdottedlines{14em}
+
+\question[2] Explain why the data engineering lifecycle is considered \textbf{cyclical} rather than linear.
+\fillwithdottedlines{14em}
+
+\end{questions}
+
+\rule[1ex]{\textwidth}{0.8pt}
+
+%% ---- Part 4 ---------------------------------------------------------------
+\noindent\textbf{Part 4: Design Questions} \hfill \textit{[6 marks --- 3 marks each]}
+
+\vspace{2pt}
+\begin{questions}
+\setcounter{question}{0}
+
+\question[3] A data scientist reports that the marketing team needs \textbf{real-time} sales analysis but currently receives only a \textbf{daily batch} dump. Outline your \textbf{first three steps} using the ``Thinking Like a Data Engineer'' framework.
+\begin{parts}
+  \part \textbf{Step 1:}\fillwithdottedlines{5em}
+  \part \textbf{Step 2:}\fillwithdottedlines{5em}
+  \part \textbf{Step 3:}\fillwithdottedlines{5em}
+\end{parts}
+
+\question[3] You are designing a data system for a \textbf{highly regulated industry} (e.g.\ healthcare). How does this affect your \textbf{Requirements Gathering} and the \textbf{Security} undercurrent?
+\fillwithdottedlines{14em}
+
+\end{questions}
+
+%\noindent\rule[1ex]{\textwidth}{1.5pt}
+%\begin{center}\small\textbf{--- End of Assessment ---}\end{center}
+
+\end{document}

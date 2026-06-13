@@ -1,0 +1,18 @@
+Now that you're familiar with the data
+engineering lifecycle and undercurrents, it's time to take a look at how these
+concepts translate to tools and technologies on the AWS cloud. I'll first just say here that
+there are other cloud providers, including Microsoft's Azure and the Google Cloud platform,
+as well as other small providers. And depending on where you
+work as a data engineer, you might be building on one
+of these other platforms. With that being said, all the concepts
+you're learning about in these courses will be relevant to your work, no matter
+what cloud platform you're building on. Just that some of the tooling and implementation details might
+look a little different. Right now,
+AWS is a leading cloud provider, and we're really excited to be partnering
+with them on these courses. So that you can gain
+the technical skills required for data engineering using the same tools and technologies that have been adopted by
+thousands of companies around the world. So in the next video, Morgan Willis will
+introduce you to some of the tooling you'll be working with in the labs
+throughout these courses. And explaining where those tools fit
+into the data engineering lifecycle and the undercurrents. After that, I'll give you an orientation
+to the lab exercise for this week.
