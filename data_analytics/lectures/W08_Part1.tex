@@ -379,7 +379,7 @@
         \draw[arr, PURed!70] (sk)--(hdfs);
 
         % File channel note
-        \node[font=\tiny\itshape, PUGray] at (0.4, 2.8)
+        \node[font=\tiny\itshape, text=PUGray, align=center, text width=2.8cm] at (0.4, 2.8)
               {File channel: persists on disk;\\
                survives agent crash};
       \end{tikzpicture}
@@ -445,10 +445,10 @@
 
         % Consumer A at offset 3
         \draw[arr, PUTeal!70, thick] (0.3, 1.2)--(0.3, 1.45)
-              node[below=3pt, font=\tiny, PUTeal]{Con A\\off=3};
+              node[below=3pt, font=\tiny, text=PUTeal, align=center]{Con A\\off=3};
         % Consumer B at offset 6
         \draw[arr, PUGreen!70, thick] (2.4, 1.2)--(2.4, 1.45)
-              node[below=3pt, font=\tiny, PUGreen]{Con B\\off=6};
+              node[below=3pt, font=\tiny, text=PUGreen, align=center]{Con B\\off=6};
 
         \node[font=\tiny\itshape, PUGray] at (0.8, 0.4)
               {Each consumer tracks its own offset};

@@ -294,9 +294,9 @@
         \draw[arr] (cli)--(hs2);
         \draw[arr] (hs2)--(drv);
         \draw[arr] (drv) -- (meta)
-              node[midway, above left, font=\tiny]{schema\\lookup};
+              node[midway, above left, font=\tiny, align=center]{schema\\lookup};
         \draw[arr] (drv) -- (exec)
-              node[midway, above right, font=\tiny]{submit\\jobs};
+              node[midway, above right, font=\tiny, align=center]{submit\\jobs};
         \draw[arr] (exec)--(hdfs)
               node[midway, right, font=\tiny]{read/write};
 

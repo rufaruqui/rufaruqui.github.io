@@ -274,7 +274,7 @@ def reduce(key, values):
     \foreach \i/\y in {1/2.0, 2/0.6, 3/-0.8} {
       \node[rectangle, fill=PUNavy!20, draw=PUNavy!40, rounded corners=2pt,
             minimum width=1.6cm, minimum height=0.9cm,
-            font=\scriptsize\bfseries]
+            font=\scriptsize\bfseries, align=center]
             (blk\i) at (-5.5, \y) {HDFS\\Block \i};
     }
     \node[lbl] at (-5.5,-1.7) {Input\\(HDFS)};
@@ -293,7 +293,7 @@ def reduce(key, values):
     \foreach \i/\y in {1/2.0, 2/0.6, 3/-0.8} {
       \node[rectangle, fill=PUOrange!70, text=white,
             rounded corners=2pt, minimum width=1.4cm, minimum height=0.9cm,
-            font=\scriptsize\bfseries]
+            font=\scriptsize\bfseries, align=center]
             (comb\i) at (-1.3, \y) {Combiner\\(opt.)};
       \draw[arr, PUOrange!70] (map\i) -- (comb\i);
     }
@@ -330,7 +330,7 @@ def reduce(key, values):
     \node[lbl] at (5.0,-1.7) {Output\\(HDFS)};
 
     % Partitioner label
-    \node[font=\tiny\bfseries, PUPurple] at (1.9, 2.5)
+    \node[font=\tiny\bfseries, text=PUPurple, align=center, text width=3.8cm] at (1.9, 2.5)
           {Partitioner decides\\which Reducer gets which key};
     \draw[-{Stealth[length=3pt]}, PUPurple!60, thin, dashed]
           (1.6,2.2) -- (1.5,0.9);

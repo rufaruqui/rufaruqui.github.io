@@ -252,16 +252,16 @@
       sub/.style={font=\scriptsize\normalfont}
     ]
     \node[quad, fill=PUNavy,        text=white] (A) at (0,   1.7)
-          {Structural / Schema\\\sub{Different column names\\\& table organisation}};
+          {Structural / Schema\\{\scriptsize\normalfont Different column names\\\& table organisation}};
     \node[quad, fill=PUGold!80!black, text=white] (B) at (5.5, 1.7)
-          {Semantic\\\sub{Same name,\\ different meaning}};
+          {Semantic\\{\scriptsize\normalfont Same name,\\ different meaning}};
     \node[quad, fill=PUTeal,         text=white] (C) at (0,  -0.3)
-          {Syntactic / Format\\\sub{Same data,\\ different encoding}};
+          {Syntactic / Format\\{\scriptsize\normalfont Same data,\\ different encoding}};
     \node[quad, fill=PUOrange,        text=white] (D) at (5.5,-0.3)
-          {Scale / Granularity\\\sub{Different resolutions,\\ units, cardinalities}};
+          {Scale / Granularity\\{\scriptsize\normalfont Different resolutions,\\ units, cardinalities}};
 
     % Central label
-    \node[font=\bfseries\small, PUNavy] at (2.75, 0.7) {Heterogeneity};
+    \node[font=\bfseries\small, text=PUNavy] at (2.75, 0.7) {Heterogeneity};
     \draw[PUNavy!30, thick] (2.75,0.3) circle (0.5cm);
 
     % Lines to centre
@@ -580,7 +580,7 @@
         \draw[arr] (DL) -- (T);
 
         % Storage label
-        \node[font=\tiny\itshape, PUTeal] at (4.0, 0.35)
+        \node[font=\tiny\itshape, text=PUTeal, align=center, text width=2.5cm] at (4.0, 0.35)
               {HDFS / S3\\(schema-on-read)};
 
         % On-demand arrow
@@ -724,22 +724,22 @@
       \begin{exampleblock}{Four-Step Entity Resolution Pipeline}
         \begin{center}
         \begin{tikzpicture}[
-            step/.style={rectangle, rounded corners=2pt,
+            sbox/.style={rectangle, rounded corners=2pt,
                          fill=PUNavy!15, draw=PUNavy!50,
                          minimum width=3.0cm, minimum height=0.65cm,
                          font=\small, align=center},
             arr/.style={-{Stealth[length=3.5pt]}, PUNavy!70, thick}
           ]
-          \node[step] (bl) at (0, 3.0)
+          \node[sbox] (bl) at (0, 3.0)
                 {\textbf{1. Blocking}\\
                  \tiny Group by postcode / name prefix};
-          \node[step] (fe) at (0, 2.0)
+          \node[sbox] (fe) at (0, 2.0)
                 {\textbf{2. Feature Extraction}\\
                  \tiny Edit distance, Soundex, Jaccard};
-          \node[step] (sc) at (0, 1.0)
+          \node[sbox] (sc) at (0, 1.0)
                 {\textbf{3. Scoring}\\
                  \tiny Similarity threshold or ML model};
-          \node[step] (re) at (0, 0.0)
+          \node[sbox] (re) at (0, 0.0)
                 {\textbf{4. Resolution}\\
                  \tiny Merge / link / flag for review};
           \draw[arr] (bl) -- (fe);
@@ -968,7 +968,7 @@
     \textcolor{PUGray}{\rule{7cm}{0.5pt}}\\[10pt]
     \begin{quote}
       \itshape ``Data is the new oil.  But crude oil must be refined before it can power anything.
-                 Data integration is that refinery.''}
+                 Data integration is that refinery.''
     \end{quote}
     \hfill\textemdash\,Adapted from Clive Humby (2006)
     \vspace{16pt}

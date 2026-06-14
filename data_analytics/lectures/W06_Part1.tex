@@ -483,19 +483,19 @@
     \column{0.45\textwidth}
       \begin{center}
       \begin{tikzpicture}[
-          step/.style={rectangle, rounded corners=3pt, minimum width=3.0cm,
+          sbox/.style={rectangle, rounded corners=3pt, minimum width=3.0cm,
                        minimum height=0.7cm, font=\scriptsize\bfseries, align=center},
           arr/.style={-{Stealth[length=4pt]}, thick}
         ]
-        \node[step, fill=PUNavy!20] (load) at (0,4.5)
+        \node[sbox, fill=PUNavy!20] (load) at (0,4.5)
               {Load (HDFS read)};
-        \node[step, fill=PUTeal!25]  (flt)  at (0,3.6)
+        \node[sbox, fill=PUTeal!25]  (flt)  at (0,3.6)
               {\texttt{filter(amount > 1000)}};
-        \node[step, fill=PUTeal!25]  (mp)   at (0,2.7)
+        \node[sbox, fill=PUTeal!25]  (mp)   at (0,2.7)
               {\texttt{map(compute\_fee)}};
-        \node[step, fill=PUOrange!30] (rbk) at (0,1.8)
+        \node[sbox, fill=PUOrange!30] (rbk) at (0,1.8)
               {\texttt{reduceByKey(sum)}};
-        \node[step, fill=PUGreen!40, text=white] (act) at (0,0.9)
+        \node[sbox, fill=PUGreen!40, text=white] (act) at (0,0.9)
               {\texttt{saveAsTextFile()} \textit{(action)}};
         \node[font=\tiny\bfseries, PUGold!80!black] at (0,0.3)
               {DAG execution triggered here};
@@ -510,10 +510,10 @@
         % Stage brackets
         \draw[decorate, decoration={brace,amplitude=5pt}, PUNavy!50]
               (1.7,4.8) -- (1.7,2.4)
-              node[midway,right=6pt,font=\tiny,PUNavy]{Stage 1};
+              node[midway,right=6pt,font=\tiny,text=PUNavy]{Stage 1};
         \draw[decorate, decoration={brace,amplitude=5pt}, PUOrange!70]
               (1.7,2.1) -- (1.7,0.6)
-              node[midway,right=6pt,font=\tiny,PUOrange]{Stage 2};
+              node[midway,right=6pt,font=\tiny,text=PUOrange]{Stage 2};
       \end{tikzpicture}
       \end{center}
   \end{columns}
