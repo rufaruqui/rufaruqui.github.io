@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSE 4345 — Big Data Analytics · Premier University</title>
+
+  <style>
+    /* ── Variables ─────────────────────────────────────── */
+    :root {
+      --navy:       #0A2463;
+      --navy-mid:   #1a3a7a;
+      --navy-light: #d2e4ff;
+      --gold:       #C59725;
+      --gold-light: #f5e9bf;
+      --teal:       #006464;
+      --red:        #a01e1e;
+      --gray:       #5a5a5a;
+      --gray-light: #f5f5f5;
+      --white:      #ffffff;
+      --radius:     6px;
+      --shadow:     0 2px 8px rgba(10,36,99,.12);
+    }
+
+    /* ── Reset ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html  { scroll-behavior: smooth; }
+    body  {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #222;
+      background: var(--gray-light);
+    }
+    a { color: var(--navy); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Header / Hero ─────────────────────────────────── */
+    header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+      color: var(--white);
+      padding: 0;
+    }
+    .header-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 40px 24px 32px;
+    }
+    .header-inner h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: .5px;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .header-inner .subtitle {
+      font-size: 1.05rem;
+      opacity: .9;
+      margin-bottom: 20px;
+    }
+    .header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: .85rem;
+    }
+    .meta-pill {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 20px;
+      padding: 4px 14px;
+      white-space: nowrap;
+    }
+
+    /* ── Nav bar ───────────────────────────────────────── */
+    nav {
+      background: var(--gold);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 6px rgba(0,0,0,.18);
+    }
+    nav ul {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+    nav ul li a {
+      display: block;
+      padding: 10px 16px;
+      color: var(--navy);
+      font-weight: 600;
+      font-size: .88rem;
+      letter-spacing: .3px;
+    }
+    nav ul li a:hover {
+      background: rgba(10,36,99,.12);
+      text-decoration: none;
+    }
+
+    /* ── Main container ────────────────────────────────── */
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+      display: grid;
+      gap: 36px;
+    }
+
+    /* ── Section headers ───────────────────────────────── */
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--navy);
+      border-left: 4px solid var(--gold);
+      padding-left: 12px;
+      margin-bottom: 16px;
+    }
+
+    /* ── Info cards row (CLOs + overview) ─────────────── */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 680px) { .info-grid { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px 22px;
+    }
+    .card h3 {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    /* ── CLO table ─────────────────────────────────────── */
+    .clo-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .clo-table th {
+      background: var(--navy);
+      color: var(--white);
+      padding: 7px 10px;
+      text-align: left;
+      font-weight: 600;
+    }
+    .clo-table td { padding: 7px 10px; border-bottom: 1px solid #e0e8f8; }
+    .clo-table tr:last-child td { border-bottom: none; }
+    .clo-badge {
+      display: inline-block;
+      background: var(--navy);
+      color: var(--white);
+      font-size: .75rem;
+      font-weight: 700;
+      border-radius: 3px;
+      padding: 1px 7px;
+      white-space: nowrap;
+    }
+
+    /* ── Lecture schedule ──────────────────────────────── */
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .88rem;
+      background: var(--white);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .schedule-table thead th {
+      background: var(--navy);
+      color: var(--white);
+      padding: 11px 14px;
+      text-align: left;
+      font-weight: 600;
+      font-size: .82rem;
+      letter-spacing: .3px;
+    }
+    .schedule-table tbody tr:nth-child(even) { background: #f0f5ff; }
+    .schedule-table tbody tr:hover { background: var(--navy-light); }
+    .schedule-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #dde6f8;
+      vertical-align: middle;
+    }
+    .schedule-table tr:last-child td { border-bottom: none; }
+    .week-num {
+      font-weight: 700;
+      color: var(--navy);
+      white-space: nowrap;
+    }
+    .clo-tag {
+      display: inline-block;
+      border: 1px solid var(--navy);
+      color: var(--navy);
+      font-size: .72rem;
+      font-weight: 600;
+      border-radius: 3px;
+      padding: 1px 6px;
+      margin: 0 2px;
+      white-space: nowrap;
+    }
+
+    /* ── Slide links ───────────────────────────────────── */
+    .slide-links { display: flex; flex-wrap: wrap; gap: 6px; }
+    .btn-slide {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--navy);
+      color: var(--white) !important;
+      font-size: .78rem;
+      font-weight: 600;
+      border-radius: 4px;
+      padding: 4px 11px;
+      text-decoration: none !important;
+      transition: background .15s;
+    }
+    .btn-slide:hover { background: var(--navy-mid); }
+    .btn-slide.part2 { background: var(--teal); }
+    .btn-slide.part2:hover { background: #004f4f; }
+    .btn-slide.notes { background: var(--gray); }
+    .btn-slide.notes:hover { background: #404040; }
+    .btn-coming {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #e0e0e0;
+      color: #888 !important;
+      font-size: .78rem;
+      font-weight: 600;
+      border-radius: 4px;
+      padding: 4px 11px;
+      cursor: default;
+    }
+
+    /* ── Textbooks ─────────────────────────────────────── */
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+    .book-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px 18px;
+      border-left: 4px solid var(--gold);
+    }
+    .book-code {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: .8rem;
+      border-radius: 3px;
+      padding: 1px 8px;
+      margin-bottom: 6px;
+    }
+    .book-title { font-weight: 600; color: var(--navy); font-size: .92rem; }
+    .book-author { font-size: .83rem; color: var(--gray); margin-top: 2px; }
+    .book-link {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--teal);
+      border: 1px solid var(--teal);
+      border-radius: 3px;
+      padding: 2px 9px;
+    }
+    .book-link:hover { background: var(--teal); color: var(--white); text-decoration: none; }
+
+    /* ── Seminal Papers ────────────────────────────────── */
+    .papers-list { list-style: none; }
+    .papers-list li {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 8px;
+      padding: 11px 16px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .paper-year {
+      min-width: 40px;
+      font-weight: 700;
+      color: var(--gold);
+      font-size: .85rem;
+    }
+    .paper-info { flex: 1; }
+    .paper-title { font-weight: 600; color: var(--navy); }
+    .paper-ref { font-size: .82rem; color: var(--gray); margin-top: 1px; }
+    .paper-week {
+      display: inline-block;
+      background: var(--navy-light);
+      color: var(--navy);
+      font-size: .72rem;
+      font-weight: 600;
+      border-radius: 3px;
+      padding: 1px 7px;
+      margin-left: 8px;
+      white-space: nowrap;
+    }
+    .btn-pdf {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 6px;
+      margin-right: 6px;
+      font-size: .76rem;
+      font-weight: 700;
+      color: var(--teal) !important;
+      border: 1px solid var(--teal);
+      border-radius: 3px;
+      padding: 2px 9px;
+      text-decoration: none !important;
+      transition: background .15s, color .15s;
+    }
+    .btn-pdf:hover { background: var(--teal); color: var(--white) !important; }
+    .btn-pdf-book {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 6px;
+      font-size: .76rem;
+      font-weight: 600;
+      color: var(--gray);
+      font-style: italic;
+    }
+
+    /* ── Assessment table ──────────────────────────────── */
+    .assess-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .assess-table th {
+      background: var(--navy);
+      color: var(--white);
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .assess-table td { padding: 8px 12px; border-bottom: 1px solid #e0e8f8; }
+    .assess-table tr:last-child td { border-bottom: none; }
+    .assess-table tr:nth-child(even) td { background: #f0f5ff; }
+    .weight-bar {
+      display: inline-block;
+      height: 6px;
+      background: var(--gold);
+      border-radius: 3px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    /* ── Ivy League block ──────────────────────────────── */
+    .ivy-list {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .ivy-list li {
+      background: var(--white);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      font-size: .88rem;
+      border-top: 3px solid var(--gold);
+    }
+    .ivy-name { font-weight: 700; color: var(--navy); }
+    .ivy-full { font-size: .8rem; color: var(--gray); }
+
+    /* ── Footer ────────────────────────────────────────── */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,.75);
+      text-align: center;
+      padding: 20px 24px;
+      font-size: .83rem;
+    }
+    footer a { color: var(--gold); }
+    footer strong { color: var(--white); }
+  </style>
+</head>
+
+<body>
+
+<!-- ═══════════════════════ HEADER ═══════════════════════ -->
+<header>
+  <div class="header-inner">
+    <h1>CSE 4345 &mdash; Big Data Analytics</h1>
+    <p class="subtitle">Department of Computer Science &amp; Engineering &bull; Premier University, Chittagong</p>
+    <div class="header-meta">
+      <span class="meta-pill">&#128197; Semester 2026</span>
+      <span class="meta-pill">&#128218; 3 Credit Hours</span>
+      <span class="meta-pill">&#9654; Pre-requisite: CSE 2221 (DBMS)</span>
+      <span class="meta-pill">&#128231; <a href="mailto:rufaruqui@cu.ac.bd" style="color:var(--gold)">rufaruqui@cu.ac.bd</a></span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════ NAV ══════════════════════════ -->
+<nav>
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#schedule">Lectures</a></li>
+    <li><a href="#textbooks">Textbooks</a></li>
+    <li><a href="#papers">Seminal Papers</a></li>
+    <li><a href="#assessment">Assessment</a></li>
+    <li><a href="#resources">Resources</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════════ MAIN ═════════════════════════ -->
+<main>
+
+  <!-- ── Overview & CLOs ─────────────────────────────── -->
+  <section id="overview">
+    <h2 class="section-title">Course Overview</h2>
+    <div class="info-grid">
+
+      <div class="card">
+        <h3>Course Learning Outcomes (CLOs)</h3>
+        <table class="clo-table">
+          <thead>
+            <tr><th>CLO</th><th>Statement</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="clo-badge">CLO 1</span></td>
+              <td>Understand big data characteristics</td>
+            </tr>
+            <tr>
+              <td><span class="clo-badge">CLO 2</span></td>
+              <td>Analyze the existing challenges in big data</td>
+            </tr>
+            <tr>
+              <td><span class="clo-badge">CLO 3</span></td>
+              <td>Explain the importance and performance of different big data techniques and tools</td>
+            </tr>
+            <tr>
+              <td><span class="clo-badge">CLO 4</span></td>
+              <td>Utilize the knowledge to solve problems and build own project</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>About This Course</h3>
+        <p style="margin-bottom:10px;font-size:.9rem;">
+          An OBE-structured 11-week course covering the full Big Data stack — from the distributed
+          file system foundations (HDFS, GFS) through batch and stream processing (MapReduce, Spark,
+          Kafka), SQL-on-Hadoop (Hive, Presto), visualization, and real-world application domains
+          (social media analytics, time-series forecasting, healthcare informatics).
+        </p>
+        <p style="font-size:.9rem;">
+          Benchmarked against
+          <strong>Stanford CS246</strong>, <strong>Harvard CS265</strong>,
+          <strong>MIT 6.830</strong>, and <strong>CMU 15-721</strong>.
+          Every week has two Beamer lecture decks: Part&nbsp;1 (core content &amp; assessment)
+          and Part&nbsp;2 (seminal paper deep-dive &amp; industry case study).
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Lecture Schedule ─────────────────────────────── -->
+  <section id="schedule">
+    <h2 class="section-title">Lecture Schedule &amp; Slides</h2>
+    <p style="margin-bottom:14px;font-size:.88rem;color:var(--gray);">
+      Each week has <strong>Part 1</strong> (core content, assessment) and
+      <strong>Part 2</strong> (seminal paper + industry case study).
+      Click the buttons to open the PDF slides.
+    </p>
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th>Week</th>
+          <th>Topic</th>
+          <th>CLO</th>
+          <th>Slides</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td class="week-num">Week 1</td>
+          <td>Digital Data Landscape, Introduction to Big Data &amp; the 3Vs Framework</td>
+          <td><span class="clo-tag">CLO1</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"      href="lectures/W01_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="lectures/W01_Part2.pdf" target="_blank">&#128196; Part 2</a>
+              <a class="btn-slide notes" href="lectures/W01_Notes.pdf" target="_blank">&#128221; Notes</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 2</td>
+          <td>Challenges of Big Data &mdash; Extraction, Integration &amp; Heterogeneous Information</td>
+          <td><span class="clo-tag">CLO2</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"      href="lectures/W02_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="lectures/W02_Part2.pdf" target="_blank">&#128196; Part 2</a>
+              <a class="btn-slide notes" href="lectures/W02_Notes.pdf" target="_blank">&#128221; Notes</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 3</td>
+          <td>The Big Data Ecosystem &mdash; HDFS, Hadoop &amp; the Distributed Storage Foundation</td>
+          <td><span class="clo-tag">CLO1</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"      href="lectures/W03_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="lectures/W03_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 4</td>
+          <td>Key-Value Paradigm &mdash; MapReduce, Pig, Hive &amp; HBase</td>
+          <td><span class="clo-tag">CLO1</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"      href="lectures/W04_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="lectures/W04_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 5</td>
+          <td>Handling Big Data Files in Hadoop &mdash; YARN, File Formats &amp; Optimization</td>
+          <td><span class="clo-tag">CLO3</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"      href="lectures/W05_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="lectures/W05_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 6</td>
+          <td>MapReduce Deep Dive &amp; Apache Spark &mdash; RDDs, DataFrames &amp; In-Memory Computing</td>
+          <td><span class="clo-tag">CLO3</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"      href="lectures/W06_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="lectures/W06_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 7</td>
+          <td>Querying Big Data &mdash; Hive, HiveQL &amp; the SQL-on-Hadoop Ecosystem</td>
+          <td><span class="clo-tag">CLO3</span> <span class="clo-tag">CLO4</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"      href="lectures/W07_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="lectures/W07_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 8</td>
+          <td>Data Integration at Scale &mdash; Kafka, Pipelines &amp; Lambda/Kappa Architectures</td>
+          <td><span class="clo-tag">CLO3</span> <span class="clo-tag">CLO4</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"      href="lectures/W08_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="lectures/W08_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 9</td>
+          <td>Data Visualization &mdash; Principles, Techniques &amp; Big Data Visualization Tools</td>
+          <td><span class="clo-tag">CLO3</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"      href="lectures/W09_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="lectures/W09_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 10</td>
+          <td>Big Data in Real Applications &mdash; Social Media, Time Series &amp; Health Data</td>
+          <td><span class="clo-tag">CLO4</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"      href="lectures/W10_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="lectures/W10_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 11</td>
+          <td>Next Steps &mdash; Lakehouse, Data Mesh, MLOps &amp; Emerging Trends</td>
+          <td><span class="clo-tag">CLO4</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"      href="lectures/W11_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="lectures/W11_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── Textbooks ────────────────────────────────────── -->
+  <section id="textbooks">
+    <h2 class="section-title">Textbooks &amp; Core References</h2>
+    <div class="books-grid">
+
+      <div class="book-card">
+        <span class="book-code">[TW]</span>
+        <p class="book-title">Hadoop: The Definitive Guide, 4th ed.</p>
+        <p class="book-author">Tom White &bull; O'Reilly Media, 2015</p>
+      </div>
+
+      <div class="book-card">
+        <span class="book-code">[SA]</span>
+        <p class="book-title">Big Data and Analytics</p>
+        <p class="book-author">Seema Acharya &amp; Subhashini Chellappan &bull; Wiley, 2015</p>
+      </div>
+
+      <div class="book-card">
+        <span class="book-code">[TE]</span>
+        <p class="book-title">Big Data Fundamentals</p>
+        <p class="book-author">Thomas Erl, Wajid Khattak &amp; Paul Buhler &bull; Prentice Hall, 2016</p>
+      </div>
+
+      <div class="book-card">
+        <span class="book-code">[LRU]</span>
+        <p class="book-title">Mining of Massive Datasets, 3rd ed.</p>
+        <p class="book-author">Leskovec, Rajaraman &amp; Ullman &bull; Cambridge UP, 2020</p>
+        <a class="book-link" href="http://www.mmds.org/" target="_blank">Free PDF &rarr;</a>
+      </div>
+
+      <div class="book-card">
+        <span class="book-code">[MMS]</span>
+        <p class="book-title">Big Data: A Revolution That Will Transform How We Live, Work, and Think</p>
+        <p class="book-author">Viktor Mayer-Sch&ouml;nberger &amp; Kenneth Cukier &bull; Houghton Mifflin, 2013</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Seminal Papers ────────────────────────────────── -->
+  <section id="papers">
+    <h2 class="section-title">Seminal Papers Covered</h2>
+    <ul class="papers-list">
+
+      <li>
+        <span class="paper-year">2001</span>
+        <div class="paper-info">
+          <p class="paper-title">3D Data Management: Controlling Data Volume, Velocity and Variety</p>
+          <p class="paper-ref">Doug Laney &bull; META Group Research Note
+            <span class="paper-week">Week 1</span></p>
+          <a class="btn-pdf" href="https://diegonogare.net/wp-content/uploads/2020/08/3D-Data-Management-Controlling-Data-Volume-Velocity-and-Variety.pdf" target="_blank">&#8595; PDF</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2003</span>
+        <div class="paper-info">
+          <p class="paper-title">The Google File System</p>
+          <p class="paper-ref">Ghemawat, Gobioff &amp; Leung &bull; ACM SOSP 2003
+            <span class="paper-week">Week 3</span></p>
+          <a class="btn-pdf" href="https://static.googleusercontent.com/media/research.google.com/en//archive/gfs-sosp2003.pdf" target="_blank">&#8595; PDF (Google Research)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2004</span>
+        <div class="paper-info">
+          <p class="paper-title">MapReduce: Simplified Data Processing on Large Clusters</p>
+          <p class="paper-ref">Dean &amp; Ghemawat &bull; USENIX OSDI 2004 &bull; 20,000+ citations
+            <span class="paper-week">Weeks 4, 6</span></p>
+          <a class="btn-pdf" href="https://static.googleusercontent.com/media/research.google.com/en/us/archive/mapreduce-osdi04.pdf" target="_blank">&#8595; PDF (Google Research)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2006</span>
+        <div class="paper-info">
+          <p class="paper-title">Bigtable: A Distributed Storage System for Structured Data</p>
+          <p class="paper-ref">Chang et al. &bull; USENIX OSDI 2006
+            <span class="paper-week">Week 4</span></p>
+          <a class="btn-pdf" href="https://static.googleusercontent.com/media/research.google.com/en//archive/bigtable-osdi06.pdf" target="_blank">&#8595; PDF (Google Research)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2006</span>
+        <div class="paper-info">
+          <p class="paper-title">Data Integration: The Teenage Years</p>
+          <p class="paper-ref">Halevy, Rajaraman &amp; Ordille &bull; VLDB 2006
+            <span class="paper-week">Week 2</span></p>
+          <a class="btn-pdf" href="https://www.vldb.org/conf/2006/p9-halevy.pdf" target="_blank">&#8595; PDF (VLDB)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2009</span>
+        <div class="paper-info">
+          <p class="paper-title">Hive &mdash; A Warehousing Solution Over a Map-Reduce Framework</p>
+          <p class="paper-ref">Thusoo et al. &bull; PVLDB 2009 &bull; ICDE 2010
+            <span class="paper-week">Week 7</span></p>
+          <a class="btn-pdf" href="https://www.vldb.org/pvldb/vol2/vldb09-938.pdf" target="_blank">&#8595; PDF (PVLDB)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2010</span>
+        <div class="paper-info">
+          <p class="paper-title">Spark: Cluster Computing with Working Sets</p>
+          <p class="paper-ref">Zaharia et al. &bull; USENIX HotCloud 2010 + NSDI 2012 (RDDs)
+            <span class="paper-week">Week 6</span></p>
+          <a class="btn-pdf" href="https://www.usenix.org/legacy/event/hotcloud10/tech/full_papers/Zaharia.pdf" target="_blank">&#8595; PDF &mdash; HotCloud&rsquo;10</a>
+          <a class="btn-pdf" href="https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf" target="_blank">&#8595; PDF &mdash; RDDs (NSDI&rsquo;12)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2010</span>
+        <div class="paper-info">
+          <p class="paper-title">What is Twitter, a Social Network or a News Media?</p>
+          <p class="paper-ref">Kwak, Lee, Park &amp; Moon &bull; ACM WWW 2010 &bull; 7,000+ citations
+            <span class="paper-week">Week 10</span></p>
+          <a class="btn-pdf" href="https://snap.stanford.edu/class/cs224w-readings/kwak10twitter.pdf" target="_blank">&#8595; PDF (Stanford CS224W)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2011</span>
+        <div class="paper-info">
+          <p class="paper-title">Kafka: A Distributed Messaging System for Log Aggregation</p>
+          <p class="paper-ref">Kreps, Narkhede &amp; Rao &bull; NetDB Workshop 2011
+            <span class="paper-week">Week 8</span></p>
+          <a class="btn-pdf" href="https://notes.stephenholiday.com/Kafka.pdf" target="_blank">&#8595; PDF</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">1983</span>
+        <div class="paper-info">
+          <p class="paper-title">The Visual Display of Quantitative Information</p>
+          <p class="paper-ref">Edward Tufte &bull; Graphics Press, 1983
+            <span class="paper-week">Week 9</span></p>
+          <span class="btn-pdf-book">&#128218; Book &mdash; no free PDF; available in print/library</span>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">1996</span>
+        <div class="paper-info">
+          <p class="paper-title">The Eyes Have It: A Task by Data Type Taxonomy for Information Visualizations</p>
+          <p class="paper-ref">Ben Shneiderman &bull; IEEE Visual Languages 1996
+            <span class="paper-week">Week 9</span></p>
+          <a class="btn-pdf" href="https://hci.stanford.edu/courses/cs448b/papers/shneiderman96eyes.pdf" target="_blank">&#8595; PDF (Stanford HCI)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2013</span>
+        <div class="paper-info">
+          <p class="paper-title">Apache Hadoop YARN: Yet Another Resource Negotiator</p>
+          <p class="paper-ref">Vavilapalli et al. &bull; ACM SoCC 2013
+            <span class="paper-week">Week 5</span></p>
+          <a class="btn-pdf" href="https://www.cse.ust.hk/~weiwa/teaching/Fall15-COMP6611B/reading_list/YARN.pdf" target="_blank">&#8595; PDF (HKUST)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2015</span>
+        <div class="paper-info">
+          <p class="paper-title">The Dataflow Model: Correctness, Latency, and Cost in Massive-Scale Unbounded Data Processing</p>
+          <p class="paper-ref">Akidau et al. &bull; PVLDB 2015
+            <span class="paper-week">Week 11</span></p>
+          <a class="btn-pdf" href="https://www.vldb.org/pvldb/vol8/p1792-Akidau.pdf" target="_blank">&#8595; PDF (PVLDB)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2018</span>
+        <div class="paper-info">
+          <p class="paper-title">Forecasting at Scale (Prophet)</p>
+          <p class="paper-ref">Taylor &amp; Letham &bull; The American Statistician 72(1), 2018
+            <span class="paper-week">Week 10</span></p>
+          <a class="btn-pdf" href="https://peerj.com/preprints/3190.pdf" target="_blank">&#8595; PDF (PeerJ Preprint)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2020</span>
+        <div class="paper-info">
+          <p class="paper-title">Delta Lake: High-Performance ACID Table Storage over Cloud Object Stores</p>
+          <p class="paper-ref">Armbrust et al. &bull; PVLDB 2020
+            <span class="paper-week">Week 11</span></p>
+          <a class="btn-pdf" href="https://www.vldb.org/pvldb/vol13/p3411-armbrust.pdf" target="_blank">&#8595; PDF (PVLDB)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2021</span>
+        <div class="paper-info">
+          <p class="paper-title">Lakehouse: A New Generation of Open Platforms That Unify Data Warehousing and Advanced Analytics</p>
+          <p class="paper-ref">Zaharia et al. &bull; CIDR 2021
+            <span class="paper-week">Week 11</span></p>
+          <a class="btn-pdf" href="https://www.cidrdb.org/cidr2021/papers/cidr2021_paper17.pdf" target="_blank">&#8595; PDF (CIDR)</a>
+        </div>
+      </li>
+
+    </ul>
+  </section>
+
+  <!-- ── Assessment ────────────────────────────────────── -->
+  <section id="assessment">
+    <h2 class="section-title">Assessment Weightage (OBE Aligned)</h2>
+    <div class="card" style="padding:0;overflow:hidden;">
+      <table class="assess-table">
+        <thead>
+          <tr><th>Component</th><th>Weight</th><th>CLOs Assessed</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Written Tests / Quizzes (3&times;)</td>
+            <td>20% <span class="weight-bar" style="width:40px;"></span></td>
+            <td>CLO1, CLO2</td>
+          </tr>
+          <tr>
+            <td>Mid-Term Examination</td>
+            <td>25% <span class="weight-bar" style="width:50px;"></span></td>
+            <td>CLO1, CLO2, CLO3</td>
+          </tr>
+          <tr>
+            <td>Final Examination</td>
+            <td>30% <span class="weight-bar" style="width:60px;"></span></td>
+            <td>CLO1, CLO2, CLO3, CLO4</td>
+          </tr>
+          <tr>
+            <td>Lab Reports / Assignments</td>
+            <td>10% <span class="weight-bar" style="width:20px;"></span></td>
+            <td>CLO3</td>
+          </tr>
+          <tr>
+            <td>Final Project + Exhibition</td>
+            <td>10% <span class="weight-bar" style="width:20px;"></span></td>
+            <td>CLO4</td>
+          </tr>
+          <tr>
+            <td>Final Viva / Oral Exam</td>
+            <td>5% <span class="weight-bar" style="width:10px;"></span></td>
+            <td>CLO4</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── Online Resources ──────────────────────────────── -->
+  <section id="resources">
+    <h2 class="section-title">Online Learning Resources</h2>
+
+    <div style="margin-bottom:20px;">
+      <h3 style="font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:12px;">
+        Ivy League Benchmark Courses
+      </h3>
+      <ul class="ivy-list">
+        <li>
+          <p class="ivy-name">Stanford CS246</p>
+          <p class="ivy-full">Mining Massive Datasets</p>
+        </li>
+        <li>
+          <p class="ivy-name">Harvard CS265</p>
+          <p class="ivy-full">Big Data Systems</p>
+        </li>
+        <li>
+          <p class="ivy-name">MIT 6.830 / 6.S897</p>
+          <p class="ivy-full">Database Systems &amp; ML for Healthcare</p>
+        </li>
+        <li>
+          <p class="ivy-name">CMU 15-721</p>
+          <p class="ivy-full">Advanced Database Systems</p>
+        </li>
+        <li>
+          <p class="ivy-name">Columbia COMS 4995</p>
+          <p class="ivy-full">Big Data Analytics</p>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 style="font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:12px;">
+        Recommended Free Courses &amp; Materials
+      </h3>
+      <div class="books-grid">
+        <div class="book-card" style="border-left-color:var(--teal);">
+          <p class="book-title">Mining Massive Datasets (CS246)</p>
+          <p class="book-author">Stanford Online &bull; Weeks 1, 4, 10</p>
+          <a class="book-link" href="http://www.mmds.org/" target="_blank" style="border-color:var(--teal);color:var(--teal);">Free textbook &rarr;</a>
+        </div>
+        <div class="book-card" style="border-left-color:var(--teal);">
+          <p class="book-title">Big Data Specialization</p>
+          <p class="book-author">Coursera (UC San Diego) &bull; Weeks 3&ndash;7</p>
+        </div>
+        <div class="book-card" style="border-left-color:var(--teal);">
+          <p class="book-title">Data Engineering with Google Cloud</p>
+          <p class="book-author">Coursera (Google) &bull; Weeks 5, 8, 11</p>
+        </div>
+        <div class="book-card" style="border-left-color:var(--teal);">
+          <p class="book-title">Apache Spark with Python (PySpark)</p>
+          <p class="book-author">DataCamp &bull; Week 6</p>
+        </div>
+        <div class="book-card" style="border-left-color:var(--teal);">
+          <p class="book-title">Visualization with D3.js</p>
+          <p class="book-author">Observable / YouTube &bull; Week 9</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════════════ FOOTER ════════════════════════ -->
+<footer>
+  <p>
+    <strong>CSE 4345 &mdash; Big Data Analytics</strong><br />
+    Department of Computer Science &amp; Engineering &bull;
+    Premier University, Chittagong, Bangladesh<br />
+    Instructor: <a href="mailto:rufaruqui@cu.ac.bd">rufaruqui@cu.ac.bd</a>
+  </p>
+</footer>
+
+</body>
+</html>
