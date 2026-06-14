@@ -1,0 +1,15 @@
+rm -rf **/*.toc
+rm -rf **/*.out
+rm -rf **/*.aux
+rm -rf **/*.bbl
+rm -rf **/*.bcf
+rm -rf **/*.blg
+rm -rf **/*.fdb*
+rm -rf **/*.log
+rm -rf **/*.fls
+rm -rf **/*.run*
+rm -rf **/*.synctex*
+rm -rf **/*.synctex.*
+rm -rf **/*.snm
+rm -rf **/*.vrb
+rm -rf **/*.nav
