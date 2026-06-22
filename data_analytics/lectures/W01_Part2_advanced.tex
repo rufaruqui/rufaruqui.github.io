@@ -84,7 +84,7 @@
 
 %---------- Title metadata ----------
 \title[CSE 4345 \textbar{} Week 1, Part 2]{CSE 4345: Big Data Analytics}
-\subtitle{Week 1, Part 2 \textemdash\  Research Articles \& Case Study}
+\subtitle{Week 1, Part 2 \textemdash\ Seminal Research \& Case Study}
 \author[Dept.\ of CSE]{{\sc Rokan Uddin Faruqui} \\ Professor \\ Department of Computer Science \& Engineering\\[4pt]
        \small University of Chittagong, Chittagong}
 \institute{}
@@ -116,8 +116,8 @@
       \begin{exampleblock}{Seminal Papers Covered}
         \begin{enumerate}
           \item Laney, D. (2001). \textit{3D Data Management}. META Group.
-          % \item Brewer, E. (2000). \textit{Towards Robust Distributed Systems}. PODC.
-          % \item Gilbert \& Lynch (2002). \textit{Brewer's Conjecture}. ACM SIGACT.
+          \item Brewer, E. (2000). \textit{Towards Robust Distributed Systems}. PODC.
+          \item Gilbert \& Lynch (2002). \textit{Brewer's Conjecture}. ACM SIGACT.
         \end{enumerate}
       \end{exampleblock}
       \vspace{6pt}
@@ -136,59 +136,60 @@
 \section{Research Paper 1 — Laney (2001): The 3Vs Origin}
 %================================================================
 
-% \begin{frame}{Research Landscape: Why These Papers?}
-%   \begin{center}
-%   \begin{tikzpicture}[
-%       node/.style={rectangle, rounded corners=3pt, minimum width=3.5cm,
-%                    minimum height=0.9cm, text width=3.3cm, align=center,
-%                    font=\scriptsize\bfseries},
-%       arr/.style={-{Stealth[length=5pt]}, PUNavy, thick}
-%     ]
-%     % Timeline spine
-%     \draw[PUNavy!40, very thick] (0,0) -- (11,0);
+\begin{frame}{Research Landscape: Why These Papers?}
+  \begin{center}
+  \begin{tikzpicture}[
+      node/.style={rectangle, rounded corners=3pt, minimum width=3.5cm,
+                   minimum height=0.9cm, text width=3.3cm, align=center,
+                   font=\scriptsize\bfseries},
+      arr/.style={-{Stealth[length=5pt]}, PUNavy, thick}
+    ]
+    % Timeline spine
+    \draw[PUNavy!40, very thick] (0,0) -- (11,0);
 
-%     % Papers
-%     \node[node, fill=PUGold!70!black, text=white]  (L) at (1.8,1.2)
-%           {Laney\\(2001)\\3Vs coined};
-%     \node[node, fill=PUNavy,           text=white]  (B) at (5.0,1.2)
-%           {Brewer\\(2000/2002)\\CAP Theorem};
-%     \node[node, fill=PUTeal,           text=white]  (GFS) at (7.5,1.2)
-%           {Ghemawat et al.\\(2003)\\Google File System};
-%     \node[node, fill=PURed!80,         text=white]  (MR) at (10.0,1.2)
-%           {Dean \&\\Ghemawat\\(2004) MapReduce};
+    % Papers
+    \node[node, fill=PUGold!70!black, text=white]  (L) at (1.8,1.2)
+          {Laney\\(2001)\\3Vs coined};
+    \node[node, fill=PUNavy,           text=white]  (B) at (5.0,1.2)
+          {Brewer\\(2000/2002)\\CAP Theorem};
+    \node[node, fill=PUTeal,           text=white]  (GFS) at (7.5,1.2)
+          {Ghemawat et al.\\(2003)\\Google File System};
+    \node[node, fill=PURed!80,         text=white]  (MR) at (10.0,1.2)
+          {Dean \&\\Ghemawat\\(2004) MapReduce};
 
-%     % Year ticks
-%     \foreach \x/\y in {1.8/2001, 5.0/2000, 7.5/2003, 10.0/2004}{
-%       \draw[PUNavy!50] (\x,0.1) -- (\x,-0.1);
-%       \node[font=\tiny, PUGray] at (\x,-0.35) {\y};
-%     }
+    % Year ticks
+    \foreach \x/\y in {1.8/2001, 5.0/2000, 7.5/2003, 10.0/2004}{
+      \draw[PUNavy!50] (\x,0.1) -- (\x,-0.1);
+      \node[font=\tiny, PUGray] at (\x,-0.35) {\y};
+    }
 
-%     % Arrows from papers to spine
-%     \draw[arr] (L)   -- (1.8,0.12);
-%     \draw[arr] (B)   -- (5.0,0.12);
-%     \draw[arr] (GFS) -- (7.5,0.12);
-%     \draw[arr] (MR)  -- (10.0,0.12);
+    % Arrows from papers to spine
+    \draw[arr] (L)   -- (1.8,0.12);
+    \draw[arr] (B)   -- (5.0,0.12);
+    \draw[arr] (GFS) -- (7.5,0.12);
+    \draw[arr] (MR)  -- (10.0,0.12);
 
-%     % Week labels
-%     \node[font=\tiny\itshape, text=PUGold!80!black] at (1.8,-0.75)
-%           {\textbf{This week}};
-%     \node[font=\tiny\itshape, text=PUNavy]           at (5.0,-0.75)
-%           {\textbf{This week}};
-%     \node[font=\tiny\itshape, text=PUGray]            at (7.5,-0.75)
-%           {Week 3};
-%     \node[font=\tiny\itshape, text=PUGray]            at (10.0,-0.75)
-%           {Week 4};
-%   \end{tikzpicture}
-%   \end{center}
-%   \vspace{6pt}
-%   \begin{alertblock}{Reading Sequence}
-%     Laney (2001) defines \emph{what} Big Data is $\;\to\;$ Brewer/Gilbert (2000–2002) defines \emph{why} distributed design is hard $\;\to\;$ GFS (2003) and MapReduce (2004) provide the \emph{engineering solutions}.  This course follows that exact intellectual lineage.
-%   \end{alertblock}
-% \end{frame}
+    % Week labels
+    \node[font=\tiny\itshape, text=PUGold!80!black] at (1.8,-0.75)
+          {\textbf{This week}};
+    \node[font=\tiny\itshape, text=PUNavy]           at (5.0,-0.75)
+          {\textbf{This week}};
+    \node[font=\tiny\itshape, text=PUGray]            at (7.5,-0.75)
+          {Week 3};
+    \node[font=\tiny\itshape, text=PUGray]            at (10.0,-0.75)
+          {Week 4};
+  \end{tikzpicture}
+  \end{center}
+  \vspace{6pt}
+  \begin{alertblock}{Reading Sequence}
+    Laney (2001) defines \emph{what} Big Data is $\;\to\;$ Brewer/Gilbert (2000–2002) defines \emph{why} distributed design is hard $\;\to\;$ GFS (2003) and MapReduce (2004) provide the \emph{engineering solutions}.  This course follows that exact intellectual lineage.
+  \end{alertblock}
+\end{frame}
 
 %----------------------------------------------------------------
 \begin{frame}{Laney (2001): Publication Context}
- 
+  \begin{columns}[T]
+    \column{0.53\textwidth}
       \begin{paperbox}{Full Citation}
         Laney, D. (2001, February 6). \textbf{3D Data Management: Controlling Data Volume, Velocity and Variety.} META Group Application Delivery Strategies Research Note, File 949.\\[6pt]
         \textbf{Venue:} META Group analyst memo (2 pages)\\
@@ -200,11 +201,7 @@
         Doug Laney was a research analyst at META Group (later acquired by Gartner in 2005).  He wrote this as a short practitioner note about \textbf{e-commerce data management challenges}\textemdash not a formal academic paper.
       \end{exampleblock}
 
-    
-\end{frame}
-
-\begin{frame}{Laney (2001): Publication Context}
-  
+    \column{0.44\textwidth}
       \begin{alertblock}{Laney's Own Reflection (2012 Interview)}
         \textit{``It was sort of a throwaway piece.  I had been thinking about the data challenges at e-commerce companies and wrote down three dimensions.  I never expected it to become the definition of an entire era of computing.''}\\
         \hfill\textemdash\,Doug Laney, Gartner Blog, 2012
@@ -213,12 +210,13 @@
       \begin{block}{Why Study a 2-page Memo?}
         It illustrates that \textbf{foundational frameworks} need not come from prestigious venues.  The quality of the \emph{insight} matters more than the journal.  This is a recurring theme in Big Data research.
       \end{block}
- 
+  \end{columns}
 \end{frame}
 
 %----------------------------------------------------------------
 \begin{frame}{Laney (2001): The Original 3Vs\textemdash Close Reading}
- 
+  \begin{columns}[T]
+    \column{0.52\textwidth}
       \begin{paperbox}{Opening Argument (Paraphrased)}
         \textit{``E-commerce has exploded the volume, velocity and variety of information that companies must manage.  Retailers and their trading partners face the challenge of managing large, fast-moving and diverse data from the Web, RFID, point-of-sale sensors and order entry systems.''}
       \end{paperbox}
@@ -230,11 +228,7 @@
         \item \textbf{Variety:} Data arriving in \textbf{many formats}\textemdash structured purchase records, semi-structured web logs, unstructured customer reviews.
       \end{itemize}
 
-     
-\end{frame}
-
-\begin{frame}{Laney (2001): The Original 3Vs\textemdash Close Reading}
-   
+    \column{0.45\textwidth}
       \begin{alertblock}{The Insight That Made This Seminal}
         Laney was the first to observe that these three dimensions are \textbf{interdependent and compound}:
         \vspace{4pt}
@@ -246,15 +240,18 @@
         \vspace{4pt}
         This \textbf{3D problem space} is why no single traditional tool solves Big Data\textemdash you need an \emph{ecosystem}.
       \end{alertblock}
- 
+  \end{columns}
 \end{frame}
+
 %----------------------------------------------------------------
 \begin{frame}{Laney (2001): The E-Commerce Motivation}
+  \begin{columns}[T]
+    \column{0.52\textwidth}
       \textbf{The year is 2001.  The dot-com boom has just ended.  What data problems were practitioners actually facing?}
       \vspace{8pt}
       \begin{block}{Laney's Observed Challenges}
         \renewcommand{\arraystretch}{1.3}
-        \begin{tabular}{p{1.8cm}p{12.2cm}}
+        \begin{tabular}{p{1.8cm}p{4.2cm}}
           \toprule
           \textbf{Dimension} & \textbf{Observed Problem (2001)} \\
           \midrule
@@ -265,11 +262,7 @@
         \end{tabular}
       \end{block}
 
-    
-\end{frame}
-
-\begin{frame}{Laney (2001): The E-Commerce Motivation}
-   
+    \column{0.45\textwidth}
       \begin{exampleblock}{2024 Parallel: Same Problem, 1{,}000$\times$ Scale}
         \begin{itemize}
           \item \textbf{Volume (2024):} Amazon: $>$1.6 million orders per day; petabytes of product images, reviews, fulfillment data
@@ -281,12 +274,13 @@
       \begin{alertblock}{The Enduring Relevance}
         Laney's 3Vs from 2001 describe a problem that has only \textbf{grown more severe}. The framework is still the standard taxonomy in every major cloud provider's documentation (AWS, GCP, Azure) in 2024.
       \end{alertblock}
- 
+  \end{columns}
 \end{frame}
 
 %----------------------------------------------------------------
 \begin{frame}{Laney (2001): Legacy, Extensions, and Critique}
- 
+  \begin{columns}[T]
+    \column{0.50\textwidth}
       \textbf{What the paper triggered:}
       \begin{itemize}
         \item Gartner adopted 3Vs as official Big Data definition (2012)
@@ -308,10 +302,7 @@
         \end{tabular}
       \end{exampleblock}
 
-\end{frame}
-
-\begin{frame}{Laney (2001): Legacy, Extensions, and Critique}
-  
+    \column{0.47\textwidth}
       \begin{alertblock}{Academic Critique of the 3Vs}
         The 3Vs are a \textbf{useful taxonomy}, not a formal theory:
         \vspace{4pt}
@@ -328,168 +319,170 @@
       \begin{block}{Takeaway for Practitioners}
         Use the 3Vs to \textbf{diagnose} problems.  Do not use them to \textbf{justify} adding technology without understanding the specific business value (V5).
       \end{block}
- 
+  \end{columns}
 \end{frame}
-% %================================================================
-% \section{Research Paper 2 — Brewer (2000) \& Gilbert \& Lynch (2002): CAP Theorem}
-% %================================================================
 
-% \begin{frame}{Brewer (2000): The CAP Conjecture}
-%   \begin{columns}[T]
-%     \column{0.52\textwidth}
-%       \begin{paperbox}{Full Citations}
-%         \textbf{[1]} Brewer, E.\ A.\ (2000). \textbf{Towards Robust Distributed Systems.} Invited Keynote, ACM Symposium on Principles of Distributed Computing (PODC), Portland, Oregon.\\[8pt]
-%         \textbf{[2]} Gilbert, S.\ \& Lynch, N.\ (2002). \textbf{Brewer's Conjecture and the Feasibility of Consistent, Available, Partition-Tolerant Web Services.} ACM SIGACT News, 33(2), 51--59.
-%       \end{paperbox}
-%       \vspace{6pt}
-%       \begin{block}{About the Authors}
-%         \textbf{Eric Brewer}: UC Berkeley professor; co-founder of Inktomi (early web search engine), VP of Infrastructure at Google.  His \emph{practitioner} instincts drove the conjecture.\\[4pt]
-%         \textbf{Seth Gilbert \& Nancy Lynch}: MIT theoreticians who \emph{formally proved} Brewer's conjecture 2 years later.
-%       \end{block}
+%================================================================
+\section{Research Paper 2 — Brewer (2000) \& Gilbert \& Lynch (2002): CAP Theorem}
+%================================================================
 
-%     \column{0.45\textwidth}
-%       \begin{alertblock}{The Conjecture (Brewer, 2000)}
-%         \textit{``It is impossible for a web service to simultaneously provide all three of the following guarantees:}
-%         \begin{itemize}
-%           \item \textit{\textbf{Consistency}: all nodes see the same data at the same time;}
-%           \item \textit{\textbf{Availability}: a guarantee that every request receives a response;}
-%           \item \textit{\textbf{Partition tolerance}: the system continues to operate despite arbitrary message loss or failure of part of the system.''}
-%         \end{itemize}
-%         \hfill\textemdash\,Brewer, PODC 2000 Keynote
-%       \end{alertblock}
-%   \end{columns}
-% \end{frame}
+\begin{frame}{Brewer (2000): The CAP Conjecture}
+  \begin{columns}[T]
+    \column{0.52\textwidth}
+      \begin{paperbox}{Full Citations}
+        \textbf{[1]} Brewer, E.\ A.\ (2000). \textbf{Towards Robust Distributed Systems.} Invited Keynote, ACM Symposium on Principles of Distributed Computing (PODC), Portland, Oregon.\\[8pt]
+        \textbf{[2]} Gilbert, S.\ \& Lynch, N.\ (2002). \textbf{Brewer's Conjecture and the Feasibility of Consistent, Available, Partition-Tolerant Web Services.} ACM SIGACT News, 33(2), 51--59.
+      \end{paperbox}
+      \vspace{6pt}
+      \begin{block}{About the Authors}
+        \textbf{Eric Brewer}: UC Berkeley professor; co-founder of Inktomi (early web search engine), VP of Infrastructure at Google.  His \emph{practitioner} instincts drove the conjecture.\\[4pt]
+        \textbf{Seth Gilbert \& Nancy Lynch}: MIT theoreticians who \emph{formally proved} Brewer's conjecture 2 years later.
+      \end{block}
 
-% %----------------------------------------------------------------
-% \begin{frame}{Gilbert \& Lynch (2002): The Formal Proof}
-%   \begin{columns}[T]
-%     \column{0.52\textwidth}
-%       \begin{block}{Proof Strategy: Contradiction}
-%         Gilbert \& Lynch used an \textbf{impossibility argument}:
-%         \vspace{4pt}
-%         \begin{enumerate}
-%           \item Assume a system guarantees C, A, and P simultaneously.
-%           \item Construct a scenario with a network partition: Node 1 and Node 2 cannot communicate.
-%           \item A write $w$ is sent to Node 1.  A read $r$ is sent to Node 2.
-%           \item \textbf{Availability} requires Node 2 to respond to $r$.
-%           \item \textbf{Consistency} requires Node 2's response to reflect $w$.
-%           \item But \textbf{Partition tolerance} means Node 2 cannot receive $w$ from Node 1.
-%           \item \textbf{Contradiction} $\Rightarrow$ C, A, P cannot all hold simultaneously. \hfill\textbf{QED}
-%         \end{enumerate}
-%       \end{block}
+    \column{0.45\textwidth}
+      \begin{alertblock}{The Conjecture (Brewer, 2000)}
+        \textit{``It is impossible for a web service to simultaneously provide all three of the following guarantees:}
+        \begin{itemize}
+          \item \textit{\textbf{Consistency}: all nodes see the same data at the same time;}
+          \item \textit{\textbf{Availability}: a guarantee that every request receives a response;}
+          \item \textit{\textbf{Partition tolerance}: the system continues to operate despite arbitrary message loss or failure of part of the system.''}
+        \end{itemize}
+        \hfill\textemdash\,Brewer, PODC 2000 Keynote
+      \end{alertblock}
+  \end{columns}
+\end{frame}
 
-%     \column{0.45\textwidth}
-%       \vspace{4pt}
-%       \begin{center}
-%       \begin{tikzpicture}[scale=0.82,
-%           srv/.style={rectangle, rounded corners=3pt, fill=PUNavy, text=white,
-%                       minimum width=1.8cm, minimum height=0.8cm, font=\scriptsize\bfseries},
-%           msg/.style={-{Stealth[length=4pt]}, thick}
-%         ]
-%         \node[srv] (N1) at (0,0)   {Node 1};
-%         \node[srv] (N2) at (4.5,0) {Node 2};
+%----------------------------------------------------------------
+\begin{frame}{Gilbert \& Lynch (2002): The Formal Proof}
+  \begin{columns}[T]
+    \column{0.52\textwidth}
+      \begin{block}{Proof Strategy: Contradiction}
+        Gilbert \& Lynch used an \textbf{impossibility argument}:
+        \vspace{4pt}
+        \begin{enumerate}
+          \item Assume a system guarantees C, A, and P simultaneously.
+          \item Construct a scenario with a network partition: Node 1 and Node 2 cannot communicate.
+          \item A write $w$ is sent to Node 1.  A read $r$ is sent to Node 2.
+          \item \textbf{Availability} requires Node 2 to respond to $r$.
+          \item \textbf{Consistency} requires Node 2's response to reflect $w$.
+          \item But \textbf{Partition tolerance} means Node 2 cannot receive $w$ from Node 1.
+          \item \textbf{Contradiction} $\Rightarrow$ C, A, P cannot all hold simultaneously. \hfill\textbf{QED}
+        \end{enumerate}
+      \end{block}
 
-%         % Client writes
-%         \draw[msg, PUTeal] (-1.5,0.6) -- node[above,font=\tiny]{write $w$} (N1);
-%         % Client reads
-%         \draw[msg, PUTeal] (6.0,0.6) -- node[above,font=\tiny]{read $r$} (N2);
+    \column{0.45\textwidth}
+      \vspace{4pt}
+      \begin{center}
+      \begin{tikzpicture}[scale=0.82,
+          srv/.style={rectangle, rounded corners=3pt, fill=PUNavy, text=white,
+                      minimum width=1.8cm, minimum height=0.8cm, font=\scriptsize\bfseries},
+          msg/.style={-{Stealth[length=4pt]}, thick}
+        ]
+        \node[srv] (N1) at (0,0)   {Node 1};
+        \node[srv] (N2) at (4.5,0) {Node 2};
 
-%         % Partition
-%         \draw[PURed, very thick, dashed] (2.25,0.55) -- (2.25,-0.55);
-%         \node[font=\tiny\bfseries, PURed] at (2.25,-0.8) {Network Partition};
+        % Client writes
+        \draw[msg, PUTeal] (-1.5,0.6) -- node[above,font=\tiny]{write $w$} (N1);
+        % Client reads
+        \draw[msg, PUTeal] (6.0,0.6) -- node[above,font=\tiny]{read $r$} (N2);
 
-%         % Responses
-%         \draw[msg, PUGreen] (N2) -- node[below,font=\tiny\bfseries]{?? return $w$ ??}(5.8,-0.5);
-%         \node[font=\tiny, PURed, align=center] at (2.25,1.4)
-%               {Cannot propagate\\$w$ to Node 2};
-%       \end{tikzpicture}
-%       \end{center}
-%       \vspace{4pt}
-%       \begin{alertblock}{Design Implication}
-%         Since partitions \textbf{cannot be prevented} in real networks, every distributed system \emph{must} tolerate P.  The only real design choice is: \textbf{C or A} when a partition occurs.
-%       \end{alertblock}
-%   \end{columns}
-% \end{frame}
+        % Partition
+        \draw[PURed, very thick, dashed] (2.25,0.55) -- (2.25,-0.55);
+        \node[font=\tiny\bfseries, PURed] at (2.25,-0.8) {Network Partition};
 
-% %----------------------------------------------------------------
-% \begin{frame}{CAP Theorem: Real System Choices \& Nuances}
-%   \begin{columns}[T]
-%     \column{0.55\textwidth}
-%       \centering
-%       \renewcommand{\arraystretch}{1.45}
-%       \begin{tabular}{p{1.5cm}p{2.8cm}p{2.6cm}}
-%         \toprule
-%         \textbf{Choice} & \textbf{Systems} & \textbf{Trade-off} \\
-%         \midrule
-%         \textbf{CP} & HBase, ZooKeeper, MongoDB (default) & Returns error instead of stale data during partition \\[4pt]
-%         \textbf{AP} & Cassandra, DynamoDB, CouchDB & Returns possibly stale data; reconciles later \\[4pt]
-%         \textbf{CA} & Traditional RDBMS (MySQL, PostgreSQL) & Only works without network partitions (single node) \\
-%         \bottomrule
-%       \end{tabular}
-%       \vspace{8pt}
-%       \begin{exampleblock}{Bangladesh Example: bKash vs.\ Facebook}
-%         \small
-%         \textbf{bKash mobile banking (CP)}: During a network issue, it is better to \emph{reject} a transaction than to process it incorrectly and lose money.\\[4pt]
-%         \textbf{Facebook timeline (AP)}: During a partition, it is acceptable to show a post from 3 seconds ago rather than blocking the page entirely.
-%       \end{exampleblock}
+        % Responses
+        \draw[msg, PUGreen] (N2) -- node[below,font=\tiny\bfseries]{?? return $w$ ??}(5.8,-0.5);
+        \node[font=\tiny, PURed, align=center] at (2.25,1.4)
+              {Cannot propagate\\$w$ to Node 2};
+      \end{tikzpicture}
+      \end{center}
+      \vspace{4pt}
+      \begin{alertblock}{Design Implication}
+        Since partitions \textbf{cannot be prevented} in real networks, every distributed system \emph{must} tolerate P.  The only real design choice is: \textbf{C or A} when a partition occurs.
+      \end{alertblock}
+  \end{columns}
+\end{frame}
 
-%     \column{0.42\textwidth}
-%       \begin{alertblock}{Important Nuance: Kleppmann (2015)}
-%         \textbf{``Please stop calling databases CP or AP''} --- Martin Kleppmann, \textit{A Critique of the CAP Theorem}, arXiv:1509.05393.
-%         \vspace{6pt}
-%         \begin{itemize}
-%           \small
-%           \item CAP's definitions are more nuanced than binary classifications suggest
-%           \item Real systems provide \textbf{tunable consistency} (e.g., Cassandra's consistency levels: ONE, QUORUM, ALL)
-%           \item \textbf{PACELC model} (Abadi, 2012) extends CAP: even without partitions, there is a Latency vs.\ Consistency trade-off
-%           \item CAP is a \textbf{useful mental model}, not a precise engineering specification
-%         \end{itemize}
-%       \end{alertblock}
-%   \end{columns}
-% \end{frame}
+%----------------------------------------------------------------
+\begin{frame}{CAP Theorem: Real System Choices \& Nuances}
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+      \centering
+      \renewcommand{\arraystretch}{1.45}
+      \begin{tabular}{p{1.5cm}p{2.8cm}p{2.6cm}}
+        \toprule
+        \textbf{Choice} & \textbf{Systems} & \textbf{Trade-off} \\
+        \midrule
+        \textbf{CP} & HBase, ZooKeeper, MongoDB (default) & Returns error instead of stale data during partition \\[4pt]
+        \textbf{AP} & Cassandra, DynamoDB, CouchDB & Returns possibly stale data; reconciles later \\[4pt]
+        \textbf{CA} & Traditional RDBMS (MySQL, PostgreSQL) & Only works without network partitions (single node) \\
+        \bottomrule
+      \end{tabular}
+      \vspace{8pt}
+      \begin{exampleblock}{Bangladesh Example: bKash vs.\ Facebook}
+        \small
+        \textbf{bKash mobile banking (CP)}: During a network issue, it is better to \emph{reject} a transaction than to process it incorrectly and lose money.\\[4pt]
+        \textbf{Facebook timeline (AP)}: During a partition, it is acceptable to show a post from 3 seconds ago rather than blocking the page entirely.
+      \end{exampleblock}
 
-% %----------------------------------------------------------------
-% \begin{frame}{Connecting the Papers: From 3Vs to Distributed Design}
-%   \begin{center}
-%   \begin{tikzpicture}[
-%       box/.style={rectangle, rounded corners=4pt, text width=2.6cm,
-%                   minimum height=1.1cm, align=center, font=\small},
-%       arr/.style={-{Stealth[length=6pt]}, PUNavy!70, very thick}
-%     ]
-%     \node[box, fill=PUGold!70!black, text=white] (L)
-%           at (0,0) {\textbf{Laney (2001)}\\\small 3Vs define the\\\small \emph{problem space}};
-%     \node[box, fill=PUNavy,           text=white] (B)
-%           at (4,0) {\textbf{Brewer (2000)}\\\small CAP explains\\\small \emph{why it is hard}};
-%     \node[box, fill=PUTeal,           text=white] (GFS)
-%           at (8,0) {\textbf{GFS (2003)}\\\small HDFS provides\\\small \emph{the storage}};
-%     \node[box, fill=PURed!75,         text=white] (MR)
-%           at (12,0) {\textbf{MapReduce (2004)}\\\small Computation\\\small \emph{at scale}};
+    \column{0.42\textwidth}
+      \begin{alertblock}{Important Nuance: Kleppmann (2015)}
+        \textbf{``Please stop calling databases CP or AP''} --- Martin Kleppmann, \textit{A Critique of the CAP Theorem}, arXiv:1509.05393.
+        \vspace{6pt}
+        \begin{itemize}
+          \small
+          \item CAP's definitions are more nuanced than binary classifications suggest
+          \item Real systems provide \textbf{tunable consistency} (e.g., Cassandra's consistency levels: ONE, QUORUM, ALL)
+          \item \textbf{PACELC model} (Abadi, 2012) extends CAP: even without partitions, there is a Latency vs.\ Consistency trade-off
+          \item CAP is a \textbf{useful mental model}, not a precise engineering specification
+        \end{itemize}
+      \end{alertblock}
+  \end{columns}
+\end{frame}
 
-%     \draw[arr] (L)   -- (B);
-%     \draw[arr] (B)   -- (GFS);
-%     \draw[arr] (GFS) -- (MR);
+%----------------------------------------------------------------
+\begin{frame}{Connecting the Papers: From 3Vs to Distributed Design}
+  \begin{center}
+  \begin{tikzpicture}[
+      box/.style={rectangle, rounded corners=4pt, text width=2.6cm,
+                  minimum height=1.1cm, align=center, font=\small},
+      arr/.style={-{Stealth[length=6pt]}, PUNavy!70, very thick}
+    ]
+    \node[box, fill=PUGold!70!black, text=white] (L)
+          at (0,0) {\textbf{Laney (2001)}\\\small 3Vs define the\\\small \emph{problem space}};
+    \node[box, fill=PUNavy,           text=white] (B)
+          at (4,0) {\textbf{Brewer (2000)}\\\small CAP explains\\\small \emph{why it is hard}};
+    \node[box, fill=PUTeal,           text=white] (GFS)
+          at (8,0) {\textbf{GFS (2003)}\\\small HDFS provides\\\small \emph{the storage}};
+    \node[box, fill=PURed!75,         text=white] (MR)
+          at (12,0) {\textbf{MapReduce (2004)}\\\small Computation\\\small \emph{at scale}};
 
-%     % Labels on arrows
-%     \node[font=\tiny\itshape, PUGray, align=center] at (2,0.65)
-%           {``We need distributed\\storage because of 3Vs''};
-%     \node[font=\tiny\itshape, PUGray, align=center] at (6,0.65)
-%           {``CAP says replicate\\for fault tolerance''};
-%     \node[font=\tiny\itshape, PUGray, align=center] at (10,0.65)
-%           {``Compute where\\data lives''};
-%   \end{tikzpicture}
-%   \end{center}
-%   \vspace{8pt}
-%   \begin{alertblock}{The Intellectual Lineage of This Course}
-%     Laney's 3Vs \textbf{motivated} distributed storage (because a single server cannot handle 3Vs simultaneously) $\to$ Brewer's CAP \textbf{constrained} the design space (you must choose C or A) $\to$ Google's GFS and MapReduce \textbf{implemented} a concrete CP-leaning architecture $\to$ Hadoop \textbf{open-sourced} those ideas.  This entire arc from 2001--2006 forms the foundation of everything you will study in Weeks 2--10.
-%   \end{alertblock}
-% \end{frame}
+    \draw[arr] (L)   -- (B);
+    \draw[arr] (B)   -- (GFS);
+    \draw[arr] (GFS) -- (MR);
+
+    % Labels on arrows
+    \node[font=\tiny\itshape, PUGray, align=center] at (2,0.65)
+          {``We need distributed\\storage because of 3Vs''};
+    \node[font=\tiny\itshape, PUGray, align=center] at (6,0.65)
+          {``CAP says replicate\\for fault tolerance''};
+    \node[font=\tiny\itshape, PUGray, align=center] at (10,0.65)
+          {``Compute where\\data lives''};
+  \end{tikzpicture}
+  \end{center}
+  \vspace{8pt}
+  \begin{alertblock}{The Intellectual Lineage of This Course}
+    Laney's 3Vs \textbf{motivated} distributed storage (because a single server cannot handle 3Vs simultaneously) $\to$ Brewer's CAP \textbf{constrained} the design space (you must choose C or A) $\to$ Google's GFS and MapReduce \textbf{implemented} a concrete CP-leaning architecture $\to$ Hadoop \textbf{open-sourced} those ideas.  This entire arc from 2001--2006 forms the foundation of everything you will study in Weeks 2--10.
+  \end{alertblock}
+\end{frame}
 
 %================================================================
 \section{Case Study — McKinsey Global Institute (2011)}
 %================================================================
 
 \begin{frame}{About the Report}
-   
+  \begin{columns}[T]
+    \column{0.52\textwidth}
       \begin{paperbox}{Full Citation}
         Manyika, J., Chui, M., Brown, B., Bughin, J., Dobbs, R., Roxburgh, C., \& Byers, A.H.\ (2011, May). \textbf{Big Data: The Next Frontier for Innovation, Competition, and Productivity.} McKinsey Global Institute.\\[6pt]
         \textbf{Length:} 156 pages\\
@@ -502,11 +495,7 @@
         Surveyed Big Data potential across \textbf{five domains}: US healthcare, European public administration, US retail, global manufacturing, and personal location data.  Included interviews with 250 executives across 14 industries.
       \end{block}
 
-     
-\end{frame}
-
-\begin{frame}{About the Report}
-   
+    \column{0.45\textwidth}
       \begin{alertblock}{Why It Mattered in 2011}
         This was the first large-scale, cross-industry \textbf{quantified economic analysis} of Big Data's potential value.  Before this report, Big Data was primarily a \emph{technical} term used by engineers.  McKinsey made it a \emph{boardroom} term.
       \end{alertblock}
@@ -521,13 +510,16 @@
           \item This report \textbf{triggered the Big Data hiring wave} of 2012--2016
         \end{itemize}
       \end{exampleblock}
- 
+  \end{columns}
 \end{frame}
+
 %----------------------------------------------------------------
-\begin{frame}{Key Quantitative Findings} 
+\begin{frame}{Key Quantitative Findings}
+  \begin{columns}[T]
+    \column{0.55\textwidth}
       \centering
       \renewcommand{\arraystretch}{1.5}
-      \begin{tabular}{lr}
+      \begin{tabular}{p{3.6cm}r}
         \toprule
         \textbf{Domain} & \textbf{Estimated Value} \\
         \midrule
@@ -545,11 +537,8 @@
       \begin{block}{Methodology Note}
         Values estimated via expert interviews, revenue-impact modelling, and extrapolation from early big data deployments.  \textbf{Not derived from controlled experiments}\textemdash a key limitation noted by critics.
       \end{block}
- 
-\end{frame}
 
-\begin{frame}{Key Quantitative Findings}
-  
+    \column{0.42\textwidth}
       \begin{alertblock}{The Headline Argument}
         \textit{``Big data will become a key basis of competition, underpinning new waves of productivity growth, innovation, and consumer surplus.  Leaders in every sector will have to grapple with the implications of big data, not just a few data-oriented managers.''}\\
         \hfill\textemdash\,Manyika et al., 2011, p.\ 1
@@ -557,10 +546,14 @@
       \vspace{6pt}
       \begin{exampleblock}{The Talent Gap Was Under-estimated}
         \small The report predicted 140{,}000--190{,}000 deep analytics jobs needed by 2018.  LinkedIn's 2018 Workforce Report found \textbf{250{,}000+ unfilled data science roles} in the US alone\textemdash the actual gap was \emph{larger} than McKinsey forecast.
-      \end{exampleblock} 
+      \end{exampleblock}
+  \end{columns}
 \end{frame}
+
 %----------------------------------------------------------------
-\begin{frame}{Healthcare: The Flagship Case} 
+\begin{frame}{Healthcare: The Flagship Case}
+  \begin{columns}[T]
+    \column{0.52\textwidth}
       \begin{block}{US Healthcare: \$300B+ Annual Value Potential}
         McKinsey identified five mechanism categories:
         \vspace{4pt}
@@ -573,11 +566,7 @@
         \end{enumerate}
       \end{block}
 
-     
-\end{frame}
-
-\begin{frame}{Healthcare: The Flagship Case}
-  
+    \column{0.45\textwidth}
       \begin{exampleblock}{2024 Reality Check: What Was Achieved?}
         \small
         \textbf{Largely realised:}
@@ -593,11 +582,13 @@
           \item \textbf{HIPAA compliance} slows data sharing; predicted gains require data McKinsey assumed would flow freely
         \end{itemize}
       \end{exampleblock}
-  
+  \end{columns}
 \end{frame}
+
 %----------------------------------------------------------------
 \begin{frame}{Critical Analysis: What Did McKinsey Get Right and Wrong?}
- 
+  \begin{columns}[T]
+    \column{0.48\textwidth}
       \begin{exampleblock}{What McKinsey Got Right \checkmark}
         \begin{itemize}
           \item \textbf{Talent gap}: understated, not overstated
@@ -607,11 +598,8 @@
           \item \textbf{Urgency}: The hiring and investment wave that followed this report built the infrastructure now used for AI
         \end{itemize}
       \end{exampleblock}
- 
-\end{frame}
 
-\begin{frame}{Critical Analysis: What Did McKinsey Get Right and Wrong?}
-   
+    \column{0.48\textwidth}
       \begin{alertblock}{What McKinsey Missed \texttimes}
         \begin{itemize}
           \item \textbf{Privacy \& regulation}: No mention of GDPR (2018), CCPA, or the political cost of mass data collection (Cambridge Analytica, 2018)
@@ -621,12 +609,13 @@
           \item \textbf{Deep learning}: Report assumed statistical models; neural networks redefined ``analytics''
         \end{itemize}
       \end{alertblock}
-   
+  \end{columns}
 \end{frame}
 
 %----------------------------------------------------------------
 \begin{frame}{Cautionary Interlude: Google Flu Trends (2008--2015)}
-  
+  \begin{columns}[T]
+    \column{0.52\textwidth}
       \begin{block}{The Claim (Ginsberg et al., 2009, \textit{Nature})}
         \textit{``We can accurately estimate influenza activity in each region of the United States, up to two weeks ahead of traditional CDC reports, simply by tracking the volume of flu-related Google search queries.''}
       \end{block}
@@ -642,9 +631,7 @@
         \end{itemize}
       \end{alertblock}
 
-    
-\end{frame}
-\begin{frame}{Cautionary Interlude: Google Flu Trends (2008--2015)}
+    \column{0.45\textwidth}
       \begin{exampleblock}{Lessons for Big Data Practitioners}
         \begin{enumerate}
           \item \textbf{Correlation $\neq$ causation}: A high $r^2$ on training data does not guarantee real-world validity
@@ -655,102 +642,102 @@
         \vspace{4pt}
         \textbf{Reference:} Lazer et al. (2014). \textit{The Parable of Google Flu: Traps in Big Data Analysis.} Science, 343(6176), 1203--1205.
       \end{exampleblock}
- 
+  \end{columns}
 \end{frame}
 
-% %----------------------------------------------------------------
-% \begin{frame}{Bangladesh \& South Asia Relevance}
-%   \begin{columns}[T]
-%     \column{0.52\textwidth}
-%       \begin{block}{McKinsey's Emerging-Economy Blind Spot}
-%         The 2011 report focused exclusively on the USA and Europe. But the McKinsey logic applies directly to Bangladesh:
-%       \end{block}
-%       \vspace{6pt}
-%       \renewcommand{\arraystretch}{1.3}
-%       \begin{tabular}{p{2.2cm}p{4.2cm}}
-%         \toprule
-%         \textbf{Sector} & \textbf{Big Data Opportunity} \\
-%         \midrule
-%         Mobile finance & bKash: 65M+ accounts, real-time fraud, credit scoring for the unbanked \\
-%         Garment (RMG) & Supply-chain optimisation, energy prediction in 4{,}000+ factories \\
-%         Agriculture & Crop yield prediction from satellite data + weather APIs \\
-%         Public health & Dengue / cholera syndromic surveillance from pharmacy \& hospital data \\
-%         \bottomrule
-%       \end{tabular}
+%----------------------------------------------------------------
+\begin{frame}{Bangladesh \& South Asia Relevance}
+  \begin{columns}[T]
+    \column{0.52\textwidth}
+      \begin{block}{McKinsey's Emerging-Economy Blind Spot}
+        The 2011 report focused exclusively on the USA and Europe. But the McKinsey logic applies directly to Bangladesh:
+      \end{block}
+      \vspace{6pt}
+      \renewcommand{\arraystretch}{1.3}
+      \begin{tabular}{p{2.2cm}p{4.2cm}}
+        \toprule
+        \textbf{Sector} & \textbf{Big Data Opportunity} \\
+        \midrule
+        Mobile finance & bKash: 65M+ accounts, real-time fraud, credit scoring for the unbanked \\
+        Garment (RMG) & Supply-chain optimisation, energy prediction in 4{,}000+ factories \\
+        Agriculture & Crop yield prediction from satellite data + weather APIs \\
+        Public health & Dengue / cholera syndromic surveillance from pharmacy \& hospital data \\
+        \bottomrule
+      \end{tabular}
 
-%     \column{0.45\textwidth}
-%       \begin{alertblock}{A2i \& ICT Division Initiatives}
-%         Bangladesh's \textbf{Aspire to Innovate (a2i)} programme is actively building national data infrastructure:
-%         \vspace{4pt}
-%         \begin{itemize}
-%           \item \textbf{National Data Warehouse}: Integrating 49 ministries' databases
-%           \item \textbf{NID biometric database}: 110 million records used for KYC in banking and telecoms
-%           \item \textbf{Health Bulletin DHIS2}: District-level health data aggregation
-%           \item \textbf{Bangladesh Open Data Portal}: data.gov.bd (launched 2021)
-%         \end{itemize}
-%         \vspace{4pt}
-%         \textit{Each of these is a real-world manifestation of the McKinsey public-sector big data thesis.}
-%       \end{alertblock}
-%   \end{columns}
-% \end{frame}
+    \column{0.45\textwidth}
+      \begin{alertblock}{A2i \& ICT Division Initiatives}
+        Bangladesh's \textbf{Aspire to Innovate (a2i)} programme is actively building national data infrastructure:
+        \vspace{4pt}
+        \begin{itemize}
+          \item \textbf{National Data Warehouse}: Integrating 49 ministries' databases
+          \item \textbf{NID biometric database}: 110 million records used for KYC in banking and telecoms
+          \item \textbf{Health Bulletin DHIS2}: District-level health data aggregation
+          \item \textbf{Bangladesh Open Data Portal}: data.gov.bd (launched 2021)
+        \end{itemize}
+        \vspace{4pt}
+        \textit{Each of these is a real-world manifestation of the McKinsey public-sector big data thesis.}
+      \end{alertblock}
+  \end{columns}
+\end{frame}
 
-% %================================================================
-% \section{Guided Discussion \& Live Exercise}
-% %================================================================
+%================================================================
+\section{Guided Discussion \& Live Exercise}
+%================================================================
 
-% \begin{frame}{Class Discussion Questions}
-%   \begin{exampleblock}{Instructions}
-%     Discuss in pairs (5 minutes), then share with class.  There are no single correct answers\textemdash\,justify your position with evidence from today's papers.
-%   \end{exampleblock}
-%   \vspace{8pt}
-%   \begin{enumerate}[\textbf{D1.}]
-%     \item Laney wrote his 3Vs memo in 2001 to describe e-commerce challenges.  Do you think the \textbf{same three dimensions} are still the most important way to characterise Big Data challenges in 2024, or has the field evolved past this framework?  What would you change or add?
-%   \end{enumerate}
-%   \vspace{8pt}
-%   \begin{enumerate}[\textbf{D2.}]
-%     \item The McKinsey report predicted massive economic value from Big Data, but also \textbf{missed} the privacy, bias, and regulatory implications entirely.  Does this mean we should be \emph{sceptical} of similar economic projections for AI today?  What should analysts include that McKinsey did not?
-%   \end{enumerate}
-%   \vspace{8pt}
-%   \begin{enumerate}[\textbf{D3.}]
-%     \item The Google Flu Trends failure is often cited as a warning against ``big data hubris.''  Can you identify a current example in Bangladesh where a big data system might \textbf{fail for similar reasons} (feedback loop, overfitting, missing ground truth)?
-%   \end{enumerate}
-% \end{frame}
+\begin{frame}{Class Discussion Questions}
+  \begin{exampleblock}{Instructions}
+    Discuss in pairs (5 minutes), then share with class.  There are no single correct answers\textemdash\,justify your position with evidence from today's papers.
+  \end{exampleblock}
+  \vspace{8pt}
+  \begin{enumerate}[\textbf{D1.}]
+    \item Laney wrote his 3Vs memo in 2001 to describe e-commerce challenges.  Do you think the \textbf{same three dimensions} are still the most important way to characterise Big Data challenges in 2024, or has the field evolved past this framework?  What would you change or add?
+  \end{enumerate}
+  \vspace{8pt}
+  \begin{enumerate}[\textbf{D2.}]
+    \item The McKinsey report predicted massive economic value from Big Data, but also \textbf{missed} the privacy, bias, and regulatory implications entirely.  Does this mean we should be \emph{sceptical} of similar economic projections for AI today?  What should analysts include that McKinsey did not?
+  \end{enumerate}
+  \vspace{8pt}
+  \begin{enumerate}[\textbf{D3.}]
+    \item The Google Flu Trends failure is often cited as a warning against ``big data hubris.''  Can you identify a current example in Bangladesh where a big data system might \textbf{fail for similar reasons} (feedback loop, overfitting, missing ground truth)?
+  \end{enumerate}
+\end{frame}
 
-% %----------------------------------------------------------------
-% \begin{frame}{Live Exercise: Apply the Frameworks}
-%   \begin{block}{Instructions}
-%     Individual work, 10 minutes.  Submit on paper or LMS.
-%   \end{block}
-%   \vspace{6pt}
-%   \begin{columns}[T]
-%     \column{0.48\textwidth}
-%       \begin{exampleblock}{Exercise A: 5Vs Classification (CLO1)}
-%         For each of the following data assets belonging to a Bangladeshi e-commerce platform, rate each V on a scale of \textbf{Low / Medium / High} and \textbf{justify in one sentence}:
-%         \vspace{4pt}
-%         \begin{enumerate}[(1)]
-%           \item Daily product sales CSV exported from MySQL at midnight
-%           \item Real-time GPS location of 500 delivery riders
-%           \item Customer-uploaded product review photos
-%           \item HL7 medical certificate required for pharmaceutical products
-%           \item Historical 3-year order archive (cold storage)
-%         \end{enumerate}
-%       \end{exampleblock}
+%----------------------------------------------------------------
+\begin{frame}{Live Exercise: Apply the Frameworks}
+  \begin{block}{Instructions}
+    Individual work, 10 minutes.  Submit on paper or LMS.
+  \end{block}
+  \vspace{6pt}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+      \begin{exampleblock}{Exercise A: 5Vs Classification (CLO1)}
+        For each of the following data assets belonging to a Bangladeshi e-commerce platform, rate each V on a scale of \textbf{Low / Medium / High} and \textbf{justify in one sentence}:
+        \vspace{4pt}
+        \begin{enumerate}[(1)]
+          \item Daily product sales CSV exported from MySQL at midnight
+          \item Real-time GPS location of 500 delivery riders
+          \item Customer-uploaded product review photos
+          \item HL7 medical certificate required for pharmaceutical products
+          \item Historical 3-year order archive (cold storage)
+        \end{enumerate}
+      \end{exampleblock}
 
-%     \column{0.48\textwidth}
-%       \begin{alertblock}{Exercise B: System Design (CAP)}
-%         You are the CTO of a new Bangladeshi super-app (like bKash + Shohoz + Chaldal combined).  For each sub-system below, state which \textbf{CAP trade-off} (CP or AP) you would choose and why:
-%         \vspace{4pt}
-%         \begin{enumerate}[(1)]
-%           \item \textbf{Mobile wallet balance}: showing current taka balance
-%           \item \textbf{Product availability}: showing whether an item is in stock
-%           \item \textbf{Ride fare estimate}: showing the price before the driver accepts
-%           \item \textbf{Rider GPS map}: showing real-time driver location on map
-%         \end{enumerate}
-%         \vspace{4pt}
-%         \textit{Hint: Think about the consequence of showing \emph{stale} vs.\ \emph{unavailable} in each case.}
-%       \end{alertblock}
-%   \end{columns}
-% \end{frame}
+    \column{0.48\textwidth}
+      \begin{alertblock}{Exercise B: System Design (CAP)}
+        You are the CTO of a new Bangladeshi super-app (like bKash + Shohoz + Chaldal combined).  For each sub-system below, state which \textbf{CAP trade-off} (CP or AP) you would choose and why:
+        \vspace{4pt}
+        \begin{enumerate}[(1)]
+          \item \textbf{Mobile wallet balance}: showing current taka balance
+          \item \textbf{Product availability}: showing whether an item is in stock
+          \item \textbf{Ride fare estimate}: showing the price before the driver accepts
+          \item \textbf{Rider GPS map}: showing real-time driver location on map
+        \end{enumerate}
+        \vspace{4pt}
+        \textit{Hint: Think about the consequence of showing \emph{stale} vs.\ \emph{unavailable} in each case.}
+      \end{alertblock}
+  \end{columns}
+\end{frame}
 
 %================================================================
 \section*{References}
