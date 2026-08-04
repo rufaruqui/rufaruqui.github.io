@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSE 813 — Machine Learning · University of Chittagong</title>
+  <meta name="description" content="CSE 813 Machine Learning — OBE-based 13-week course, Department of CSE, University of Chittagong. Lecture slides, research articles, textbooks and assessment." />
+
+  <style>
+    /* ── Variables ─────────────────────────────────────── */
+    :root {
+      --navy:       #0A2463;
+      --navy-mid:   #1a3a7a;
+      --navy-light: #d2e4ff;
+      --gold:       #C59725;
+      --gold-light: #f5e9bf;
+      --teal:       #006464;
+      --purple:     #5a288c;
+      --red:        #a01e1e;
+      --gray:       #5a5a5a;
+      --gray-light: #f5f5f5;
+      --white:      #ffffff;
+      --radius:     6px;
+      --shadow:     0 2px 8px rgba(10,36,99,.12);
+    }
+
+    /* ── Reset ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html  { scroll-behavior: smooth; }
+    body  {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #222;
+      background: var(--gray-light);
+    }
+    a { color: var(--navy); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Header / Hero ─────────────────────────────────── */
+    header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+      color: var(--white);
+      padding: 0;
+    }
+    .header-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 40px 24px 32px;
+    }
+    .header-inner h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: .5px;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .header-inner .subtitle {
+      font-size: 1.05rem;
+      opacity: .9;
+      margin-bottom: 6px;
+    }
+    .header-inner .instructor {
+      font-size: .92rem;
+      opacity: .85;
+      margin-bottom: 20px;
+    }
+    .header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: .85rem;
+    }
+    .meta-pill {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 20px;
+      padding: 4px 14px;
+      white-space: nowrap;
+    }
+
+    /* ── Nav bar ───────────────────────────────────────── */
+    nav {
+      background: var(--gold);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 6px rgba(0,0,0,.18);
+    }
+    nav ul {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+    nav ul li a {
+      display: block;
+      padding: 10px 16px;
+      color: var(--navy);
+      font-weight: 600;
+      font-size: .88rem;
+      letter-spacing: .3px;
+    }
+    nav ul li a:hover {
+      background: rgba(10,36,99,.12);
+      text-decoration: none;
+    }
+
+    /* ── Main container ────────────────────────────────── */
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+      display: grid;
+      gap: 36px;
+    }
+
+    /* ── Section headers ───────────────────────────────── */
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--navy);
+      border-left: 4px solid var(--gold);
+      padding-left: 12px;
+      margin-bottom: 16px;
+    }
+    .section-note {
+      margin-bottom: 14px;
+      font-size: .88rem;
+      color: var(--gray);
+    }
+
+    /* ── Info cards row (CLOs + overview) ─────────────── */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 680px) { .info-grid { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px 22px;
+    }
+    .card h3 {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    /* ── CLO table ─────────────────────────────────────── */
+    .clo-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .clo-table th {
+      background: var(--navy);
+      color: var(--white);
+      padding: 7px 10px;
+      text-align: left;
+      font-weight: 600;
+    }
+    .clo-table td { padding: 7px 10px; border-bottom: 1px solid #e0e8f8; }
+    .clo-table tr:last-child td { border-bottom: none; }
+    .clo-badge {
+      display: inline-block;
+      background: var(--navy);
+      color: var(--white);
+      font-size: .75rem;
+      font-weight: 700;
+      border-radius: 3px;
+      padding: 1px 7px;
+      white-space: nowrap;
+    }
+
+    /* ── Schedule table ────────────────────────────────── */
+    .table-scroll { overflow-x: auto; }
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .88rem;
+      background: var(--white);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .schedule-table thead th {
+      background: var(--navy);
+      color: var(--white);
+      padding: 11px 14px;
+      text-align: left;
+      font-weight: 600;
+      font-size: .82rem;
+      letter-spacing: .3px;
+    }
+    .schedule-table tbody tr:nth-child(even) { background: #f0f5ff; }
+    .schedule-table tbody tr:hover { background: var(--navy-light); }
+    .schedule-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #dde6f8;
+      vertical-align: middle;
+    }
+    .schedule-table tr:last-child td { border-bottom: none; }
+    .week-num {
+      font-weight: 700;
+      color: var(--navy);
+      white-space: nowrap;
+    }
+    .clo-tag {
+      display: inline-block;
+      border: 1px solid var(--navy);
+      color: var(--navy);
+      font-size: .72rem;
+      font-weight: 600;
+      border-radius: 3px;
+      padding: 1px 6px;
+      margin: 1px 2px 1px 0;
+      white-space: nowrap;
+    }
+
+    /* ── Slide links ───────────────────────────────────── */
+    .slide-links { display: flex; flex-wrap: wrap; gap: 6px; }
+    .btn-slide {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--navy);
+      color: var(--white) !important;
+      font-size: .78rem;
+      font-weight: 600;
+      border-radius: 4px;
+      padding: 4px 11px;
+      text-decoration: none !important;
+      transition: background .15s;
+    }
+    .btn-slide:hover { background: var(--navy-mid); }
+    .btn-slide.part2 { background: var(--teal); }
+    .btn-slide.part2:hover { background: #004f4f; }
+    .btn-slide.single { background: var(--purple); }
+    .btn-slide.single:hover { background: #46206e; }
+    .btn-coming {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #e0e0e0;
+      color: #888 !important;
+      font-size: .78rem;
+      font-weight: 600;
+      border-radius: 4px;
+      padding: 4px 11px;
+      cursor: default;
+    }
+
+    /* ── Textbooks ─────────────────────────────────────── */
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+    .book-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px 18px;
+      border-left: 4px solid var(--gold);
+    }
+    .book-code {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: .8rem;
+      border-radius: 3px;
+      padding: 1px 8px;
+      margin-bottom: 6px;
+    }
+    .book-title { font-weight: 600; color: var(--navy); font-size: .92rem; }
+    .book-author { font-size: .83rem; color: var(--gray); margin-top: 2px; }
+    .book-link {
+      display: inline-block;
+      margin-top: 8px;
+      margin-right: 6px;
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--teal);
+      border: 1px solid var(--teal);
+      border-radius: 3px;
+      padding: 2px 9px;
+    }
+    .book-link:hover { background: var(--teal); color: var(--white); text-decoration: none; }
+
+    /* ── Research Articles ─────────────────────────────── */
+    .papers-list { list-style: none; }
+    .papers-list li {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 8px;
+      padding: 11px 16px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .paper-year {
+      min-width: 42px;
+      font-weight: 700;
+      color: var(--gold);
+      font-size: .85rem;
+    }
+    .paper-info { flex: 1; }
+    .paper-title { font-weight: 600; color: var(--navy); }
+    .paper-ref { font-size: .82rem; color: var(--gray); margin-top: 1px; }
+    .paper-week {
+      display: inline-block;
+      background: var(--navy-light);
+      color: var(--navy);
+      font-size: .72rem;
+      font-weight: 600;
+      border-radius: 3px;
+      padding: 1px 7px;
+      margin-left: 8px;
+      white-space: nowrap;
+    }
+    .btn-pdf {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 6px;
+      margin-right: 6px;
+      font-size: .76rem;
+      font-weight: 700;
+      color: var(--teal) !important;
+      border: 1px solid var(--teal);
+      border-radius: 3px;
+      padding: 2px 9px;
+      text-decoration: none !important;
+      transition: background .15s, color .15s;
+    }
+    .btn-pdf:hover { background: var(--teal); color: var(--white) !important; }
+    .btn-pdf-book {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 6px;
+      font-size: .76rem;
+      font-weight: 600;
+      color: var(--gray);
+      font-style: italic;
+    }
+
+    /* ── Assessment table ──────────────────────────────── */
+    .assess-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .assess-table th {
+      background: var(--navy);
+      color: var(--white);
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .assess-table td { padding: 8px 12px; border-bottom: 1px solid #e0e8f8; }
+    .assess-table tr:last-child td { border-bottom: none; }
+    .assess-table tbody tr:nth-child(even) td { background: #f0f5ff; }
+    .weight-bar {
+      display: inline-block;
+      height: 6px;
+      background: var(--gold);
+      border-radius: 3px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .notice {
+      background: var(--gold-light);
+      border-left: 4px solid var(--gold);
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      font-size: .85rem;
+      color: #4a3c10;
+      margin-bottom: 14px;
+    }
+
+    /* ── Ivy League block ──────────────────────────────── */
+    .ivy-list {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .ivy-list li {
+      background: var(--white);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      font-size: .88rem;
+      border-top: 3px solid var(--gold);
+    }
+    .ivy-name { font-weight: 700; color: var(--navy); }
+    .ivy-full { font-size: .8rem; color: var(--gray); }
+
+    .subhead {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 12px;
+    }
+
+    /* ── Footer ────────────────────────────────────────── */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,.75);
+      text-align: center;
+      padding: 20px 24px;
+      font-size: .83rem;
+    }
+    footer a { color: var(--gold); }
+    footer strong { color: var(--white); }
+  </style>
+</head>
+
+<body>
+
+<!-- ═══════════════════════ HEADER ═══════════════════════ -->
+<header>
+  <div class="header-inner">
+    <h1>CSE 813 &mdash; Machine Learning</h1>
+    <p class="subtitle">Department of Computer Science &amp; Engineering &bull; University of Chittagong</p>
+    <p class="instructor">Instructor: <strong>Rokan Uddin Faruqui</strong>, Professor</p>
+    <div class="header-meta">
+      <span class="meta-pill">&#128197; 13 Weeks &bull; 2026</span>
+      <span class="meta-pill">&#128218; 3 Credit Hours (Theory)</span>
+      <span class="meta-pill">&#129514; CSE 814 Lab (1 credit, co-requisite)</span>
+      <span class="meta-pill">&#9654; Pre-req: CSE 221 &bull; CSE 225 &bull; CSE 235</span>
+      <span class="meta-pill">&#128231; <a href="mailto:rufaruqui@cu.ac.bd" style="color:var(--gold)">rufaruqui@cu.ac.bd</a></span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════ NAV ══════════════════════════ -->
+<nav>
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#schedule">Lectures</a></li>
+    <li><a href="#lab">Lab</a></li>
+    <li><a href="#textbooks">Textbooks</a></li>
+    <li><a href="#papers">Research Articles</a></li>
+    <li><a href="#assessment">Assessment</a></li>
+    <li><a href="#resources">Resources</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════════ MAIN ═════════════════════════ -->
+<main>
+
+  <!-- ── Overview & CLOs ─────────────────────────────── -->
+  <section id="overview">
+    <h2 class="section-title">Course Overview</h2>
+    <div class="info-grid">
+
+      <div class="card">
+        <h3>Course Learning Outcomes (CLOs)</h3>
+        <table class="clo-table">
+          <thead>
+            <tr><th>CLO</th><th>Statement</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="clo-badge">CLO 1</span></td>
+              <td>Understand the fundamental concepts, paradigms, and theoretical foundations of machine learning</td>
+            </tr>
+            <tr>
+              <td><span class="clo-badge">CLO 2</span></td>
+              <td>Analyze and compare different machine learning algorithms for supervised and unsupervised learning</td>
+            </tr>
+            <tr>
+              <td><span class="clo-badge">CLO 3</span></td>
+              <td>Explain the mathematical principles (optimization, probability, statistical inference) underlying learning algorithms</td>
+            </tr>
+            <tr>
+              <td><span class="clo-badge">CLO 4</span></td>
+              <td>Apply machine learning techniques to solve real-world problems and evaluate model performance</td>
+            </tr>
+            <tr>
+              <td><span class="clo-badge">CLO 5</span></td>
+              <td>Design and implement end-to-end machine learning pipelines for practical applications</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>About This Course</h3>
+        <p style="margin-bottom:10px;font-size:.9rem;">
+          An OBE-structured 13-week course covering the machine learning canon &mdash; from the
+          learning problem and its mathematical foundations, through supervised learning
+          (linear and logistic regression, KNN, decision trees, SVMs, ensembles), unsupervised
+          learning (clustering, dimensionality reduction) and neural networks, to practical
+          pipelines, emerging trends and ML ethics.
+        </p>
+        <p style="margin-bottom:10px;font-size:.9rem;">
+          Benchmarked against <strong>Stanford CS229</strong>, <strong>MIT 6.867</strong>,
+          <strong>CMU 10-701</strong>, <strong>UC Berkeley CS189</strong> and
+          <strong>Harvard CS181</strong>. Weeks 1&ndash;11 have two Beamer decks:
+          Part&nbsp;1 (core content &amp; assessment pool) and Part&nbsp;2 (research-article
+          deep-dive &amp; case study). Weeks 12&ndash;13 have a single deck each.
+        </p>
+        <p style="font-size:.9rem;">
+          Full plans:
+          <a href="theory/plan.md">Theory lecture plan</a> &bull;
+          <a href="lab/plan.md">Lab plan (CSE 814)</a>
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Lecture Schedule ─────────────────────────────── -->
+  <section id="schedule">
+    <h2 class="section-title">Lecture Schedule &amp; Slides</h2>
+    <p class="section-note">
+      Weeks 1&ndash;11 have <strong>Part 1</strong> (core content and assessment pool) and
+      <strong>Part 2</strong> (research article + case study). Weeks 12&ndash;13 are single decks.
+      Click a button to open the PDF slides.
+    </p>
+    <div class="table-scroll">
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th>Week</th>
+          <th>Topic</th>
+          <th>CLO</th>
+          <th>Slides</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td class="week-num">Week 1</td>
+          <td>Introduction to Machine Learning &mdash; Paradigms, Applications &amp; the Learning Problem</td>
+          <td><span class="clo-tag">CLO1</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"       href="theory/lectures/W01_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="theory/lectures/W01_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 2</td>
+          <td>Mathematical Foundations &mdash; Linear Algebra, Probability &amp; Optimization</td>
+          <td><span class="clo-tag">CLO3</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"       href="theory/lectures/W02_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="theory/lectures/W02_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 3</td>
+          <td>Supervised Learning &mdash; Linear Regression &amp; Model Evaluation</td>
+          <td><span class="clo-tag">CLO1</span> <span class="clo-tag">CLO4</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"       href="theory/lectures/W03_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="theory/lectures/W03_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 4</td>
+          <td>Classification &mdash; Logistic Regression &amp; the Perceptron</td>
+          <td><span class="clo-tag">CLO1</span> <span class="clo-tag">CLO4</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"       href="theory/lectures/W04_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="theory/lectures/W04_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 5</td>
+          <td>K-Nearest Neighbors &amp; Decision Trees</td>
+          <td><span class="clo-tag">CLO1</span> <span class="clo-tag">CLO4</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"       href="theory/lectures/W05_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="theory/lectures/W05_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 6</td>
+          <td>Support Vector Machines &amp; Kernel Methods</td>
+          <td><span class="clo-tag">CLO2</span> <span class="clo-tag">CLO3</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"       href="theory/lectures/W06_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="theory/lectures/W06_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 7</td>
+          <td>Ensemble Methods &mdash; Bagging, Random Forests &amp; Boosting</td>
+          <td><span class="clo-tag">CLO2</span> <span class="clo-tag">CLO4</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"       href="theory/lectures/W07_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="theory/lectures/W07_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 8</td>
+          <td>Unsupervised Learning &mdash; Clustering (K-Means, Hierarchical, DBSCAN)</td>
+          <td><span class="clo-tag">CLO1</span> <span class="clo-tag">CLO4</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"       href="theory/lectures/W08_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="theory/lectures/W08_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 9</td>
+          <td>Dimensionality Reduction &mdash; PCA &amp; t-SNE</td>
+          <td><span class="clo-tag">CLO2</span> <span class="clo-tag">CLO3</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"       href="theory/lectures/W09_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="theory/lectures/W09_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 10</td>
+          <td>Neural Networks &amp; Deep Learning &mdash; Foundations &amp; Backpropagation</td>
+          <td><span class="clo-tag">CLO2</span> <span class="clo-tag">CLO3</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"       href="theory/lectures/W10_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="theory/lectures/W10_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 11</td>
+          <td>Convolutional &amp; Recurrent Neural Networks (CNNs, RNNs, Transformers)</td>
+          <td><span class="clo-tag">CLO2</span> <span class="clo-tag">CLO4</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide"       href="theory/lectures/W11_Part1.pdf" target="_blank">&#128196; Part 1</a>
+              <a class="btn-slide part2" href="theory/lectures/W11_Part2.pdf" target="_blank">&#128196; Part 2</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 12</td>
+          <td>Model Selection, Hyperparameter Tuning &amp; Practical ML Pipelines</td>
+          <td><span class="clo-tag">CLO4</span> <span class="clo-tag">CLO5</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide single" href="theory/lectures/W12.pdf" target="_blank">&#128196; Slides</a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="week-num">Week 13</td>
+          <td>Emerging Trends, Ethics &amp; Course Synthesis</td>
+          <td><span class="clo-tag">CLO5</span></td>
+          <td>
+            <div class="slide-links">
+              <a class="btn-slide single" href="theory/lectures/W13.pdf" target="_blank">&#128196; Slides</a>
+            </div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <!-- ── Lab ──────────────────────────────────────────── -->
+  <section id="lab">
+    <h2 class="section-title">CSE 814 &mdash; Machine Learning Lab</h2>
+    <p class="section-note">
+      One-credit lab taken alongside this course. Python + Jupyter, NumPy, Pandas,
+      Matplotlib/Seaborn, scikit-learn and TensorFlow/PyTorch. Full details in the
+      <a href="lab/plan.md">lab plan</a>.
+    </p>
+    <div class="table-scroll">
+    <table class="schedule-table">
+      <thead>
+        <tr><th>Lab Week</th><th>Session</th><th>Aligned Lecture</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="week-num">Lab 1</td><td>Python for ML &mdash; NumPy, Pandas &amp; Data Exploration</td><td>Weeks 1&ndash;2</td></tr>
+        <tr><td class="week-num">Lab 2</td><td>Linear Regression from Scratch</td><td>Week 3</td></tr>
+        <tr><td class="week-num">Lab 3</td><td>Logistic Regression &amp; Perceptron from Scratch</td><td>Week 4</td></tr>
+        <tr><td class="week-num">Lab 4</td><td>K-Nearest Neighbors &amp; Decision Trees</td><td>Week 5</td></tr>
+        <tr><td class="week-num">Lab 5</td><td>Support Vector Machines with scikit-learn</td><td>Week 6</td></tr>
+        <tr><td class="week-num">Lab 6</td><td>Ensemble Methods &mdash; Random Forest &amp; Gradient Boosting</td><td>Week 7</td></tr>
+        <tr><td class="week-num">Lab 7</td><td>Unsupervised Learning &mdash; K-Means, Hierarchical, DBSCAN</td><td>Week 8</td></tr>
+        <tr><td class="week-num">Lab 8</td><td>Dimensionality Reduction &mdash; PCA &amp; t-SNE</td><td>Week 9</td></tr>
+        <tr><td class="week-num">Lab 9</td><td>Neural Networks with TensorFlow / PyTorch</td><td>Week 10</td></tr>
+        <tr><td class="week-num">Lab 10</td><td>Convolutional Neural Networks</td><td>Week 11</td></tr>
+        <tr><td class="week-num">Lab 11</td><td>ML Pipelines &amp; Hyperparameter Tuning</td><td>Week 12</td></tr>
+        <tr><td class="week-num">Lab 12</td><td>Capstone Project Work Session</td><td>Week 12</td></tr>
+        <tr><td class="week-num">Lab 13</td><td>Capstone Finalization &amp; Presentation</td><td>Week 13</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <!-- ── Textbooks ────────────────────────────────────── -->
+  <section id="textbooks">
+    <h2 class="section-title">Textbooks &amp; Core References</h2>
+    <div class="books-grid">
+
+      <div class="book-card">
+        <span class="book-code">[Mitchell]</span>
+        <p class="book-title">Machine Learning</p>
+        <p class="book-author">Tom M. Mitchell &bull; McGraw-Hill, 1997</p>
+        <a class="book-link" href="https://www.cs.cmu.edu/~tom/mlbook.html" target="_blank">Book page &rarr;</a>
+        <a class="book-link" href="https://www.cs.cmu.edu/~tom/mlbook/NBayesLogReg.pdf" target="_blank">Free chapter: NB &amp; LogReg &rarr;</a>
+      </div>
+
+      <div class="book-card">
+        <span class="book-code">[Bishop]</span>
+        <p class="book-title">Pattern Recognition and Machine Learning</p>
+        <p class="book-author">Christopher M. Bishop &bull; Springer, 2006</p>
+        <a class="book-link" href="https://www.microsoft.com/en-us/research/publication/pattern-recognition-machine-learning/" target="_blank">Free PDF (MSR) &rarr;</a>
+        <a class="book-link" href="https://link.springer.com/book/9780387310732" target="_blank">Publisher &rarr;</a>
+      </div>
+
+      <div class="book-card">
+        <span class="book-code">[Murphy]</span>
+        <p class="book-title">Machine Learning: A Probabilistic Perspective</p>
+        <p class="book-author">Kevin P. Murphy &bull; MIT Press, 2012</p>
+        <a class="book-link" href="https://www.cs.ubc.ca/~murphyk/MLbook/" target="_blank">Book page &rarr;</a>
+        <a class="book-link" href="https://probml.github.io/pml-book/" target="_blank">2nd ed. (free) &rarr;</a>
+      </div>
+
+      <div class="book-card">
+        <span class="book-code">[Hastie]</span>
+        <p class="book-title">The Elements of Statistical Learning, 2nd ed.</p>
+        <p class="book-author">Hastie, Tibshirani &amp; Friedman &bull; Springer, 2009</p>
+        <a class="book-link" href="https://hastie.su.domains/ElemStatLearn/" target="_blank">Free PDF &rarr;</a>
+      </div>
+
+      <div class="book-card">
+        <span class="book-code">[Shalev-Shwartz]</span>
+        <p class="book-title">Understanding Machine Learning: From Theory to Algorithms</p>
+        <p class="book-author">Shalev-Shwartz &amp; Ben-David &bull; Cambridge UP, 2014</p>
+        <a class="book-link" href="https://www.cs.huji.ac.il/~shais/UnderstandingMachineLearning/understanding-machine-learning-theory-algorithms.pdf" target="_blank">Free PDF &rarr;</a>
+      </div>
+
+      <div class="book-card">
+        <span class="book-code">[Goodfellow]</span>
+        <p class="book-title">Deep Learning</p>
+        <p class="book-author">Goodfellow, Bengio &amp; Courville &bull; MIT Press, 2016</p>
+        <a class="book-link" href="https://www.deeplearningbook.org/" target="_blank">Free online &rarr;</a>
+      </div>
+
+      <div class="book-card" style="border-left-color:var(--teal);">
+        <span class="book-code" style="background:var(--teal);color:var(--white);">[MML]</span>
+        <p class="book-title">Mathematics for Machine Learning</p>
+        <p class="book-author">Deisenroth, Faisal &amp; Ong &bull; Cambridge UP, 2020 &bull; Week 2</p>
+        <a class="book-link" href="https://mml-book.github.io/" target="_blank" style="border-color:var(--teal);color:var(--teal);">Free PDF &rarr;</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Research Articles ────────────────────────────── -->
+  <section id="papers">
+    <h2 class="section-title">Research Articles Covered</h2>
+    <p class="section-note">
+      Each Part&nbsp;2 lecture is built around a primary source. Links point to the publisher
+      of record or a stable open copy; a few classics are available only through the library.
+    </p>
+    <ul class="papers-list">
+
+      <li>
+        <span class="paper-year">1805<br />1809</span>
+        <div class="paper-info">
+          <p class="paper-title">Least Squares &mdash; Legendre (1805) and Gauss (1809)</p>
+          <p class="paper-ref">Legendre, <i>Nouvelles m&eacute;thodes&hellip;</i> &bull; Gauss, <i>Theoria Motus Corporum Coelestium</i>
+            <span class="paper-week">Week 3</span></p>
+          <span class="btn-pdf-book">&#128218; Historical sources &mdash; library / archive copies</span>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">1901<br />1933</span>
+        <div class="paper-info">
+          <p class="paper-title">The Origins of Principal Component Analysis</p>
+          <p class="paper-ref">Pearson (1901), <i>Phil. Mag.</i> &bull; Hotelling (1933), <i>J. Educ. Psychol.</i>
+            <span class="paper-week">Week 9</span></p>
+          <a class="btn-pdf" href="https://doi.org/10.1080/14786440109462720" target="_blank">&#8599; Pearson (DOI)</a>
+          <a class="btn-pdf" href="https://doi.org/10.1037/h0071325" target="_blank">&#8599; Hotelling (DOI)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">1958</span>
+        <div class="paper-info">
+          <p class="paper-title">The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain</p>
+          <p class="paper-ref">Frank Rosenblatt &bull; <i>Psychological Review</i> 65(6)
+            <span class="paper-week">Week 4</span></p>
+          <a class="btn-pdf" href="https://doi.org/10.1037/h0042519" target="_blank">&#8599; DOI</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">1958</span>
+        <div class="paper-info">
+          <p class="paper-title">The Regression Analysis of Binary Sequences</p>
+          <p class="paper-ref">David R. Cox &bull; <i>JRSS Series B</i> 20(2) &mdash; origins of logistic regression
+            <span class="paper-week">Week 4</span></p>
+          <a class="btn-pdf" href="https://doi.org/10.1111/j.2517-6161.1958.tb00292.x" target="_blank">&#8599; DOI</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">1959</span>
+        <div class="paper-info">
+          <p class="paper-title">Some Studies in Machine Learning Using the Game of Checkers</p>
+          <p class="paper-ref">Arthur L. Samuel &bull; <i>IBM Journal of Research and Development</i> 3(3) &bull; the founding paper
+            <span class="paper-week">Week 1</span></p>
+          <a class="btn-pdf" href="https://people.csail.mit.edu/brooks/idocs/Samuel.pdf" target="_blank">&#8595; PDF (MIT CSAIL)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">1967</span>
+        <div class="paper-info">
+          <p class="paper-title">Nearest Neighbor Pattern Classification</p>
+          <p class="paper-ref">Cover &amp; Hart &bull; <i>IEEE Trans. Information Theory</i> 13(1)
+            <span class="paper-week">Week 5</span></p>
+          <a class="btn-pdf" href="https://isl.stanford.edu/~cover/papers/transIT/0021cove.pdf" target="_blank">&#8595; PDF (Stanford ISL)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">1967</span>
+        <div class="paper-info">
+          <p class="paper-title">Some Methods for Classification and Analysis of Multivariate Observations</p>
+          <p class="paper-ref">J. MacQueen &bull; Berkeley Symposium on Math. Statistics &amp; Probability &mdash; K-Means
+            <span class="paper-week">Week 8</span></p>
+          <a class="btn-pdf" href="https://projecteuclid.org/euclid.bsmsp/1200512992" target="_blank">&#8595; PDF (Project Euclid)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">1986</span>
+        <div class="paper-info">
+          <p class="paper-title">Learning Representations by Back-propagating Errors</p>
+          <p class="paper-ref">Rumelhart, Hinton &amp; Williams &bull; <i>Nature</i> 323
+            <span class="paper-week">Week 10</span></p>
+          <a class="btn-pdf" href="https://www.nature.com/articles/323533a0" target="_blank">&#8599; Nature</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">1986</span>
+        <div class="paper-info">
+          <p class="paper-title">Induction of Decision Trees (ID3)</p>
+          <p class="paper-ref">J. R. Quinlan &bull; <i>Machine Learning</i> 1(1)
+            <span class="paper-week">Week 5</span></p>
+          <a class="btn-pdf" href="https://link.springer.com/article/10.1007/BF00116251" target="_blank">&#8599; Springer</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">1992</span>
+        <div class="paper-info">
+          <p class="paper-title">A Training Algorithm for Optimal Margin Classifiers</p>
+          <p class="paper-ref">Boser, Guyon &amp; Vapnik &bull; COLT 1992 &mdash; the kernel trick
+            <span class="paper-week">Week 6</span></p>
+          <a class="btn-pdf" href="https://www.svms.org/training/BOGV92.pdf" target="_blank">&#8595; PDF</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">1995</span>
+        <div class="paper-info">
+          <p class="paper-title">Support-Vector Networks</p>
+          <p class="paper-ref">Cortes &amp; Vapnik &bull; <i>Machine Learning</i> 20(3)
+            <span class="paper-week">Week 6</span></p>
+          <a class="btn-pdf" href="https://link.springer.com/article/10.1007/BF00994018" target="_blank">&#8599; Springer (open)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">1996</span>
+        <div class="paper-info">
+          <p class="paper-title">Bagging Predictors</p>
+          <p class="paper-ref">Leo Breiman &bull; <i>Machine Learning</i> 24(2)
+            <span class="paper-week">Week 7</span></p>
+          <a class="btn-pdf" href="https://www.stat.berkeley.edu/~breiman/bagging.pdf" target="_blank">&#8595; PDF (Berkeley)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">1996</span>
+        <div class="paper-info">
+          <p class="paper-title">A Density-Based Algorithm for Discovering Clusters in Large Spatial Databases with Noise (DBSCAN)</p>
+          <p class="paper-ref">Ester, Kriegel, Sander &amp; Xu &bull; KDD 1996
+            <span class="paper-week">Week 8</span></p>
+          <a class="btn-pdf" href="https://cdn.aaai.org/KDD/1996/KDD96-037.pdf" target="_blank">&#8595; PDF (AAAI)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">1996</span>
+        <div class="paper-info">
+          <p class="paper-title">The Lack of A Priori Distinctions Between Learning Algorithms</p>
+          <p class="paper-ref">David H. Wolpert &bull; <i>Neural Computation</i> 8(7) &mdash; the No Free Lunch theorem
+            <span class="paper-week">Weeks 1, 12</span></p>
+          <a class="btn-pdf" href="https://doi.org/10.1162/neco.1996.8.7.1341" target="_blank">&#8599; DOI</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">1997</span>
+        <div class="paper-info">
+          <p class="paper-title">A Decision-Theoretic Generalization of On-Line Learning and an Application to Boosting (AdaBoost)</p>
+          <p class="paper-ref">Freund &amp; Schapire &bull; <i>J. Computer and System Sciences</i> 55(1)
+            <span class="paper-week">Weeks 2, 7</span></p>
+          <a class="btn-pdf" href="https://www.face-rec.org/algorithms/Boosting-Ensemble/decision-theoretic_generalization.pdf" target="_blank">&#8595; PDF</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">1997</span>
+        <div class="paper-info">
+          <p class="paper-title">Long Short-Term Memory</p>
+          <p class="paper-ref">Hochreiter &amp; Schmidhuber &bull; <i>Neural Computation</i> 9(8)
+            <span class="paper-week">Week 11</span></p>
+          <a class="btn-pdf" href="https://deeplearning.cs.cmu.edu/F23/document/readings/LSTM.pdf" target="_blank">&#8595; PDF (CMU)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">1998</span>
+        <div class="paper-info">
+          <p class="paper-title">Gradient-Based Learning Applied to Document Recognition (LeNet-5)</p>
+          <p class="paper-ref">LeCun, Bottou, Bengio &amp; Haffner &bull; <i>Proceedings of the IEEE</i> 86(11)
+            <span class="paper-week">Week 11</span></p>
+          <a class="btn-pdf" href="http://vision.stanford.edu/cs598_spring07/papers/Lecun98.pdf" target="_blank">&#8595; PDF (Stanford Vision)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2001</span>
+        <div class="paper-info">
+          <p class="paper-title">Random Forests</p>
+          <p class="paper-ref">Leo Breiman &bull; <i>Machine Learning</i> 45(1)
+            <span class="paper-week">Week 7</span></p>
+          <a class="btn-pdf" href="https://link.springer.com/article/10.1023/A:1010933404324" target="_blank">&#8599; Springer (open)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2008</span>
+        <div class="paper-info">
+          <p class="paper-title">Visualizing Data using t-SNE</p>
+          <p class="paper-ref">van der Maaten &amp; Hinton &bull; <i>JMLR</i> 9
+            <span class="paper-week">Week 9</span></p>
+          <a class="btn-pdf" href="https://www.jmlr.org/papers/volume9/vandermaaten08a/vandermaaten08a.pdf" target="_blank">&#8595; PDF (JMLR)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2012</span>
+        <div class="paper-info">
+          <p class="paper-title">ImageNet Classification with Deep Convolutional Neural Networks (AlexNet)</p>
+          <p class="paper-ref">Krizhevsky, Sutskever &amp; Hinton &bull; NeurIPS 2012
+            <span class="paper-week">Week 10</span></p>
+          <a class="btn-pdf" href="https://proceedings.neurips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf" target="_blank">&#8595; PDF (NeurIPS)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2015</span>
+        <div class="paper-info">
+          <p class="paper-title">Machine Learning: Trends, Perspectives, and Prospects</p>
+          <p class="paper-ref">Jordan &amp; Mitchell &bull; <i>Science</i> 349(6245)
+            <span class="paper-week">Week 1</span></p>
+          <a class="btn-pdf" href="https://www.cs.cmu.edu/~tom/pubs/Science-ML-2015.pdf" target="_blank">&#8595; PDF (CMU)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2015</span>
+        <div class="paper-info">
+          <p class="paper-title">Hidden Technical Debt in Machine Learning Systems</p>
+          <p class="paper-ref">Sculley et al. &bull; NeurIPS 2015
+            <span class="paper-week">Week 12</span></p>
+          <a class="btn-pdf" href="https://proceedings.neurips.cc/paper/2015/file/86df7dcfd896fcaf2674f757a2463eba-Paper.pdf" target="_blank">&#8595; PDF (NeurIPS)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2016</span>
+        <div class="paper-info">
+          <p class="paper-title">&ldquo;Why Should I Trust You?&rdquo; Explaining the Predictions of Any Classifier (LIME)</p>
+          <p class="paper-ref">Ribeiro, Singh &amp; Guestrin &bull; KDD 2016
+            <span class="paper-week">Week 13</span></p>
+          <a class="btn-pdf" href="https://arxiv.org/abs/1602.04938" target="_blank">&#8595; PDF (arXiv)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2016</span>
+        <div class="paper-info">
+          <p class="paper-title">Equality of Opportunity in Supervised Learning</p>
+          <p class="paper-ref">Hardt, Price &amp; Srebro &bull; NeurIPS 2016
+            <span class="paper-week">Week 13</span></p>
+          <a class="btn-pdf" href="https://arxiv.org/abs/1610.02413" target="_blank">&#8595; PDF (arXiv)</a>
+        </div>
+      </li>
+
+      <li>
+        <span class="paper-year">2017</span>
+        <div class="paper-info">
+          <p class="paper-title">Attention Is All You Need</p>
+          <p class="paper-ref">Vaswani et al. &bull; NeurIPS 2017 &mdash; the Transformer
+            <span class="paper-week">Week 11</span></p>
+          <a class="btn-pdf" href="https://arxiv.org/abs/1706.03762" target="_blank">&#8595; PDF (arXiv)</a>
+        </div>
+      </li>
+
+    </ul>
+  </section>
+
+  <!-- ── Assessment ───────────────────────────────────── -->
+  <section id="assessment">
+    <h2 class="section-title">Assessment (OBE Aligned)</h2>
+
+    <p class="notice">
+      <strong>Note:</strong> theory weightages below are indicative and follow the standard
+      departmental structure &mdash; confirm the final distribution against the current
+      University of Chittagong / CSE examination policy before circulating to students.
+      The lab weightages are those specified in the CSE&nbsp;814 lab plan.
+    </p>
+
+    <div class="info-grid">
+
+      <div class="card" style="padding:0;overflow:hidden;">
+        <table class="assess-table">
+          <thead>
+            <tr><th>CSE 813 &mdash; Theory</th><th>Weight</th><th>CLOs</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Class Tests / Quizzes</td>
+              <td>20% <span class="weight-bar" style="width:40px;"></span></td>
+              <td>CLO1, CLO2</td>
+            </tr>
+            <tr>
+              <td>Mid-Term Examination</td>
+              <td>25% <span class="weight-bar" style="width:50px;"></span></td>
+              <td>CLO1, CLO2, CLO3</td>
+            </tr>
+            <tr>
+              <td>Final Examination</td>
+              <td>40% <span class="weight-bar" style="width:80px;"></span></td>
+              <td>CLO1&ndash;CLO5</td>
+            </tr>
+            <tr>
+              <td>Assignments / Term Paper</td>
+              <td>10% <span class="weight-bar" style="width:20px;"></span></td>
+              <td>CLO4, CLO5</td>
+            </tr>
+            <tr>
+              <td>Attendance &amp; Participation</td>
+              <td>5% <span class="weight-bar" style="width:10px;"></span></td>
+              <td>&mdash;</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card" style="padding:0;overflow:hidden;">
+        <table class="assess-table">
+          <thead>
+            <tr><th>CSE 814 &mdash; Lab</th><th>Weight</th><th>CLOs</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Lab Tasks (11 &times; 2%)</td>
+              <td>22% <span class="weight-bar" style="width:44px;"></span></td>
+              <td>CLO1, CLO2, CLO3</td>
+            </tr>
+            <tr>
+              <td>Quizzes (5 &times; 4%)</td>
+              <td>20% <span class="weight-bar" style="width:40px;"></span></td>
+              <td>CLO1, CLO2, CLO3</td>
+            </tr>
+            <tr>
+              <td>Mid-Term Lab Exam</td>
+              <td>15% <span class="weight-bar" style="width:30px;"></span></td>
+              <td>CLO1, CLO2, CLO3</td>
+            </tr>
+            <tr>
+              <td>Capstone Project (milestones + final)</td>
+              <td>30% <span class="weight-bar" style="width:60px;"></span></td>
+              <td>CLO4, CLO5</td>
+            </tr>
+            <tr>
+              <td>Final Lab Exam / Viva</td>
+              <td>13% <span class="weight-bar" style="width:26px;"></span></td>
+              <td>CLO4, CLO5</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Online Resources ─────────────────────────────── -->
+  <section id="resources">
+    <h2 class="section-title">Online Learning Resources</h2>
+
+    <div style="margin-bottom:20px;">
+      <h3 class="subhead">Benchmark Courses</h3>
+      <ul class="ivy-list">
+        <li>
+          <p class="ivy-name"><a href="https://cs229.stanford.edu/" target="_blank">Stanford CS229</a></p>
+          <p class="ivy-full">Machine Learning (Andrew Ng)</p>
+        </li>
+        <li>
+          <p class="ivy-name"><a href="https://www.cs.cmu.edu/~10701/" target="_blank">CMU 10-701</a></p>
+          <p class="ivy-full">Introduction to Machine Learning</p>
+        </li>
+        <li>
+          <p class="ivy-name"><a href="https://people.eecs.berkeley.edu/~jrs/189/" target="_blank">UC Berkeley CS189</a></p>
+          <p class="ivy-full">Introduction to Machine Learning</p>
+        </li>
+        <li>
+          <p class="ivy-name">MIT 6.867</p>
+          <p class="ivy-full">Machine Learning &mdash; statistical inference foundation</p>
+        </li>
+        <li>
+          <p class="ivy-name">Harvard CS181</p>
+          <p class="ivy-full">Machine Learning &mdash; applied perspective</p>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="subhead">Free Materials &amp; Tools</h3>
+      <div class="books-grid">
+        <div class="book-card" style="border-left-color:var(--teal);">
+          <p class="book-title">CS229 Main Lecture Notes</p>
+          <p class="book-author">Stanford &bull; all weeks</p>
+          <a class="book-link" href="https://cs229.stanford.edu/main_notes.pdf" target="_blank" style="border-color:var(--teal);color:var(--teal);">PDF &rarr;</a>
+        </div>
+        <div class="book-card" style="border-left-color:var(--teal);">
+          <p class="book-title">scikit-learn User Guide</p>
+          <p class="book-author">Reference for Weeks 3&ndash;9 &amp; the lab</p>
+          <a class="book-link" href="https://scikit-learn.org/stable/" target="_blank" style="border-color:var(--teal);color:var(--teal);">Docs &rarr;</a>
+        </div>
+        <div class="book-card" style="border-left-color:var(--teal);">
+          <p class="book-title">NumPy &amp; Pandas Documentation</p>
+          <p class="book-author">Lab Week 1 foundations</p>
+          <a class="book-link" href="https://numpy.org/doc/stable/" target="_blank" style="border-color:var(--teal);color:var(--teal);">NumPy &rarr;</a>
+          <a class="book-link" href="https://pandas.pydata.org/docs/" target="_blank" style="border-color:var(--teal);color:var(--teal);">Pandas &rarr;</a>
+        </div>
+        <div class="book-card" style="border-left-color:var(--teal);">
+          <p class="book-title">Kaggle Learn &amp; Datasets</p>
+          <p class="book-author">Practice datasets and capstone ideas</p>
+          <a class="book-link" href="https://www.kaggle.com/learn" target="_blank" style="border-color:var(--teal);color:var(--teal);">Courses &rarr;</a>
+        </div>
+        <div class="book-card" style="border-left-color:var(--teal);">
+          <p class="book-title">UCI Machine Learning Repository</p>
+          <p class="book-author">Classic benchmark datasets</p>
+          <a class="book-link" href="https://archive.ics.uci.edu/" target="_blank" style="border-color:var(--teal);color:var(--teal);">Datasets &rarr;</a>
+        </div>
+        <div class="book-card" style="border-left-color:var(--teal);">
+          <p class="book-title">PyTorch &amp; TensorFlow Tutorials</p>
+          <p class="book-author">Weeks 10&ndash;11 &amp; Labs 9&ndash;10</p>
+          <a class="book-link" href="https://pytorch.org/tutorials/" target="_blank" style="border-color:var(--teal);color:var(--teal);">PyTorch &rarr;</a>
+          <a class="book-link" href="https://www.tensorflow.org/tutorials" target="_blank" style="border-color:var(--teal);color:var(--teal);">TensorFlow &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════════════ FOOTER ════════════════════════ -->
+<footer>
+  <p>
+    <strong>CSE 813 &mdash; Machine Learning</strong><br />
+    Department of Computer Science &amp; Engineering &bull;
+    University of Chittagong, Chittagong, Bangladesh<br />
+    Instructor: Rokan Uddin Faruqui &bull;
+    <a href="mailto:rufaruqui@cu.ac.bd">rufaruqui@cu.ac.bd</a>
+  </p>
+</footer>
+
+</body>
+</html>
