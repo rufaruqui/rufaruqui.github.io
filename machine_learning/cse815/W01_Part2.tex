@@ -1,0 +1,674 @@
+% =================================================================
+%  CSE 815 -- Machine Learning 
+%  Module 1, Week 1, Part 2   
+%  Visualising the Cost Function and Gradient Descent
+% =================================================================
+\documentclass[aspectratio=169,10pt]{beamer}
+\usepackage{cse815}
+
+\title[CSE 815 -- Week 1, Part 2]{Training a Model with Gradient Descent}
+\subtitle{Visualising $J(w,b)$, the Descent Algorithm, and the Learning Rate}
+\author{Rokan Uddin Faruqui\\ \small Professor, Department of CSE}
+\institute{\small University of Chittagong \\ \texttt{rufaruqui@cu.ac.bd}}
+\date[Week 1 / P 2]{ Week 1 $\cdot$ Part 2 }
+
+\begin{document}
+
+\begin{frame}[plain,noframenumbering]
+  \titlepage
+\end{frame}
+
+% ---------------------------------------------------------------
+\begin{frame}{Where we left off, and where we are going}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Part 1 gave us}
+        \[ \fwb(x)=wx+b \]
+        \[ J(w,b)=\frac{1}{2m}\sum_{i=1}^{m}\bigl(\fwb(\xii{i})-\yii{i}\bigr)^2 \]
+        \[ \text{Goal:}\quad \min_{w,b} J(w,b) \]
+      \end{block}
+      \small We can \emph{state} the goal. We cannot yet \emph{reach} it: trying
+      every $(w,b)$ is impossible --- the parameter space is continuous.
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \begin{keyidea}[Today]
+        \small
+        \begin{enumerate}
+          \item See $J$ as a surface and as contours 
+          \item Gradient descent: the algorithm 
+          \item Why the derivative points the right way 
+          \item The learning rate $\alpha$ 
+          \item Derive the gradients for linear regression 
+          \item Batch gradient descent in action 
+        \end{enumerate}
+      \end{keyidea}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===============================================================
+\section{Visualising the Cost Function}
+
+\begin{frame}{With two parameters, $J$ is a surface}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.55\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \begin{axis}[width=6.6cm,height=4.4cm,
+          view={40}{30},
+          xlabel={$w$},ylabel={$b$},zlabel={$J(w,b)$},
+          tick label style={font=\tiny},label style={font=\scriptsize},
+          colormap={cu}{color=(culight) color=(cuteal) color=(cublue)},
+          samples=26,domain=-1.2:3.2,y domain=-1.6:3.6]
+          \addplot3[surf,shader=interp,opacity=0.92]
+            {1.6*(x-1)^2 + 0.9*(y-1)^2 + 0.55*(x-1)*(y-1) + 0.2};
+        \end{axis}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.42\textwidth}
+      \footnotesize
+      \begin{itemize}
+        \item Horizontal axes: the \emph{parameters} $w$ and $b$.
+        \item Vertical axis: the cost $J$ --- how badly that line fits the
+              \emph{fixed} training data.
+        \item A \textbf{convex bowl}: one lowest point, no local minima, no
+              plateaus.
+        \item Each point on the surface is one candidate line $\fwb$.
+      \end{itemize}
+      \begin{keyidea}
+        Training searches for the bottom of this bowl, blindfolded: we feel the
+        local slope but never see the whole surface.
+      \end{keyidea}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{The same surface, seen from above: contour plots}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.52\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \begin{axis}[width=6.4cm,height=5.0cm,xlabel={$w$},ylabel={$b$},
+          tick label style={font=\scriptsize},label style={font=\scriptsize},
+          view={0}{90}, domain=-1.2:3.2, y domain=-1.6:3.6,
+          colormap={cu}{color=(cublue) color=(cuteal) color=(cuamber)}]
+          \costcontour{}{0.3,0.8,1.6,2.8,4.4,6.4}{1.6*(x-1)^2 + 0.9*(y-1)^2 + 0.55*(x-1)*(y-1) + 0.2}
+          \addplot3[only marks,mark=*,mark size=2.4pt,curose] coordinates {(1,1,0.2)};
+          \node[font=\scriptsize,curose,anchor=west] at (axis cs:1.35,0.55,0) {minimum};
+        \end{axis}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \small
+      \begin{itemize}
+        \item Each closed curve joins all $(w,b)$ pairs having the \emph{same}
+              cost --- exactly like elevation lines on a topographic map of
+              Chittagong Hill Tracts.
+        \item The centre of the innermost ellipse is the minimum.
+        \item Contours \emph{close together} $\Rightarrow$ steep slope;
+              \emph{far apart} $\Rightarrow$ nearly flat.
+        \item Elongated ellipses signal that the two parameters have very
+              different scales --- this motivates feature scaling in Week 2.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Reading the contour map: three candidate lines}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering {\scriptsize Data and three fits}\par
+      \begin{tikzpicture}
+        \begin{axis}[width=6.0cm,height=4.4cm,xlabel={$x$},ylabel={$y$},
+          xmin=0,xmax=9,ymin=0,ymax=10,grid=major,grid style={culight},
+          tick label style={font=\scriptsize},label style={font=\scriptsize},
+          legend style={font=\tiny,at={(0.02,0.98)},anchor=north west,draw=none,fill=white}]
+          \addplot[only marks,mark=*,mark size=1.8pt,cublue,forget plot]
+            coordinates {(1,2)(2,3.4)(3,3.8)(4,5.6)(5,5.4)(6,7.2)(7,7.4)(8,8.8)};
+          \addplot[cuteal,very thick,domain=0.5:8.5]{0.95*x+1.1};   \addlegendentry{A: good}
+          \addplot[cuamber,very thick,dashed,domain=0.5:8.5]{0.55*x+2.6}; \addlegendentry{B: fair}
+          \addplot[curose,very thick,dotted,domain=0.5:8.5]{0.1*x+7}; \addlegendentry{C: poor}
+        \end{axis}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \centering {\scriptsize Their positions in parameter space}\par
+      \begin{tikzpicture}
+        \begin{axis}[width=6.0cm,height=4.4cm,xlabel={$w$},ylabel={$b$},
+          tick label style={font=\scriptsize},label style={font=\scriptsize},
+          view={0}{90}, domain=-0.2:1.6, y domain=-1:8,
+          colormap={cu}{color=(cublue) color=(cuteal) color=(cuamber)}]
+          \costcontour{}{0.15,0.6,1.6,3.4,6.5,11}{14*(x-0.95)^2 + 0.42*(y-1.1)^2 + 3.2*(x-0.95)*(y-1.1) + 0.05}
+          \addplot3[only marks,mark=*,mark size=2.2pt,cuteal] coordinates {(0.95,1.1,0)};
+          \addplot3[only marks,mark=square*,mark size=2.2pt,cuamber] coordinates {(0.55,2.6,0)};
+          \addplot3[only marks,mark=triangle*,mark size=2.8pt,curose] coordinates {(0.1,7,0)};
+          \node[font=\tiny,cuteal,anchor=west]  at (axis cs:1.02,1.1,0) {A};
+          \node[font=\tiny,cuamber,anchor=west] at (axis cs:0.62,2.6,0) {B};
+          \node[font=\tiny,curose,anchor=west]  at (axis cs:0.17,7,0) {C};
+        \end{axis}
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+  \vspace{1mm}
+  \small
+  \centering
+  A sits at the centre (low cost); C sits on an outer contour (high cost).
+  \textbf{Better line $\Leftrightarrow$ inner contour.}
+\end{frame}
+
+% ===============================================================
+\section{Gradient Descent}
+
+\begin{frame}{The idea: walk downhill}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.52\textwidth}
+      \small
+      You are standing on a hillside in dense fog. You want the valley floor.
+      A reasonable procedure:
+      \begin{enumerate}
+        \item Feel the ground around your feet.
+        \item Identify the direction of \emph{steepest descent}.
+        \item Take a small step that way.
+        \item Repeat until the ground is flat.
+      \end{enumerate}
+      \vspace{2mm}
+      That procedure is \textbf{gradient descent}. The ``feel the ground'' step
+      is a derivative; the ``small step'' is scaled by the learning rate.
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \begin{axis}[width=6.0cm,height=4.6cm,
+          xlabel={$w$},ylabel={$J(w)$},
+          xmin=-2.4,xmax=3.4,ymin=-0.4,ymax=6.4,
+          grid=major,grid style={culight},
+          tick label style={font=\scriptsize},label style={font=\scriptsize}]
+          \addplot[cublue,very thick,domain=-2.4:3.4,samples=90]{0.6*(x-0.5)^2+0.4};
+          \addplot[only marks,mark=*,mark size=2.2pt,curose]
+            coordinates {(-2.0,4.15)(-1.0,1.75)(-0.4,0.886)(-0.04,0.578)(0.18,0.461)};
+          \draw[-{Stealth},cuamber,thick] (axis cs:-2.0,4.15)--(axis cs:-1.0,1.75);
+          \draw[-{Stealth},cuamber,thick] (axis cs:-1.0,1.75)--(axis cs:-0.4,0.886);
+          \draw[-{Stealth},cuamber,thick] (axis cs:-0.4,0.886)--(axis cs:-0.04,0.578);
+          \node[font=\scriptsize,cugray] at (axis cs:2.2,1.0) {steps shrink};
+        \end{axis}
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{The gradient descent algorithm}
+  \begin{defnbox}[Gradient descent for two parameters]
+    Start from some initial $w,b$ (commonly $w=0,\,b=0$). Repeat until convergence:
+    \[
+      \left\{
+      \begin{aligned}
+        \text{tmp}_w &:= w - \alpha\,\frac{\partial}{\partial w}J(w,b)\\[2pt]
+        \text{tmp}_b &:= b - \alpha\,\frac{\partial}{\partial b}J(w,b)\\[2pt]
+        w &:= \text{tmp}_w,\qquad b := \text{tmp}_b
+      \end{aligned}
+      \right.
+    \]
+  \end{defnbox}
+  \small
+  \begin{itemize}
+    \item $\alpha>0$ is the \textbf{learning rate}, typically $0.001$--$0.3$; it
+          controls the step size.
+    \item $:=$ denotes assignment, not a mathematical equality.
+    \item The minus sign is what makes it \emph{descent}: we move \emph{against}
+          the gradient, the direction of steepest increase.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Simultaneous update --- a correctness requirement}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Correct: simultaneous}
+        \begin{align*}
+          \text{tmp}_w &:= w-\alpha\,\partial_w J(w,b)\\
+          \text{tmp}_b &:= b-\alpha\,\partial_b J(w,b)\\
+          w &:= \text{tmp}_w\\
+          b &:= \text{tmp}_b
+        \end{align*}
+        \footnotesize Both derivatives are evaluated at the \emph{same} point
+        $(w,b)$ --- the old one.
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Incorrect: sequential}
+        \begin{align*}
+          w &:= w-\alpha\,\partial_w J(w,b)\\
+          b &:= b-\alpha\,\partial_b J(\underbrace{w}_{\text{already changed!}},b)
+        \end{align*}
+        \footnotesize The second derivative is taken at a \emph{different} point.
+        This is another algorithm; it sometimes still converges, which makes the
+        bug hard to spot.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+  \begin{pitfall}
+    \footnotesize In NumPy, \texttt{w -= alpha*dj\_dw} then
+    \texttt{b -= alpha*dj\_db} is safe \emph{only if} both gradients were
+    computed \emph{before} either assignment.
+  \end{pitfall}
+\end{frame}
+
+\begin{frame}{Why the derivative points the right way}
+  \framesubtitle{One parameter, $J(w)$, update $w := w - \alpha\,\frac{d}{dw}J(w)$}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \begin{axis}[width=6.2cm,height=4.8cm,xlabel={$w$},ylabel={$J(w)$},
+          xmin=-2.6,xmax=3.6,ymin=-0.3,ymax=5.6,
+          grid=major,grid style={culight},
+          tick label style={font=\scriptsize},label style={font=\scriptsize}]
+          \addplot[cublue,very thick,domain=-2.6:3.6,samples=90]{0.5*(x-0.5)^2+0.3};
+          % right point, positive slope
+          \addplot[only marks,mark=*,mark size=2.2pt,curose] coordinates {(2.7,2.72)};
+          \addplot[curose,thick,domain=1.9:3.5]{2.2*(x-2.7)+2.72};
+          \draw[-{Stealth},curose,very thick] (axis cs:2.7,2.1)--(axis cs:1.9,2.1);
+          % left point, negative slope
+          \addplot[only marks,mark=*,mark size=2.2pt,cuteal] coordinates {(-1.7,2.72)};
+          \addplot[cuteal,thick,domain=-2.5:-0.9]{-2.2*(x+1.7)+2.72};
+          \draw[-{Stealth},cuteal,very thick] (axis cs:-1.7,2.1)--(axis cs:-0.9,2.1);
+        \end{axis}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \small
+      \textbf{Right of the minimum} ({\color{curose}rose}): the tangent rises, so
+      $\frac{dJ}{dw}>0$. Then
+      \[ w := w - \alpha\cdot(\text{positive}) \;\Rightarrow\; w\ \text{decreases}. \]
+      We move \emph{left}, toward the minimum. \pause
+      \vspace{2mm}
+
+      \textbf{Left of the minimum} ({\color{cuteal}teal}): the tangent falls, so
+      $\frac{dJ}{dw}<0$. Then
+      \[ w := w - \alpha\cdot(\text{negative}) \;\Rightarrow\; w\ \text{increases}. \]
+      We move \emph{right}, toward the minimum.\pause
+      \vspace{2mm}
+
+      \textbf{At the minimum:} $\frac{dJ}{dw}=0$, so $w:=w-0$. Gradient descent
+      leaves a minimum alone --- it is a fixed point.
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===============================================================
+\section{The Learning Rate}
+
+\begin{frame}{Choosing $\alpha$: too small, too large, just right}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.33\textwidth}
+      \centering {\scriptsize $\alpha$ too \textbf{small}}\par
+      \begin{tikzpicture}
+        \begin{axis}[width=4.3cm,height=3.6cm,xtick=\empty,ytick=\empty,
+          xmin=-2.6,xmax=2.6,ymin=0,ymax=4,axis lines=box]
+          \addplot[cublue,thick,domain=-2.6:2.6,samples=70]{0.55*x^2+0.2};
+          \addplot[only marks,mark=*,mark size=1.5pt,curose]
+            coordinates {(-2.2,2.86)(-1.98,2.36)(-1.78,1.94)(-1.6,1.61)(-1.44,1.34)(-1.3,1.13)};
+          \draw[-{Stealth},cuamber] (axis cs:-2.2,2.86)--(axis cs:-1.98,2.36);
+          \draw[-{Stealth},cuamber] (axis cs:-1.98,2.36)--(axis cs:-1.78,1.94);
+          \draw[-{Stealth},cuamber] (axis cs:-1.78,1.94)--(axis cs:-1.6,1.61);
+        \end{axis}
+      \end{tikzpicture}
+      {\scriptsize Converges, but needs a huge number of iterations. Training is
+      slow, not wrong.}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \centering {\scriptsize $\alpha$ too \textbf{large}}\par
+      \begin{tikzpicture}
+        \begin{axis}[width=4.3cm,height=3.6cm,xtick=\empty,ytick=\empty,
+          xmin=-3.2,xmax=3.2,ymin=0,ymax=6,axis lines=box]
+          \addplot[cublue,thick,domain=-3.2:3.2,samples=70]{0.55*x^2+0.2};
+          \addplot[only marks,mark=*,mark size=1.5pt,curose]
+            coordinates {(-0.8,0.55)(1.2,1.0)(-1.9,2.19)(2.9,4.83)};
+          \draw[-{Stealth},curose] (axis cs:-0.8,0.55)--(axis cs:1.2,1.0);
+          \draw[-{Stealth},curose] (axis cs:1.2,1.0)--(axis cs:-1.9,2.19);
+          \draw[-{Stealth},curose] (axis cs:-1.9,2.19)--(axis cs:2.9,4.83);
+        \end{axis}
+      \end{tikzpicture}
+      {\scriptsize Overshoots the minimum each step; $J$ \emph{increases}.
+      Diverges.}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \centering {\scriptsize $\alpha$ \textbf{well chosen}}\par
+      \begin{tikzpicture}
+        \begin{axis}[width=4.3cm,height=3.6cm,xtick=\empty,ytick=\empty,
+          xmin=-2.6,xmax=2.6,ymin=0,ymax=4,axis lines=box]
+          \addplot[cublue,thick,domain=-2.6:2.6,samples=70]{0.55*x^2+0.2};
+          \addplot[only marks,mark=*,mark size=1.5pt,cuteal]
+            coordinates {(-2.2,2.86)(-1.1,0.87)(-0.55,0.37)(-0.27,0.24)(-0.13,0.21)};
+          \draw[-{Stealth},cuteal] (axis cs:-2.2,2.86)--(axis cs:-1.1,0.87);
+          \draw[-{Stealth},cuteal] (axis cs:-1.1,0.87)--(axis cs:-0.55,0.37);
+          \draw[-{Stealth},cuteal] (axis cs:-0.55,0.37)--(axis cs:-0.27,0.24);
+        \end{axis}
+      \end{tikzpicture}
+      {\scriptsize Rapid, monotone decrease in $J$.}
+    \end{column}
+  \end{columns}
+  \vspace{2mm}
+  \begin{keyidea}
+    Try $\alpha \in \{0.001,\,0.003,\,0.01,\,0.03,\,0.1,\,0.3\}$ --- roughly
+    $3\times$ steps. Plot $J$ against iteration number for each and pick the
+    largest $\alpha$ that still decreases $J$ smoothly.
+  \end{keyidea}
+\end{frame}
+
+\begin{frame}{Steps shrink automatically --- $\alpha$ need not}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \begin{axis}[width=6.2cm,height=4.6cm,xlabel={$w$},ylabel={$J(w)$},
+          xmin=-0.4,xmax=3.4,ymin=-0.2,ymax=4.4,
+          grid=major,grid style={culight},
+          tick label style={font=\scriptsize},label style={font=\scriptsize}]
+          \addplot[cublue,very thick,domain=-0.4:3.4,samples=90]{0.9*(x-0.4)^2+0.15};
+          \addplot[only marks,mark=*,mark size=2pt,curose]
+            coordinates {(3.0,4.03)(1.96,2.28)(1.34,1.03)(0.96,0.46)(0.74,0.26)(0.6,0.19)};
+          \draw[-{Stealth},cuamber,thick] (axis cs:3.0,4.03)--(axis cs:1.96,2.28);
+          \draw[-{Stealth},cuamber,thick] (axis cs:1.96,2.28)--(axis cs:1.34,1.03);
+          \draw[-{Stealth},cuamber,thick] (axis cs:1.34,1.03)--(axis cs:0.96,0.46);
+          \draw[-{Stealth},cuamber,thick] (axis cs:0.96,0.46)--(axis cs:0.74,0.26);
+        \end{axis}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \small
+      As we approach the minimum the slope $\bigl|\partial J/\partial w\bigr|$
+      gets smaller, so the step
+      \[ \Delta w = -\alpha\,\frac{\partial J}{\partial w} \]
+      gets smaller too --- \emph{with $\alpha$ held fixed}.
+      \vspace{2mm}
+      \begin{keyidea}
+        Gradient descent decelerates near a minimum on its own. For a convex
+        problem like linear regression, $\alpha$ need not be decayed by hand.
+      \end{keyidea}
+      \footnotesize For non-convex problems a fixed $\alpha$ can stall in a
+      \emph{local} minimum --- Module 2 introduces Adam.
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===============================================================
+\section{Gradient Descent for Linear Regression}
+
+\begin{frame}{Deriving the two partial derivatives}
+  \small
+  With $\fwb(x)=wx+b$ and $J(w,b)=\dfrac{1}{2m}\displaystyle\sum_{i=1}^{m}\bigl(\fwb(\xii{i})-\yii{i}\bigr)^2$:
+  \vspace{1mm}
+  \[
+    \frac{\partial J}{\partial w}
+    = \frac{1}{2m}\sum_{i=1}^{m} 2\bigl(w\xii{i}+b-\yii{i}\bigr)\cdot \frac{\partial}{\partial w}\bigl(w\xii{i}+b-\yii{i}\bigr)
+    = \frac{1}{m}\sum_{i=1}^{m}\bigl(\fwb(\xii{i})-\yii{i}\bigr)\,\xii{i}
+  \]
+  \[
+    \frac{\partial J}{\partial b}
+    = \frac{1}{2m}\sum_{i=1}^{m} 2\bigl(w\xii{i}+b-\yii{i}\bigr)\cdot 1
+    = \frac{1}{m}\sum_{i=1}^{m}\bigl(\fwb(\xii{i})-\yii{i}\bigr)
+  \]
+  \vspace{1mm}
+  \begin{keyidea}
+    This is where the $\tfrac{1}{2}$ in $J$ pays for itself: the $2$ from the
+    chain rule cancels it exactly. The $\tfrac12$ changes the \emph{value} of $J$
+    but not its \emph{minimiser}.
+  \end{keyidea}
+  \vspace{1mm}
+  Note the structure: both gradients are averages of the residual
+  $\bigl(\yhat^{(i)}-\yii{i}\bigr)$ --- weighted by $\xii{i}$ for $w$, unweighted for $b$.
+\end{frame}
+
+\begin{frame}{The complete algorithm}
+  \begin{defnbox}[Batch gradient descent for univariate linear regression]
+    Initialise $w:=0$, $b:=0$. Repeat until convergence:
+    \[
+      \begin{aligned}
+        w &:= w - \alpha\,\frac{1}{m}\sum_{i=1}^{m}\bigl(\fwb(\xii{i})-\yii{i}\bigr)\xii{i}\\[3pt]
+        b &:= b - \alpha\,\frac{1}{m}\sum_{i=1}^{m}\bigl(\fwb(\xii{i})-\yii{i}\bigr)
+      \end{aligned}
+      \qquad\text{(updated simultaneously)}
+    \]
+  \end{defnbox}
+  \small
+  \textbf{``Batch''} means each update uses \emph{all $m$} examples; mini-batch
+  and stochastic variants use a subset per step.
+  \begin{keyidea}[Why we are safe here]
+    \footnotesize The squared-error cost of a linear model is \emph{convex} in
+    $(w,b)$ --- a single bowl. With a suitable $\alpha$, gradient descent
+    always reaches the \emph{global} minimum, whatever the initialisation.
+  \end{keyidea}
+\end{frame}
+
+\begin{frame}{One iteration by hand}
+  \small
+  Data $(1,1),(2,2),(3,3)$, $m=3$. Start at $w=0,\,b=0$, take $\alpha=0.1$.
+  \vspace{1mm}
+
+  \textbf{Step 1 --- predictions and residuals.}
+  $\hat y = (0,0,0)$, so residuals $\hat y^{(i)}-y^{(i)} = (-1,-2,-3)$.
+  \vspace{1mm}
+
+  \textbf{Step 2 --- gradients.}
+  \[
+    \frac{\partial J}{\partial w}=\frac{1}{3}\bigl[(-1)(1)+(-2)(2)+(-3)(3)\bigr]
+      =\frac{-14}{3}\approx-4.667,
+    \qquad
+    \frac{\partial J}{\partial b}=\frac{-1-2-3}{3}=-2.
+  \]
+  \textbf{Step 3 --- simultaneous update.}
+  \[
+    w := 0 - 0.1(-4.667) = 0.467,\qquad b := 0 - 0.1(-2) = 0.2 .
+  \]
+  \vspace{1mm}
+  \textbf{Check.} Cost fell from $J(0,0)=\tfrac{1}{6}(1+4+9)=2.33$ to
+  $J(0.467,0.2)\approx 0.47$. Both parameters moved toward the true
+  $(w,b)=(1,0)$; $b$ will be pulled back down in later iterations.
+  \vspace{1mm}
+  \begin{pitfall}
+    Note that $b$ overshot \emph{upward} on iteration 1 even though its optimum is
+    $0$. Individual parameters may move away from their optimum; only $J$ is
+    guaranteed to decrease.
+  \end{pitfall}
+\end{frame}
+
+\begin{frame}{Running gradient descent: the trajectory}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering {\scriptsize Path over the contours of $J(w,b)$}\par
+      \begin{tikzpicture}
+        \begin{axis}[width=6.1cm,height=4.7cm,xlabel={$w$},ylabel={$b$},
+          tick label style={font=\scriptsize},label style={font=\scriptsize},
+          view={0}{90}, domain=-0.4:1.8, y domain=-1.2:4.4,
+          colormap={cu}{color=(cublue) color=(cuteal) color=(cuamber)}]
+          \costcontour{}{0.1,0.45,1.2,2.6,5,9}{9*(x-1)^2 + 0.5*(y-0.2)^2 + 2.4*(x-1)*(y-0.2) + 0.02}
+          \addplot3[curose,thick,mark=*,mark size=1.5pt] coordinates {
+            (0,3.6,0) (0.62,2.5,0) (0.86,1.6,0) (0.95,0.95,0) (0.99,0.5,0) (1.0,0.28,0)};
+          \addplot3[only marks,mark=star,mark size=3.4pt,cublue] coordinates {(1,0.2,0)};
+          \node[font=\tiny,cugray,anchor=west] at (axis cs:0.05,3.95,0) {start};
+        \end{axis}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \centering {\scriptsize The learning curve: $J$ vs.\ iteration}\par
+      \begin{tikzpicture}
+        \begin{axis}[width=6.1cm,height=4.7cm,xlabel={iteration},ylabel={$J(w,b)$},
+          xmin=0,xmax=60,ymin=0,ymax=2.6,grid=major,grid style={culight},
+          tick label style={font=\scriptsize},label style={font=\scriptsize}]
+          \addplot[cublue,very thick,domain=0:60,samples=90]{2.4*exp(-0.12*x)+0.02};
+          \draw[dashed,cugray] (axis cs:0,0.05)--(axis cs:60,0.05);
+          \node[font=\scriptsize,cugray,anchor=south east] at (axis cs:58,0.12) {plateau $\Rightarrow$ converged};
+        \end{axis}
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+  \begin{keyidea}[Always plot the learning curve]
+    \footnotesize A correct gradient descent decreases $J$ on \emph{every}
+    iteration. If $J$ ever rises, $\alpha$ is too large or the gradient code
+    has a bug.
+  \end{keyidea}
+\end{frame}
+
+\begin{frame}{Declaring convergence}
+  \small
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Automatic test}
+        Stop when $J$ decreases by less than $\varepsilon$ (e.g.\ $10^{-3}$) in one
+        iteration.\\[3pt]
+        \emph{Drawback:} the right $\varepsilon$ varies wildly across problems and
+        is hard to guess in advance.
+      \end{block}
+      \begin{block}{Visual test --- preferred}
+        Plot $J$ against iteration count and look for the curve flattening.
+        You also see divergence, oscillation and a badly chosen $\alpha$
+        immediately.
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Debugging checklist}
+        \begin{itemize}
+          \item $J$ increasing $\Rightarrow$ reduce $\alpha$ by $3$--$10\times$.
+          \item $J$ oscillating $\Rightarrow$ $\alpha$ slightly too large.
+          \item $J$ barely moving $\Rightarrow$ $\alpha$ too small, or features on
+                wildly different scales (Week 2).
+          \item Sanity check: with a very small $\alpha$, $J$ \emph{must} decrease
+                every iteration. If it does not, the bug is in the gradient, not
+                in $\alpha$.
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===============================================================
+\section{Wrap-up and Assessment}
+
+\begin{frame}{Summary of Week 1}
+  \small
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{The three-part recipe}
+        \begin{enumerate}
+          \item \textbf{Model:} $\fwb(x)=wx+b$
+          \item \textbf{Cost:} $J(w,b)=\frac{1}{2m}\sum_i(\fwb(\xii{i})-\yii{i})^2$
+          \item \textbf{Optimiser:} gradient descent
+            \[ \theta := \theta - \alpha\,\partial_\theta J \]
+        \end{enumerate}
+        Every algorithm in this course --- logistic regression, neural networks,
+        recommenders --- is a different choice of these same three parts.
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Things to remember}
+        \begin{itemize}
+          \item Update $w$ and $b$ \emph{simultaneously}.
+          \item The derivative's \emph{sign} steers; $\alpha$ sets the \emph{size}.
+          \item Squared-error + linear model $\Rightarrow$ convex $\Rightarrow$
+                global minimum guaranteed.
+          \item ``Batch'' = all $m$ examples per step.
+          \item Plot $J$ vs.\ iteration, always.
+        \end{itemize}
+      \end{block}
+      \begin{block}{Next week}
+        \small Multiple features, vectorisation, feature scaling, and choosing
+        $\alpha$ systematically.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Descriptive questions}
+  \small
+  \begin{enumerate}
+    \item Explain what a contour plot of $J(w,b)$ represents. What does the
+          spacing between adjacent contours tell you about the gradient there?
+          \hfill\clo{5}
+    \item Write the gradient descent update rule for $(w,b)$ and explain why the
+          updates must be simultaneous. Show, with a small example, how a
+          sequential update yields a different trajectory. \hfill\clo{6}
+    \item Using the sign of $dJ/dw$, argue that the update
+          $w := w-\alpha\,dJ/dw$ moves $w$ toward the minimum whether the current
+          $w$ lies to the left or to the right of it. \hfill\clo{5}
+    \item Derive $\partial J/\partial w$ and $\partial J/\partial b$ for
+          univariate linear regression with the squared-error cost. State clearly
+          where the chain rule is applied. \hfill\clo{8}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Descriptive questions (continued)}
+  \small
+  \begin{enumerate}\setcounter{enumi}{4}
+    \item Describe the behaviour of gradient descent when $\alpha$ is (a) too
+          small, (b) too large. Sketch the corresponding curve of $J$ against
+          iteration number for each case. \hfill\clo{5}
+    \item Explain why gradient descent takes smaller steps near the minimum even
+          though $\alpha$ is held constant. \hfill\clo{4}
+    \item For the data $(1,1),(2,2),(3,3)$, model $\fwb(x)=wx+b$, initial
+          $w=b=0$ and $\alpha=0.1$, carry out \emph{two} iterations of gradient
+          descent by hand, reporting $w$, $b$ and $J$ after each. \hfill\clo{8}
+    \item Why is the global optimum guaranteed for linear regression with squared
+          error, but not for a neural network? \hfill\clo{4}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Design questions}
+  \small
+  \begin{enumerate}
+    \item \textbf{Design a learning-rate schedule.} You must train the same model
+          on 200 different districts' data overnight, unattended --- no human can
+          watch the learning curves. Design an automated procedure that selects
+          $\alpha$ per district and detects divergence. Specify the decision rule,
+          the quantities you would log, and the failure case your design does not
+          handle. \hfill\clo{12}
+    \item \textbf{Design a stopping criterion.} Propose a convergence test that is
+          scale-invariant --- one that behaves the same whether prices are
+          recorded in taka or in lakh taka. Justify why your criterion has this
+          property, and contrast it with the naive test
+          ``stop when $\Delta J < 10^{-3}$''. \hfill\clo{10}
+    \item \textbf{Design a test suite.} A classmate's \texttt{compute\_gradient}
+          function returns plausible numbers but the model never fits well. Design
+          three unit tests that would localise the bug --- for example, tests
+          exploiting a data set whose optimal parameters you know analytically.
+          State what each test's expected output is and which bug it catches.
+          \hfill\clo{12}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Design questions (continued)}
+  \small
+  \begin{enumerate}\setcounter{enumi}{3}
+    \item \textbf{Redesign the optimiser.} Suppose $\partial J/\partial w$ is
+          expensive because $m = 10^{8}$. Propose a modification to batch gradient
+          descent that reduces per-iteration cost, and analyse the trade-off it
+          introduces in the convergence behaviour. \hfill\clo{10}
+    \item \textbf{Diagnose from a plot.} You are shown a learning curve in which
+          $J$ falls sharply for $50$ iterations, then rises steadily. List the two
+          most likely causes and design an experiment that distinguishes between
+          them. \hfill\clo{8}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Reading}
+  \begin{block}{Primary text}
+    G.~James, D.~Witten, T.~Hastie and R.~Tibshirani,
+    \emph{An Introduction to Statistical Learning}, 2nd ed., Springer, 2021.\\[2pt]
+    \hfill{\small$\rightarrow$ \textbf{\S3.1.1--3.1.3} --- estimating the coefficients by
+    least squares, and assessing the fit.}
+  \end{block}
+  \begin{block}{Supplementary}
+    C.~M.~Bishop, \emph{Pattern Recognition and Machine Learning}, Springer, 2006.\\[2pt]
+    \hfill{\small$\rightarrow$ \textbf{\S3.1.3} --- sequential (gradient-based) learning and the
+    least-mean-squares update rule.}
+  \end{block}
+  \vspace{2mm}
+  \begin{center}
+    \small\color{cugray}
+    Lab (CSE 816, Week 1): \emph{Gradient Descent} --- implement
+    \texttt{compute\_cost} and \texttt{compute\_gradient}, then plot the learning
+    curve.\\
+    Practice quiz: \emph{Train the model with gradient descent}.
+  \end{center}
+\end{frame}
+
+\end{document}

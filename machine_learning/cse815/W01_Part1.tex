@@ -1,0 +1,692 @@
+% =================================================================
+%  CSE 815 -- Machine Learning  
+%  Module 1, Week 1, Part 1   
+%  Introduction to ML, Learning Paradigms, Linear Regression & Cost
+% =================================================================
+\documentclass[aspectratio=169,10pt]{beamer}
+\usepackage{cse815}
+
+\title[CSE 815 -- Week 1, Part 1]{Introduction to Machine Learning}
+\subtitle{Learning Paradigms, the Linear Regression Model and the Cost Function}
+\author{Rokan Uddin Faruqui\\ \small Professor, Department of CSE}
+\institute{\small University of Chittagong \\ \texttt{rufaruqui@cu.ac.bd}}
+\date[Week 1 / Part 1]{Week 1 $\cdot$ Part 1}
+
+\begin{document}
+
+\begin{frame}[plain,noframenumbering]
+  \titlepage
+  \begin{center}
+    \footnotesize\color{cugray}
+    Credits: 3 \quad$\cdot$\quad  ----- \quad$\cdot$\quad Co-req: CSE 816 (Lab)
+  \end{center}
+\end{frame}
+
+% ---------------------------------------------------------------
+\begin{frame}{Session Roadmap}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.52\textwidth}
+      \small
+      \begin{enumerate}
+        \item Why machine learning, and where it is used  
+        \item What \emph{is} learning? A formal definition  
+        \item Supervised learning: regression \& classification  
+        \item Unsupervised learning  
+        \item The linear regression model  
+        \item The squared-error cost function  
+        \item Cost-function intuition  
+      \end{enumerate}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{keyidea}[By the end of this session you can]
+        \small
+        \begin{itemize}
+          \item State Mitchell's definition of learning and instantiate $\langle T,P,E\rangle$ for a given problem.
+          \item Classify a problem as supervised (regression/classification) or unsupervised.
+          \item Write the univariate linear model and its squared-error cost.
+          \item Explain what $J(w,b)$ measures and why we square the errors.
+        \end{itemize}
+      \end{keyidea}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===============================================================
+\section{What is Machine Learning?}
+
+\begin{frame}{Two ways to make a computer do something}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \textbf{Classical programming}
+      \begin{center}
+        \begin{tikzpicture}[node distance=6mm,every node/.style={font=\footnotesize}]
+          \node[draw,rounded corners,fill=culight,minimum width=1.8cm] (r) {Rules};
+          \node[draw,rounded corners,fill=culight,minimum width=1.8cm,below=of r] (d) {Data};
+          \node[draw,fill=cublue,text=white,rounded corners,right=10mm of $(r)!0.5!(d)$] (p) {Program};
+          \node[draw,rounded corners,fill=cuamber!25,right=10mm of p] (a) {Answers};
+          \draw[-{Stealth}] (r) -- (p);
+          \draw[-{Stealth}] (d) -- (p);
+          \draw[-{Stealth}] (p) -- (a);
+        \end{tikzpicture}
+      \end{center}
+      \small The human supplies the rules. Works when the rules are
+      knowable and writable --- sorting, parsing, shortest paths.
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{Machine learning}
+      \begin{center}
+        \begin{tikzpicture}[node distance=6mm,every node/.style={font=\footnotesize}]
+          \node[draw,rounded corners,fill=culight,minimum width=1.8cm] (d) {Data};
+          \node[draw,rounded corners,fill=culight,minimum width=1.8cm,below=of d] (a) {Answers};
+          \node[draw,fill=cuteal,text=white,rounded corners,right=10mm of $(d)!0.5!(a)$] (t) {Training};
+          \node[draw,rounded corners,fill=cuamber!25,right=10mm of t] (r) {Rules};
+          \draw[-{Stealth}] (d) -- (t);
+          \draw[-{Stealth}] (a) -- (t);
+          \draw[-{Stealth}] (t) -- (r);
+        \end{tikzpicture}
+      \end{center}
+      \small The machine \emph{infers} the rules from examples. Works when
+      the rules exist but nobody can state them --- recognising a face,
+      pricing a flat, translating a sentence.
+    \end{column}
+  \end{columns}
+  \vspace{3mm}
+  \begin{keyidea}
+    ML is not magic and not a replacement for algorithms. It is the tool of
+    choice when the specification is available only as \emph{examples}.
+  \end{keyidea}
+\end{frame}
+
+\begin{frame}{Applications you already use today}
+  \small
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Consumer scale}
+        \begin{itemize}
+          \item Web search ranking; spam filtering
+          \item Speech recognition, machine translation
+          \item Product / video recommendation
+          \item Photo tagging, OCR of Bangla number plates
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Science, industry, public good}
+        \begin{itemize}
+          \item Medical imaging triage; protein structure
+          \item Crop-yield and flood forecasting
+          \item Credit scoring, fraud detection
+          \item Predictive maintenance in manufacturing
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vspace{2mm}
+  \begin{center}
+    \small\color{cugray}
+    Common thread: a large pool of \emph{recorded past decisions} exists, and the
+    decision rule is too intricate or too personal to hand-code.
+  \end{center}
+\end{frame}
+
+\begin{frame}{Defining learning}
+  \begin{defnbox}[Arthur Samuel, 1959 --- informal]
+    Machine learning is the field of study that gives computers the ability to
+    learn without being explicitly programmed.
+  \end{defnbox}
+  \vspace{2mm}
+  \begin{defnbox}[Tom Mitchell, 1997 --- operational]
+    A computer program is said to \textbf{learn} from experience $E$ with respect
+    to some class of tasks $T$ and performance measure $P$, if its performance at
+    tasks in $T$, as measured by $P$, improves with experience $E$.
+  \end{defnbox}
+  \vspace{2mm}
+  \small
+  \textbf{Why the second definition matters.} It forces you to name three things
+  before writing a line of code. If you cannot name $P$, you cannot tell whether
+  your system is working; if you cannot name $E$, you have no project.
+\end{frame}
+
+\begin{frame}{Instantiating $\langle T, P, E\rangle$}
+  \small
+  \begin{center}
+  \renewcommand{\arraystretch}{1.35}
+  \begin{tabular}{@{}L{2.7cm}L{3.0cm}L{3.2cm}L{3.2cm}@{}}
+    \toprule
+    \textbf{Problem} & \textbf{Task $T$} & \textbf{Performance $P$} & \textbf{Experience $E$}\\
+    \midrule
+    Checkers (Samuel) & Play a game of checkers & Fraction of games won against opponents & Games played against itself\\
+    Spam filter & Label an e-mail spam/ham & Fraction correctly labelled & Corpus of user-flagged e-mails\\
+    Flat-price estimator & Predict price from size & Mean squared prediction error & Past sale records in Chattogram\\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vspace{2mm}
+  \begin{pitfall}
+    ``Accuracy'' is not always the right $P$. For a spam filter that sees
+    $99\%$ ham, a program that always answers ``ham'' scores $99\%$ and is
+    useless. Choosing $P$ is a design decision --- we return to it in Module 2.
+  \end{pitfall}
+\end{frame}
+
+% ===============================================================
+\section{Supervised Learning}
+
+\begin{frame}{Supervised learning: learning from labelled examples}
+  We are given $m$ training examples
+  \[
+    \mathcal{D} \;=\; \bigl\{\,(\xii{1},\yii{1}),\,(\xii{2},\yii{2}),\,\dots,\,(\xii{m},\yii{m})\,\bigr\},
+    \qquad \xii{i}\in\mathcal{X},\; \yii{i}\in\mathcal{Y}.
+  \]
+  The learner must output a function $f:\mathcal{X}\to\mathcal{Y}$ that predicts
+  $y$ well on \emph{new, unseen} $x$.
+  \vspace{2mm}
+  \begin{center}
+    \begin{tikzpicture}[every node/.style={font=\footnotesize},node distance=8mm]
+      \node[draw,rounded corners,fill=culight,align=center,minimum height=9mm] (D)
+        {Training set\\ $(x^{(i)},y^{(i)})_{i=1}^{m}$};
+      \node[draw,fill=cuteal,text=white,rounded corners,right=of D,minimum height=9mm,align=center] (L)
+        {Learning\\ algorithm};
+      \node[draw,fill=cublue,text=white,rounded corners,right=of L,minimum height=9mm] (f) {$f$};
+      \node[right=14mm of f,align=center] (x) {new input $x$};
+      \node[below=9mm of f,align=center] (yh) {prediction $\hat{y}=f(x)$};
+      \draw[-{Stealth}] (D) -- (L);
+      \draw[-{Stealth}] (L) -- (f);
+      \draw[-{Stealth}] (x) -- (f);
+      \draw[-{Stealth}] (f) -- (yh);
+    \end{tikzpicture}
+  \end{center}
+  \vspace{1mm}
+  \small The word \emph{supervised} refers to the ``right answers'' $\yii{i}$
+  supplied during training --- a supervisor has already solved $m$ instances for us.
+\end{frame}
+
+\begin{frame}{Supervised learning, type 1: regression}
+  \framesubtitle{The output is a number from an infinite (continuous) set}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \begin{tikzpicture}
+        \begin{axis}[width=6.2cm,height=4.6cm,
+          xlabel={size $x$ (100 sq.\,ft)},ylabel={price $y$ (lakh BDT)},
+          xmin=0,xmax=26,ymin=0,ymax=95,
+          grid=major,grid style={culight},
+          tick label style={font=\scriptsize},label style={font=\scriptsize}]
+          \addplot[only marks,mark=*,mark size=1.6pt,cuteal]
+            coordinates {(5,22)(7,26)(9,36)(10,33)(12,44)(13,49)(15,52)(16,61)(18,63)(20,72)(22,74)(24,84)};
+          \addplot[curose,very thick,domain=3:25]{3.6*x+3};
+          \addplot[only marks,mark=diamond*,mark size=3pt,cuamber] coordinates {(17,0)};
+          \draw[dashed,cuamber,thick] (axis cs:17,0) -- (axis cs:17,64.2)
+                -- (axis cs:0,64.2);
+        \end{axis}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \small
+      \begin{itemize}
+        \item Infinitely many possible outputs: $\mathcal{Y}=\R$.
+        \item ``A $1700$ sq.\,ft flat $\Rightarrow$ about $64$ lakh.''
+        \item We fit a curve (here, a straight line) and read predictions off it.
+      \end{itemize}
+      \vspace{1mm}
+      \begin{block}{Other regression tasks}
+        \small
+        Forecast tomorrow's rainfall; predict a student's CGPA;
+        estimate remaining battery life; predict delivery time.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Supervised learning, type 2: classification}
+  \framesubtitle{The output is one of a small, finite set of categories}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \begin{tikzpicture}
+        \begin{axis}[width=6.0cm,height=4.2cm,
+          xlabel={tumour size},ylabel={patient age},
+          xmin=0,xmax=10,ymin=15,ymax=75,
+          grid=major,grid style={culight},
+          legend style={font=\tiny,at={(0.02,0.98)},anchor=north west,draw=none,fill=white},
+          tick label style={font=\scriptsize},label style={font=\scriptsize}]
+          \addplot[only marks,mark=o,mark size=2pt,cuteal,thick]
+            coordinates {(1.2,25)(2,32)(1.6,45)(2.8,28)(3.2,38)(2.2,55)(3.8,30)(1.4,60)(4.2,24)};
+          \addlegendentry{benign}
+          \addplot[only marks,mark=x,mark size=3pt,curose,thick]
+            coordinates {(6,48)(7.2,55)(5.4,62)(8,45)(6.8,38)(7.8,66)(5.8,52)(8.6,58)};
+          \addlegendentry{malignant}
+          \addplot[cublue,very thick,domain=1.5:9]{7.6*x-6};
+        \end{axis}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \small
+      \begin{itemize}
+        \item $\mathcal{Y}=\{0,1\}$ (binary) or $\{1,\dots,K\}$ (multiclass).
+        \item Categories need not be numbers: \{benign, malignant\}.
+        \item The learner finds a \emph{decision boundary}.
+      \end{itemize}
+      \vspace{1mm}
+      \begin{pitfall}[Regression or classification?]
+        \small Ask: \emph{is the distance between two outputs meaningful?}
+        Price $52$ vs.\ $53$ --- yes, nearly the same. Class $1$ vs.\ $2$ --- no,
+        ``cat'' is not halfway between ``dog'' and ``bird''.
+      \end{pitfall}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===============================================================
+\section{Unsupervised Learning}
+
+\begin{frame}{Unsupervised learning: data with no labels}
+  We are given only $\{\xii{1},\dots,\xii{m}\}$ --- no $y$. The goal is to find
+  \emph{structure} in the data.
+  \vspace{2mm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.33\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \begin{axis}[width=3.9cm,height=3.2cm,axis lines=box,xtick=\empty,ytick=\empty,
+          xmin=0,xmax=10,ymin=0,ymax=10,title={\scriptsize Clustering}]
+          \addplot[only marks,mark=*,mark size=1.3pt,cuteal] coordinates {(1.5,7.5)(2,8.4)(2.6,7)(1.2,6.6)(2.4,8.9)};
+          \addplot[only marks,mark=*,mark size=1.3pt,cuamber] coordinates {(7.6,7.8)(8.4,8.6)(8.8,7.2)(7.2,8.8)};
+          \addplot[only marks,mark=*,mark size=1.3pt,curose] coordinates {(4.6,2.2)(5.4,1.5)(5.8,2.8)(4.2,1.4)(6,1.9)};
+        \end{axis}
+      \end{tikzpicture}
+      {\scriptsize Group similar items: news topics, customer segments.}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \begin{axis}[width=3.9cm,height=3.2cm,axis lines=box,xtick=\empty,ytick=\empty,
+          xmin=0,xmax=10,ymin=0,ymax=10,title={\scriptsize Anomaly detection}]
+          \addplot[only marks,mark=*,mark size=1.3pt,cuteal]
+            coordinates {(4,4.4)(4.6,5)(5.2,4.2)(3.8,5.4)(5,5.6)(4.4,4)(5.6,4.8)(4.2,5.8)};
+          \addplot[only marks,mark=star,mark size=3.4pt,curose,thick] coordinates {(8.6,1.6)};
+          \draw[curose,dashed] (axis cs:8.6,1.6) circle[radius=12pt];
+        \end{axis}
+      \end{tikzpicture}
+      {\scriptsize Flag the unusual: fraud, failing engines.}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \begin{axis}[width=3.9cm,height=3.2cm,axis lines=box,xtick=\empty,ytick=\empty,
+          xmin=0,xmax=10,ymin=0,ymax=10,title={\scriptsize Dim.\ reduction}]
+          \addplot[only marks,mark=*,mark size=1.3pt,cuteal]
+            coordinates {(1.6,2.4)(2.6,3.2)(3.6,4.6)(4.6,5)(5.6,6.4)(6.6,7)(7.6,8.4)(3,3.4)(5,5.8)};
+          \addplot[cublue,very thick,domain=1:8.4]{1.05*x+0.8};
+        \end{axis}
+      \end{tikzpicture}
+      {\scriptsize Compress many features into a few: PCA.}
+    \end{column}
+  \end{columns}
+  \vspace{2mm}
+  \begin{keyidea}
+    Supervised: ``here is the right answer, learn to reproduce it.''\quad
+    Unsupervised: ``here is the data, tell me something interesting about it.''
+  \end{keyidea}
+\end{frame}
+
+\begin{frame}{Quick check: which paradigm?}
+  \small
+  \begin{enumerate}
+    \item From $10{,}000$ hospital records with a diabetic/non-diabetic flag,
+          predict whether a new patient is diabetic. \pause
+          \hfill{\color{cuteal}\textbf{Supervised --- classification}}\pause
+    \item Given the browsing logs of $50{,}000$ users with no annotation, split
+          them into groups with similar interests. \pause
+          \hfill{\color{cuteal}\textbf{Unsupervised --- clustering}}\pause
+    \item Given yesterday's electricity load curve, predict today's peak demand
+          in megawatts. \pause
+          \hfill{\color{cuteal}\textbf{Supervised --- regression}}\pause
+    \item Given millions of credit-card transactions, none marked fraudulent,
+          find the ones worth investigating. \pause
+          \hfill{\color{cuteal}\textbf{Unsupervised --- anomaly detection}}
+  \end{enumerate}
+\end{frame}
+
+% ===============================================================
+\section{The Linear Regression Model}
+
+\begin{frame}{Notation we will use all semester}
+  \small
+  \begin{center}
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabular}{@{}ll@{}}
+    \toprule
+    \textbf{Symbol} & \textbf{Meaning}\\
+    \midrule
+    $x$ & input variable / \emph{feature}\\
+    $y$ & output variable / \emph{target}\\
+    $m$ & number of training examples\\
+    $(x,y)$ & a single training example\\
+    $(\xii{i},\yii{i})$ & the $i$-th training example ($i$ is an \emph{index}, not a power)\\
+    $\hat{y}$ & the model's prediction, as opposed to the true $y$\\
+    $\fwb(x)$ & the model (hypothesis) with parameters $w,b$\\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vspace{2mm}
+  \begin{pitfall}
+    $\xii{2}$ is the \emph{second training example}; $x^2$ is $x$ squared.
+    Superscripts in parentheses always index examples.
+  \end{pitfall}
+\end{frame}
+
+\begin{frame}{The univariate linear model}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.46\textwidth}
+      \[
+        \boxed{\;\fwb(x) \;=\; wx + b\;}
+      \]
+      \small
+      \begin{itemize}
+        \item $w$ --- the \textbf{weight} or slope: how much $\hat y$ changes per
+              unit of $x$.
+        \item $b$ --- the \textbf{bias} or intercept: the prediction when $x=0$.
+        \item $w$ and $b$ are the \emph{parameters}; training means choosing them.
+        \item Called \emph{univariate} linear regression: one input feature.
+      \end{itemize}
+      \vspace{1mm}
+      Shorthand: $\yhat^{(i)} = \fwb(\xii{i}) = w\xii{i}+b$.
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \begin{axis}[width=6.4cm,height=5.0cm,xlabel={$x$},ylabel={$y$},
+          xmin=0,xmax=10,ymin=0,ymax=10,grid=major,grid style={culight},
+          tick label style={font=\scriptsize},label style={font=\scriptsize},
+          legend style={font=\tiny,at={(0.98,0.02)},anchor=south east,draw=none,fill=white}]
+          \addplot[cublue,very thick,domain=0:10]{0.8*x+1}; \addlegendentry{$w=0.8,\;b=1$}
+          \addplot[cuteal,very thick,dashed,domain=0:10]{0.8*x+4}; \addlegendentry{$w=0.8,\;b=4$}
+          \addplot[curose,very thick,dotted,domain=0:10]{-0.5*x+8}; \addlegendentry{$w=-0.5,\;b=8$}
+        \end{axis}
+      \end{tikzpicture}
+      {\scriptsize Changing $b$ shifts the line; changing $w$ tilts it.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Why start with a straight line?}
+  \small
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Pedagogically}
+        \begin{itemize}
+          \item Only two parameters --- we can \emph{draw} the whole optimisation landscape.
+          \item The cost surface is convex: one global minimum, no local traps.
+          \item Every idea here (model, cost, gradient descent) reappears unchanged in
+                logistic regression and neural networks.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Practically}
+        \begin{itemize}
+          \item Still the workhorse of econometrics and epidemiology.
+          \item Interpretable: $w$ has units and meaning.
+          \item A strong baseline --- always fit it before a deep network.
+          \item Extends to curves via feature engineering (Week 2).
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vspace{2mm}
+  \begin{keyidea}
+    ``Linear'' means linear \emph{in the parameters} $w,b$, not necessarily a
+    straight line in $x$. $f(x)=w_1x+w_2x^2+b$ is still linear regression.
+  \end{keyidea}
+\end{frame}
+
+% ===============================================================
+\section{The Cost Function}
+
+\begin{frame}{How do we know one line is better than another?}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \begin{axis}[width=6.2cm,height=4.8cm,xlabel={$x$},ylabel={$y$},
+          xmin=0,xmax=10,ymin=0,ymax=10,grid=major,grid style={culight},
+          tick label style={font=\scriptsize},label style={font=\scriptsize}]
+          \addplot[only marks,mark=*,mark size=1.9pt,cuteal]
+            coordinates {(1,2)(2,3.4)(3,3.8)(4,5.6)(5,5.4)(6,7.2)(7,7.4)(8,8.8)};
+          \addplot[curose,very thick,domain=0.5:8.5]{1.02*x+0.9};
+          \draw[cuamber,thick] (axis cs:2,3.4)--(axis cs:2,2.94);
+          \draw[cuamber,thick] (axis cs:4,5.6)--(axis cs:4,4.98);
+          \draw[cuamber,thick] (axis cs:5,5.4)--(axis cs:5,6.0);
+          \draw[cuamber,thick] (axis cs:7,7.4)--(axis cs:7,8.04);
+          \node[font=\scriptsize,cuamber] at (axis cs:6.1,4.2) {residual $\hat y^{(i)}-y^{(i)}$};
+        \end{axis}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \small
+      For each example the model makes an \textbf{error} (residual)
+      \[
+        e^{(i)} \;=\; \yhat^{(i)} - \yii{i} \;=\; \fwb(\xii{i}) - \yii{i}.
+      \]
+      We want a \emph{single number} summarising all $m$ errors, so that
+      ``better'' becomes ``smaller''.
+      \vspace{1mm}
+      \begin{itemize}
+        \item Sum the raw errors? Positives and negatives cancel --- a terrible
+              line could score $0$.
+        \item Sum $|e^{(i)}|$? Valid, but not differentiable at $0$.
+        \item Sum $(e^{(i)})^2$? Positive, smooth, and penalises large errors more.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{The squared-error cost function}
+  \begin{defnbox}[Squared-error cost]
+    \[
+      J(w,b)\;=\;\frac{1}{2m}\sum_{i=1}^{m}\bigl(\fwb(\xii{i})-\yii{i}\bigr)^{2}
+             \;=\;\frac{1}{2m}\sum_{i=1}^{m}\bigl(w\xii{i}+b-\yii{i}\bigr)^{2}.
+    \]
+  \end{defnbox}
+  \footnotesize
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \textbf{Reading the formula}
+      \begin{itemize}
+        \item Squaring: either sign costs the same, and a $10$-unit miss
+              costs $100\times$ a $1$-unit miss.
+        \item Dividing by $m$: an \emph{average}, so cost does not grow with
+              more data.
+        \item The $\tfrac12$: cosmetic --- it cancels the $2$ from
+              differentiating.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{The learning problem}
+      \[
+        \min_{w,\,b}\; J(w,b)
+      \]
+      \begin{itemize}
+        \item $J$ is a function of the \emph{parameters}, not of $x$.
+        \item The data $(\xii{i},\yii{i})$ are fixed constants inside $J$.
+        \item Training = solving this minimisation numerically --- all of
+              Session 2.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Cost-function intuition: a simplified model}
+  \framesubtitle{Set $b=0$, so $f_w(x)=wx$ and $J$ depends on one parameter only}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      {\scriptsize Model space: $f_w(x)=wx$ on data $(1,1),(2,2),(3,3)$}\par
+      \begin{tikzpicture}
+        \begin{axis}[width=5.9cm,height=4.2cm,xlabel={$x$},ylabel={$y$},
+          xmin=0,xmax=3.5,ymin=0,ymax=3.5,grid=major,grid style={culight},
+          tick label style={font=\scriptsize},label style={font=\scriptsize},
+          legend style={font=\tiny,at={(0.02,0.98)},anchor=north west,draw=none,fill=white}]
+          \addplot[only marks,mark=*,mark size=2pt,cublue,forget plot] coordinates {(1,1)(2,2)(3,3)};
+          \addplot[cuteal,very thick,domain=0:3.4]{x};      \addlegendentry{$w=1$}
+          \addplot[cuamber,very thick,domain=0:3.4]{0.5*x}; \addlegendentry{$w=0.5$}
+          \addplot[curose,very thick,domain=0:3.4]{0};      \addlegendentry{$w=0$}
+        \end{axis}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \centering
+      {\scriptsize Cost space: $J(w)$ as $w$ varies}\par
+      \begin{tikzpicture}
+        \begin{axis}[width=5.9cm,height=4.2cm,xlabel={$w$},ylabel={$J(w)$},
+          xmin=-0.6,xmax=2.6,ymin=0,ymax=3.2,grid=major,grid style={culight},
+          tick label style={font=\scriptsize},label style={font=\scriptsize}]
+          \addplot[cublue,very thick,domain=-0.6:2.6,samples=80]{(7/3)*(x-1)^2};
+          \addplot[only marks,mark=*,mark size=2.4pt,cuteal] coordinates {(1,0)};
+          \addplot[only marks,mark=*,mark size=2.4pt,cuamber] coordinates {(0.5,0.583)};
+          \addplot[only marks,mark=*,mark size=2.4pt,curose] coordinates {(0,2.333)};
+        \end{axis}
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+  \vspace{1mm}
+  \small
+  Each \emph{line} on the left is one \emph{point} on the right. $J(1)=0$ (perfect
+  fit), $J(0.5)=0.58$, $J(0)=2.33$. Minimising $J$ picks $w=1$.
+\end{frame}
+
+\begin{frame}{Worked example --- compute $J$ by hand}
+  \footnotesize
+  Data: $(1,1),(2,2),(3,3)$, so $m=3$. Model $f_w(x)=wx$.
+  \[
+    J(w)=\frac{1}{2\cdot 3}\sum_{i=1}^{3}\bigl(w\xii{i}-\yii{i}\bigr)^2 .
+  \]
+  \textbf{At $w=0.5$:} predictions $0.5,\,1,\,1.5$; errors $-0.5,\,-1,\,-1.5$.
+  \[
+    J(0.5)=\frac{1}{6}\bigl(0.25+1+2.25\bigr)=\frac{3.5}{6}\approx 0.58 .
+  \]
+  \textbf{At $w=0$:} predictions $0,0,0$; errors $-1,-2,-3$.
+  \[
+    J(0)=\frac{1}{6}(1+4+9)=\frac{14}{6}\approx 2.33 .
+  \]
+  \textbf{In general:} $J(w)=\frac{1}{6}\bigl[(w-1)^2+(2w-2)^2+(3w-3)^2\bigr]
+        =\frac{14}{6}(w-1)^2$ --- a parabola with vertex at $w=1$, where $J=0$.
+  \begin{keyidea}
+    $J$ is quadratic in the parameters, so its graph is a parabola (one
+    parameter) or a bowl (two). Convex $\Rightarrow$ a single global minimum.
+  \end{keyidea}
+\end{frame}
+
+% ===============================================================
+\section{Wrap-up and Assessment}
+
+\begin{frame}{Summary of Part 1}
+  \small
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Concepts}
+        \begin{itemize}
+          \item ML infers rules from data; use it when the rule cannot be written down.
+          \item Mitchell: learning is improvement at $T$, measured by $P$, with experience $E$.
+          \item Supervised = labelled data $\to$ regression (continuous $y$) or
+                classification (categorical $y$).
+          \item Unsupervised = unlabelled data $\to$ clustering, anomaly detection, PCA.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Formulas to memorise}
+        \[ \fwb(x)=wx+b \]
+        \[ J(w,b)=\frac{1}{2m}\sum_{i=1}^{m}\bigl(\fwb(\xii{i})-\yii{i}\bigr)^2 \]
+        \[ \min_{w,b} J(w,b) \]
+      \end{block}
+      \begin{block}{Next session}
+        \small Visualising $J$ as a surface and as contours; the gradient descent
+        algorithm; the learning rate $\alpha$; gradient descent applied to
+        linear regression.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Descriptive questions}
+  \small
+  \begin{enumerate}
+    \item State Mitchell's definition of machine learning. For an ML system that
+          learns to detect Bangla handwritten digits, identify $T$, $P$ and $E$
+          explicitly.  
+    \item Distinguish between supervised and unsupervised learning. Give one task
+          from agriculture that fits each, and justify your placement. 
+    \item Explain the difference between regression and classification. Why is
+          predicting a house's price a regression problem while predicting whether
+          it will sell within a month is classification? 
+    \item Write the squared-error cost function for univariate linear regression
+          and explain the role of each of the three parts: the square, the factor
+          $1/m$, and the factor $1/2$.  
+    \item For the training set $(1,1),(2,2),(3,3)$ and the model $f_w(x)=wx$,
+          derive a closed-form expression for $J(w)$ and use it to find the
+          minimising $w$ analytically.  
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Descriptive questions (continued)}
+  \small
+  \begin{enumerate}\setcounter{enumi}{5}
+    \item Argue why the sum of \emph{signed} errors,
+          $\sum_i(\hat y^{(i)}-y^{(i)})$, is unusable as a cost function.
+          Support your argument with a concrete two-point data set.  
+    \item ``Linear regression can only fit straight lines.'' Evaluate this
+          statement and justify your verdict.  
+    \item Two students fit the same data. Student A reports $J=4.2$ using the
+          $\tfrac{1}{2m}$ convention; student B reports $J=8.4$ using $\tfrac1m$.
+          Have they found different lines? Justify.  
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Design questions}
+  \small
+  \begin{enumerate}
+    \item \textbf{Framing a problem.} The Chattogram City Corporation wants a
+          system that predicts daily water demand for each ward. Design the
+          formulation: specify $\mathcal{X}$ (what features you would record),
+          $\mathcal{Y}$, the paradigm, and the performance measure $P$. State two
+          assumptions your design relies on.  
+    \item \textbf{Choosing a cost function.} A start-up predicts delivery times.
+          Being $10$ minutes \emph{late} is far worse for them than being $10$
+          minutes \emph{early}. Design a modified cost function that encodes this
+          asymmetry, write it mathematically, and state one property (positivity,
+          differentiability, convexity) that your design preserves or breaks.
+           
+    \item \textbf{Auditing a metric.} A hospital's ML screening tool reports
+          $97\%$ accuracy on a data set where $3\%$ of patients have the disease.
+          Explain why the stakeholders should not be satisfied, and design a
+          better evaluation protocol --- what would you measure and what data
+          split would you use? 
+    \item \textbf{Data design.} You must build the training set for a system that
+          grades short answers in Bangla. Describe how you would collect
+          $(\xii{i},\yii{i})$ pairs, and identify two ways your collection
+          procedure could bias the learned model. 
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Reading}
+  \begin{block}{Primary text}
+    G.~James, D.~Witten, T.~Hastie and R.~Tibshirani,
+    \emph{An Introduction to Statistical Learning}, 2nd ed., Springer, 2021. \\[2pt]
+    \hfill{\small$\rightarrow$ \textbf{Chapter 2} (\S2.1 statistical learning, \S2.1.4 supervised vs.\ unsupervised)
+    and \textbf{\S3.1} (simple linear regression, least squares).}
+  \end{block}
+  \begin{block}{Supplementary}
+    C.~M.~Bishop, \emph{Pattern Recognition and Machine Learning}, Springer, 2006. \\[2pt]
+    \hfill{\small$\rightarrow$ \textbf{\S1.1} polynomial curve fitting --- the sum-of-squares error
+    function from first principles.}
+  \end{block}
+  \vspace{2mm}
+  \begin{center}
+    \small\color{cugray}
+    Lab (CSE 816, Week 1): environment setup, model representation and
+    cost-function implementation in NumPy.\\
+    Practice quiz: \emph{Supervised vs.\ unsupervised learning}; \emph{Regression}.
+  \end{center}
+\end{frame}
+
+\end{document}

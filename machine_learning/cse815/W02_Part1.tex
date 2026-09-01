@@ -1,0 +1,434 @@
+% =================================================================
+%  CSE 815 -- Machine Learning
+%  Module 1, Week 2, Part 1
+%  Multiple Features, Vectorization, Gradient Descent for Multiple
+%  Linear Regression
+% =================================================================
+\documentclass[aspectratio=169,10pt]{beamer}
+\usepackage{cse815}
+
+\title[CSE 815 -- Week 2, Part 1]{Regression with Multiple Input Variables}
+\subtitle{Multiple Features, Vectorization, and Gradient Descent in $n$ Dimensions}
+\author{Rokan Uddin Faruqui\\ \small Professor, Department of CSE}
+\institute{\small University of Chittagong \\ \texttt{rufaruqui@cu.ac.bd}}
+\date[Week 2 / Part 1]{Week 2 $\cdot$ Part 1}
+
+\begin{document}
+
+\begin{frame}[plain,noframenumbering]
+  \titlepage
+\end{frame}
+
+% ---------------------------------------------------------------
+\begin{frame}{Where we are, and where this goes}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Week 1 gave us}
+        \[ \fwb(x)=wx+b \]
+        \[ J(w,b)=\frac{1}{2m}\sum_{i=1}^{m}\bigl(\fwb(\xii{i})-\yii{i}\bigr)^2 \]
+        \[ w := w-\alpha\tfrac{\partial J}{\partial w},\quad b := b-\alpha\tfrac{\partial J}{\partial b} \]
+      \end{block}
+      \small One feature: floor area. But nobody prices a flat on area alone ---
+      bedrooms, age and location all matter.
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \begin{keyidea}[Today]
+        \small
+        \begin{enumerate}
+          \item Multiple features and the notation for them 
+          \item The model as a dot product  
+          \item Vectorization, and why it is fast 
+          \item Gradient descent for $n$ features %\clo{25 min}
+          \item The normal equation, in passing %\clo{10 min}
+        \end{enumerate}
+      \end{keyidea}
+      \small Nothing conceptually new: the same three-part recipe, with $w$
+      promoted from a number to a vector.
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===============================================================
+\section{Multiple Features}
+
+\begin{frame}{One feature was never enough}
+  \footnotesize
+  \begin{center}
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabular}{@{}rrrrr@{}}
+    \toprule
+    \textbf{Size} & \textbf{Bedrooms} & \textbf{Floors} & \textbf{Age} & \textbf{Price}\\
+    $x_1$ (k sq ft) & $x_2$ & $x_3$ & $x_4$ (yr) & $y$ (lakh BDT)\\
+    \midrule
+    2.10 & 5 & 1 &  45 & 46.0\\
+    1.42 & 3 & 2 &  40 & 33.2\\
+    1.53 & 3 & 2 &  30 & 31.5\\
+    0.85 & 2 & 1 &  36 & 17.8\\
+    1.94 & 4 & 2 &  15 & 42.0\\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{defnbox}[Notation]
+        \small
+        \begin{itemize}
+          \item $n$ --- number of features (here $n=4$).
+          \item $\xii{i}$ --- the $i$-th training example, now a \emph{vector}.
+          \item $\xjj{i}{j}$ --- feature $j$ of example $i$.
+        \end{itemize}
+      \end{defnbox}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \small
+      From the table:
+      \[ \xii{2} = \begin{bmatrix} 1.42 & 3 & 2 & 40\end{bmatrix},\qquad \xjj{2}{3}=2. \]
+      $\xii{i}$ is a row of the table; $\xjj{i}{j}$ is one cell.
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{The model with $n$ features}
+  \small
+  Previously $\fwb(x)=wx+b$. Now every feature carries its own weight:
+  \[
+    f_{\vw,b}(\vx) \;=\; w_1x_1 + w_2x_2 + \dots + w_nx_n + b
+    \;=\; \vw\cdot\vx + b ,
+  \]
+  writing $\vw=[w_1,\dots,w_n]^{\!\top}$, $\vx=[x_1,\dots,x_n]^{\!\top}$ and
+  $\vw\cdot\vx=\sum_{j=1}^{n}w_jx_j$ for the dot product. The bias $b$ stays a scalar.
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.52\textwidth}
+      \footnotesize
+      A plausible fitted model for our flats:
+      \[ f(\vx) = 0.1x_1 + 4x_2 + 10x_3 - 2x_4 + 80 \]
+      Every parameter reads as a price: $b=80$ is a base in lakh, $w_2=4$ says an extra
+      bedroom adds 4 lakh, $w_4=-2$ says each year of age costs 2 lakh.
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{keyidea}
+        \footnotesize
+        This is \textbf{multiple} linear regression --- several \emph{inputs}. It is not
+        ``multivariate regression'', which means several \emph{outputs}.
+      \end{keyidea}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===============================================================
+\section{Vectorization}
+
+\begin{frame}{Three ways to compute the same thing}
+  \footnotesize
+  With $n=4$, $\vw = [w_1,\dots,w_4]$ and $\vx=[x_1,\dots,x_4]$:
+  \begin{block}{1. Written out}
+    \texttt{f = w[0]*x[0] + w[1]*x[1] + w[2]*x[2] + w[3]*x[3] + b}\\
+    Fine for $n=4$; unwritable for $n=100$.
+  \end{block}
+  \begin{block}{2. A loop}
+    \texttt{f = 0}\\
+    \texttt{for j in range(n): f = f + w[j] * x[j]}\\
+    \texttt{f = f + b}\\
+    Scales in source length, but runs in the Python interpreter.
+  \end{block}
+  \begin{block}{3. Vectorized}
+    \texttt{f = np.dot(w, x) + b}\\
+    Shorter \emph{and} far faster --- the only version you should write.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Why vectorization is faster}
+  \framesubtitle{It is not that the loop is ``interpreted'' --- it is that the hardware works in parallel}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \centering {\scriptsize Sequential: one product per time step}\par
+      \begin{tikzpicture}[font=\scriptsize,node distance=2mm]
+        \foreach \i/\t in {0/$t_0$,1/$t_1$,2/$t_2$,3/$t_3$}{
+          \node[draw,rounded corners,fill=culight,minimum width=1.5cm,minimum height=5mm]
+            at (0,-\i*0.72) (n\i) {$w_\i x_\i$};
+          \node[left=2mm of n\i,cugray] {\t};
+        }
+        \node[draw,fill=cuamber!25,rounded corners,minimum width=1.5cm,minimum height=5mm]
+          at (0,-3.3) (s) {sum};
+        \draw[-{Stealth},cugray] (n3) -- (s);
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \centering {\scriptsize Vectorized: all products in one time step}\par
+      \begin{tikzpicture}[font=\scriptsize]
+        \foreach \i in {0,1,2,3}{
+          \node[draw,rounded corners,fill=cuteal!20,minimum width=1.3cm,minimum height=5mm]
+            at (\i*1.45,0) (v\i) {$w_\i x_\i$};
+        }
+        \node[cugray] at (-1.0,0) {$t_0$};
+        \node[draw,fill=cuamber!25,rounded corners,minimum width=1.5cm,minimum height=5mm]
+          at (2.2,-1.4) (s) {sum};
+        \foreach \i in {0,1,2,3}{\draw[-{Stealth},cugray] (v\i) -- (s);}
+        \node[cugray] at (-1.0,-1.4) {$t_1$};
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+  \vspace{2mm}
+  \footnotesize
+  \texttt{np.dot} hands the arrays to compiled code using the CPU's \textbf{SIMD}
+  instructions --- one instruction acting on several numbers at once --- then a parallel
+  tree reduction for the sum. On a GPU the same idea spans thousands of cores.
+  \begin{keyidea}
+    The speed-up grows with $n$ and $m$, so vectorization is a correctness-level concern,
+    not a style preference.
+  \end{keyidea}
+\end{frame}
+
+\begin{frame}{Vectorizing the gradient descent step}
+  \footnotesize
+  Suppose $n=16$ and we have all sixteen derivatives $d_1,\dots,d_{16}$.
+  \vspace{1mm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Without vectorization}
+        \texttt{for j in range(16):}\\
+        \texttt{\ \ \ \ w[j] = w[j] - 0.1 * d[j]}
+        \vspace{1mm}
+        Sixteen steps, executed one after another.
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{With vectorization}
+        \texttt{w = w - 0.1 * d}
+        \vspace{1mm}
+        One step. NumPy updates all sixteen weights in parallel.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \begin{pitfall}
+    \small
+    \texttt{w * x} is \emph{elementwise} and returns a vector; \texttt{np.dot(w, x)} sums
+    those products and returns the scalar the model needs. Confusing them yields an array of
+    the wrong shape, often with no error until much later.
+  \end{pitfall}
+\end{frame}
+
+% ===============================================================
+\section{Gradient Descent for Multiple Features}
+
+\begin{frame}{The cost, and the gradient}
+  With $\vw\in\R^n$ and $b\in\R$, the cost is unchanged in form:
+  \[
+    J(\vw,b) \;=\; \frac{1}{2m}\sum_{i=1}^{m}\bigl(f_{\vw,b}(\xii{i})-\yii{i}\bigr)^{2},
+    \qquad f_{\vw,b}(\xii{i}) = \vw\cdot\xii{i}+b .
+  \]
+  Differentiating with respect to one weight $w_j$ --- everything else is a constant:
+  \[
+    \frac{\partial J}{\partial w_j}
+      = \frac{1}{m}\sum_{i=1}^{m}\bigl(f_{\vw,b}(\xii{i})-\yii{i}\bigr)\,\xjj{i}{j},
+    \qquad
+    \frac{\partial J}{\partial b}
+      = \frac{1}{m}\sum_{i=1}^{m}\bigl(f_{\vw,b}(\xii{i})-\yii{i}\bigr).
+  \]
+  \begin{keyidea}
+    Compare with Week 1: $\partial J/\partial w = \frac1m\sum(\fwb(\xii{i})-\yii{i})\xii{i}$.
+    The only change is that $\xii{i}$ became $\xjj{i}{j}$ --- feature $j$ of example $i$.
+    The residual is shared by every parameter; only the weighting differs.
+  \end{keyidea}
+\end{frame}
+
+\begin{frame}{The algorithm}
+  \begin{defnbox}[Gradient descent, $n$ features]
+    Repeat until convergence, updating all $n+1$ parameters \emph{simultaneously}:
+    \[
+      \begin{aligned}
+        w_j &:= w_j - \alpha\,\frac{1}{m}\sum_{i=1}^{m}\bigl(f_{\vw,b}(\xii{i})-\yii{i}\bigr)\xjj{i}{j}
+        \qquad \text{for } j = 1,\dots,n\\[2pt]
+        b &:= b - \alpha\,\frac{1}{m}\sum_{i=1}^{m}\bigl(f_{\vw,b}(\xii{i})-\yii{i}\bigr)
+      \end{aligned}
+    \]
+  \end{defnbox}
+  \footnotesize
+  In vector form the whole update is two lines:
+  \[
+    \vw := \vw - \alpha\,\nabla_{\vw}J, \qquad b := b - \alpha\,\frac{\partial J}{\partial b},
+    \qquad
+    \nabla_{\vw}J = \frac{1}{m}X^{\!\top}(X\vw + b\mathbf{1} - \mathbf{y}) .
+  \]
+  \begin{pitfall}
+    ``Simultaneously'' now means all $n+1$ parameters. Compute the entire gradient from the
+    old $(\vw,b)$, then assign. In NumPy: build \texttt{dj\_dw} and \texttt{dj\_db} first,
+    and only then write \texttt{w -= alpha*dj\_dw; b -= alpha*dj\_db}.
+  \end{pitfall}
+\end{frame}
+
+\begin{frame}{In code}
+  \footnotesize
+  \begin{block}{Computing the gradient for all $n$ features}
+    \texttt{def compute\_gradient(X, y, w, b):}\\
+    \texttt{\ \ \ \ m = X.shape[0]}\\
+    \texttt{\ \ \ \ err   = (X @ w + b) - y\ \ \ \ \ \ \ \ \ \ \# shape (m,)}\\
+    \texttt{\ \ \ \ dj\_dw = (X.T @ err) / m\ \ \ \ \ \ \ \ \ \ \# shape (n,)}\\
+    \texttt{\ \ \ \ dj\_db = np.sum(err) / m\ \ \ \ \ \ \ \ \ \ \# scalar}\\
+    \texttt{\ \ \ \ return dj\_dw, dj\_db}
+  \end{block}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \textbf{Shapes are the contract}
+      \begin{itemize}
+        \item \texttt{X} is $(m,n)$, \texttt{y} is $(m,)$
+        \item \texttt{w} is $(n,)$, \texttt{b} is a scalar
+        \item \texttt{X @ w} is $(m,)$ --- one prediction per example
+        \item \texttt{X.T @ err} is $(n,)$ --- one derivative per feature
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{Why \texttt{X.T @ err} is the gradient}\\[2pt]
+      Row $j$ of $X^{\!\top}$ is feature $j$ across all examples. Dotting it with the residual
+      vector gives $\sum_i(\hat y^{(i)}-y^{(i)})x^{(i)}_j$ --- exactly
+      $m\,\partial J/\partial w_j$.
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===============================================================
+\section{An Alternative: the Normal Equation}
+
+\begin{frame}{Solving for $\vw$ in one step}
+  \footnotesize
+  Linear regression is unusual: its minimum has a closed form. Setting $\nabla J=\mathbf{0}$
+  and solving gives the \textbf{normal equation}
+  \[
+    \boxed{\;\vw = (X^{\!\top}X)^{-1}X^{\!\top}\mathbf{y}\;}
+  \]
+  where $X$ carries a column of ones to absorb $b$.
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{In its favour}
+        \begin{itemize}
+          \item No $\alpha$ to choose.
+          \item No iterating, no convergence check.
+          \item Exact, up to floating point.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Against}
+        \begin{itemize}
+          \item Only for \emph{linear} regression --- no logistic regression, no neural nets.
+          \item Needs $(X^{\!\top}X)^{-1}$: cost grows like $n^3$, so it is unusable past
+                $n\sim10^4$.
+          \item Fails when $X^{\!\top}X$ is singular (duplicated or redundant features).
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+  \begin{keyidea}
+    Use it as a \emph{test oracle}: on a small problem, check that your gradient descent
+    converges to what \texttt{np.linalg.lstsq} returns. Gradient descent remains the method
+    that generalises to everything else in this course.
+  \end{keyidea}
+\end{frame}
+
+% ===============================================================
+\section{Wrap-up and Assessment}
+
+\begin{frame}{Summary of Part 1}
+  \small
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Concepts}
+        \begin{itemize}
+          \item $n$ features; $\xii{i}$ is a vector, $\xjj{i}{j}$ one of its entries.
+          \item $f_{\vw,b}(\vx)=\vw\cdot\vx+b$.
+          \item Vectorization is parallel hardware, not tidier code.
+          \item The gradient's form is unchanged; only the weighting index moves.
+          \item The normal equation solves this one model exactly, and nothing else.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Formulas}
+        \[ f_{\vw,b}(\vx)=\vw\cdot\vx+b \]
+        \[ \frac{\partial J}{\partial w_j}=\frac1m\sum_{i=1}^{m}\bigl(f_{\vw,b}(\xii{i})-\yii{i}\bigr)\xjj{i}{j} \]
+        \[ \vw := \vw - \alpha\nabla_{\vw}J \]
+      \end{block}
+      \begin{block}{Next}
+        \small Part 2: why unscaled features cripple gradient descent, how to check
+        convergence, choosing $\alpha$, and building new features.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Descriptive questions}
+  \footnotesize
+  \begin{enumerate}
+    \item Define $n$, $m$, $\xii{i}$ and $\xjj{i}{j}$. For the flats table on slide 4, state
+          $\xii{4}$, $\xjj{4}{2}$ and $n$. \hfill\clo{5}
+    \item Write the multiple linear regression model in both expanded and vector form, and
+          explain why $b$ is not part of $\vw$. \hfill\clo{4}
+    \item Distinguish \emph{multiple} linear regression from \emph{multivariate} regression.
+          \hfill\clo{3}
+    \item Derive $\partial J/\partial w_j$ for the multi-feature squared-error cost. State
+          precisely where it differs from the single-feature case and why. \hfill\clo{8}
+    \item Explain what vectorization means and why \texttt{np.dot(w,x)} outperforms an
+          equivalent Python loop. Refer to SIMD in your answer. \hfill\clo{6}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Descriptive questions (continued)}
+  \footnotesize
+  \begin{enumerate}\setcounter{enumi}{5}
+    \item For $\vw=[0.1,4,10,-2]$ and $b=80$, compute the predicted price of a flat with
+          $\vx=[1.5,3,2,20]$. Interpret each of the four terms in words. \hfill\clo{6}
+    \item Given \texttt{X} of shape $(m,n)$, \texttt{w} of shape $(n,)$ and \texttt{y} of
+          shape $(m,)$, state the shape of \texttt{X @ w}, \texttt{X.T @ err} and
+          \texttt{np.sum(err)}. Explain why \texttt{X.T @ err} is the weight gradient.
+          \hfill\clo{6}
+    \item State the normal equation and give two reasons it does not replace gradient
+          descent in this course. \hfill\clo{5}
+    \item A student writes \texttt{f = w * x + b} instead of \texttt{np.dot(w,x) + b}.
+          Describe what is actually computed, its shape, and why the bug may go unnoticed.
+          \hfill\clo{5}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Design questions}
+  \footnotesize
+  \begin{enumerate}
+    \item \textbf{Design the feature set.} You must predict monthly electricity bills for
+          households in Chattogram. Propose five features, giving units for each, and state
+          the sign you expect each weight to take and why. Identify one feature that looks
+          useful but would leak the answer. \hfill\clo{12}
+    \item \textbf{Design for interpretability.} A bank will use your linear model to explain
+          loan decisions to customers. Which choices in the model --- feature units, feature
+          selection, the presence of $b$ --- affect whether $w_j$ can be quoted as a reason?
+          Write the sentence you would put in front of a customer for one feature.
+          \hfill\clo{10}
+    \item \textbf{Design a shape-check harness.} Write three assertions that
+          \texttt{compute\_gradient(X, y, w, b)} should satisfy for any valid input, such
+          that a transposed matrix or a misused \texttt{*} is caught immediately. State what
+          each assertion rules out. \hfill\clo{10}
+    \item \textbf{Choose the solver.} For each case, argue for gradient descent or the normal
+          equation: (a) $m=500$, $n=6$; (b) $m=10^7$, $n=3000$; (c) $n=50$ where two features
+          are duplicates; (d) a logistic regression on $m=2000$, $n=10$. \hfill\clo{12}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Reading}
+  \begin{block}{Primary text}
+    G.~James, D.~Witten, T.~Hastie and R.~Tibshirani,
+    \emph{An Introduction to Statistical Learning}, 2nd ed., Springer, 2021.\\[2pt]
+    \hfill{\small$\rightarrow$ \textbf{\S3.2} --- multiple linear regression: estimating the
+    coefficients, interpreting them, and what the individual $w_j$ do and do not mean.}
+  \end{block}
+  \begin{block}{Supplementary}
+    C.~M.~Bishop, \emph{Pattern Recognition and Machine Learning}, Springer, 2006.\\[2pt]
+    \hfill{\small$\rightarrow$ \textbf{\S3.1--3.1.1} --- linear basis function models and the
+    normal equations in matrix form.}
+  \end{block}
+  \vspace{2mm}
+  \begin{center}
+    \small\color{cugray}
+    Lab (CSE 816, Week 2): NumPy vectorization; multiple linear regression.\\
+    Practice quiz: \emph{Multiple linear regression}.
+  \end{center}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,5 @@
+# CSE 816 -- Machine Learning Lab
+# Install with:  python3 -m pip install -r requirements.txt
+numpy>=1.24
+matplotlib>=3.7
+jupyterlab>=4.0
