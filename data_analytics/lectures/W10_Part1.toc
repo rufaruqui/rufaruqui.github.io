@@ -1,6 +1,0 @@
-\beamer@sectionintoc {1}{Domain Overview: Theory Meets Practice}{4}{0}{1}
-\beamer@sectionintoc {2}{Domain A: Social Media Analytics}{6}{0}{2}
-\beamer@sectionintoc {3}{Domain B: Time Series Analysis}{13}{0}{3}
-\beamer@sectionintoc {4}{Domain C: Healthcare Big Data}{20}{0}{4}
-\beamer@sectionintoc {5}{Case Study: CDC Syndromic Surveillance}{27}{0}{5}
-\beamer@sectionintoc {6}{Student Assessment Pool}{30}{0}{6}
